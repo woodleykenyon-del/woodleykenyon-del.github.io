@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aerospace RFQ Tracker — Case Study | Kenyon Woodley</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c94a1e;
+    --accent2: #e8622a;
+    --rule: #d0cfc9;
+    --card-bg: #ffffff;
+    --tag-bg: #ebebeb;
+    --mono: 'Space Mono', 'Courier New', monospace;
+    --sans: 'Inter', 'Helvetica Neue', 'Helvetica', sans-serif;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 64px 40px 80px; }
+
+  /* HEADER */
+  .header { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .header-eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .header-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-family: var(--mono); }
+  .header-badge { flex-shrink: 0; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 1.1rem; font-weight: 700; padding: 10px 18px; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* SECTION */
+  .section { margin-bottom: 40px; }
+  .section-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--accent); opacity: 0.4; }
+  .section-heading { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 14px; }
+  .section-body { font-size: 0.88rem; color: #2a2a2a; line-height: 1.7; }
+  .section-body p + p { margin-top: 10px; }
+  .section-body em { font-style: italic; color: var(--muted); }
+  .pull-quote { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); border-left: 3px solid var(--accent); padding: 8px 16px; margin: 18px 0; background: #f0eeea; }
+
+  /* FORMULA BOX */
+  .formula-box { background: var(--ink); color: #fff; padding: 22px 28px; margin: 24px 0; font-family: var(--mono); font-size: 0.78rem; line-height: 1.65; break-inside: avoid; }
+  .formula-box .formula-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .formula-box .formula-main { font-size: 0.85rem; color: #fff; font-weight: 700; margin-bottom: 10px; }
+  .formula-box .formula-modes { color: #bbb; font-size: 0.72rem; }
+
+  /* DIM GRID */
+  .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 24px 0; }
+  .dim-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 16px 14px; break-inside: avoid; }
+  .dim-icon { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+  .dim-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+  .dim-items { list-style: none; font-size: 0.73rem; color: var(--muted); line-height: 1.7; }
+  .dim-items li::before { content: '— '; }
+
+  /* TABLE */
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 18px; }
+  .styled-table thead tr { background: var(--ink); color: #fff; }
+  .styled-table thead th { padding: 10px 14px; text-align: left; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .styled-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .styled-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .styled-table td { padding: 12px 14px; vertical-align: top; line-height: 1.55; }
+  .styled-table td:first-child { font-weight: 600; font-size: 0.8rem; width: 28%; color: var(--ink); }
+  .styled-table td:last-child { color: #2a2a2a; font-size: 0.83rem; }
+
+  /* OUTPUT CARD */
+  .output-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 24px 26px; margin-top: 20px; }
+  .output-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; break-inside: avoid; }
+  .output-kpi-item { border: 1px solid var(--rule); padding: 10px 12px; }
+  .output-kpi-label { font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+  .output-kpi-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; }
+  .output-kpi-val.green { color: #2d7a4e; }
+  .output-kpi-val.red { color: #c94a1e; }
+  .output-kpi-val.neutral { color: var(--ink); }
+
+  .status-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 18px; break-inside: avoid; }
+  .status-chip { text-align: center; padding: 10px 8px; font-family: var(--mono); font-size: 0.68rem; font-weight: 700; }
+  .status-chip .chip-count { font-size: 1.4rem; display: block; margin-bottom: 2px; }
+  .status-chip .chip-label { font-size: 0.58rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+  .chip-critical { background: #c94a1e; color: #fff; }
+  .chip-high { background: #e8622a; color: #fff; }
+  .chip-medium { background: #c4a227; color: #fff; }
+  .chip-low { background: #6b7a8d; color: #fff; }
+  .chip-closed { background: #2d7a4e; color: #fff; }
+
+  .action-row { background: #1a1a1a; color: #fff; padding: 14px 16px; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+  .action-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; flex-shrink: 0; padding-top: 2px; }
+  .action-value { font-size: 0.85rem; font-weight: 600; color: var(--accent2); }
+
+  .output-footnote { font-size: 0.7rem; color: var(--muted); font-style: italic; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule); }
+
+  /* COLOR STRIP */
+  .color-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 20px 0; border: 1px solid var(--rule); overflow: hidden; break-inside: avoid; }
+  .color-strip-item { padding: 12px 14px; font-size: 0.73rem; line-height: 1.5; }
+  .color-strip-item .strip-label { font-family: var(--mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .strip-red { background: #fde8e4; border-left: 4px solid #c94a1e; }
+  .strip-amber { background: #fef6e0; border-left: 4px solid #c4a227; }
+  .strip-yellow { background: #fefce8; border-left: 4px solid #e0d56c; }
+  .strip-green { background: #e4f5ea; border-left: 4px solid #2d7a4e; }
+  .strip-grey { background: #eeeeee; border-left: 4px solid #888888; }
+
+  /* WORKBOOK MAP */
+  .workbook-map { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .wb-tab { background: var(--card-bg); border: 1px solid var(--rule); padding: 16px 14px; break-inside: avoid; }
+  .wb-tab-name { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px; }
+  .wb-tab-desc { font-size: 0.73rem; color: var(--muted); line-height: 1.55; }
+  .wb-tab-type { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-top: 8px; }
+
+  /* LIFECYCLE FLOW */
+  .lifecycle-flow { display: flex; align-items: center; gap: 0; margin: 24px 0; overflow: hidden; break-inside: avoid; }
+  .lf-step { flex: 1; padding: 14px 16px; background: var(--card-bg); border: 1px solid var(--rule); text-align: center; }
+  .lf-step + .lf-step { margin-left: -1px; }
+  .lf-step-num { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; }
+  .lf-step-name { font-size: 0.76rem; font-weight: 700; margin-top: 2px; }
+  .lf-step-detail { font-size: 0.65rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+  .lf-arrow { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); flex-shrink: 0; padding: 0 2px; }
+  .lf-step.active { background: var(--ink); border-color: var(--ink); }
+  .lf-step.active .lf-step-num { color: #888; }
+  .lf-step.active .lf-step-name { color: #fff; }
+  .lf-step.active .lf-step-detail { color: #999; }
+
+  /* BID TABLE */
+  .bid-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 14px; }
+  .bid-table thead tr { background: var(--ink); color: #fff; }
+  .bid-table thead th { padding: 8px 12px; text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; }
+  .bid-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .bid-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .bid-table td { padding: 8px 12px; vertical-align: middle; }
+  .bid-table .winner { background: #e4f5ea; font-weight: 600; }
+  .bid-table .over-target { color: #c94a1e; }
+  .bid-table .under-target { color: #2d7a4e; }
+
+  /* CONTEXT */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; break-inside: avoid; }
+  .context-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .context-card-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .context-card-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+  .upcoming-list { margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
+  .upcoming-list li { list-style: none; padding: 4px 0; border-bottom: 1px dashed var(--rule); font-family: var(--mono); }
+  .upcoming-list li::before { content: '→ '; color: var(--accent); }
+
+  .closing-box { background: var(--ink); color: #fff; padding: 28px 32px; margin-top: 20px; break-inside: avoid; }
+  .closing-box p { font-size: 0.88rem; line-height: 1.7; color: #ccc; }
+  .closing-box p strong { color: #fff; }
+  .closing-meta { margin-top: 14px; font-family: var(--mono); font-size: 0.68rem; color: #666; border-top: 1px solid #333; padding-top: 12px; }
+
+  .page-footer { border-top: 1px solid var(--rule); padding-top: 12px; margin-top: 24px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+
+  @media (max-width: 680px) {
+    .page { padding: 32px 20px 48px; }
+    .dim-grid, .output-kpi-row, .context-grid, .workbook-map { grid-template-columns: 1fr 1fr; }
+    .lifecycle-flow { flex-wrap: wrap; }
+    .status-row { grid-template-columns: repeat(3, 1fr); }
+    .color-strip { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">— Portfolio Case Study</div>
+      <div class="header-title">Aerospace RFQ Tracker</div>
+      <div class="header-sub">Ops-ready RFQ lifecycle management for aerospace sourcing<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Excel</div>
+    </div>
+    <div class="header-badge">RFQ</div>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <div class="section">
+    <div class="section-label">01 — Problem</div>
+    <h2 class="section-heading">RFQs disappear into inboxes. Cycle time balloons. Nobody knows what's overdue.</h2>
+    <div class="section-body">
+      <p>In aerospace sourcing, a single missed RFQ response can stall a production line. But most organizations track RFQs in email threads, scattered spreadsheets, and memory. There is no single view of what's been issued, what's been quoted, what's overdue, and what the savings picture looks like.</p>
+      <p>The consequences compound: sole-source justifications go undocumented, cycle times drift without anyone noticing, SLA compliance becomes unmeasurable, and supplier performance data (if it exists at all) lives in tribal knowledge.</p>
+      <div class="pull-quote">"How many RFQs are open right now? Which ones are overdue? What's our average cycle time?" Three basic questions that should take 10 seconds to answer, but rarely do.</div>
+    </div>
+  </div>
+
+  <!-- 02 INSIGHT -->
+  <div class="section">
+    <div class="section-label">02 — Insight</div>
+    <h2 class="section-heading">The RFQ isn't a document. It's a lifecycle.</h2>
+    <div class="section-body">
+      <p>Most tracking tools treat an RFQ as a line item: issued, done. But the sourcing value sits in what happens between issue and award. How many quotes came back. Whether the response was on time. What the price delta was against target. Whether the supplier earned the business on merit or by default.</p>
+      <p><em>A tracker that only records issuance solves the wrong problem. The system needs to capture the full lifecycle: issue, response, evaluation, award, and the performance metrics that fall out of each stage.</em></p>
+      <div class="pull-quote">"We don't have anything like this." — VP of Business Process Improvement, consumer goods manufacturing</div>
+    </div>
+  </div>
+
+  <!-- 03 APPROACH -->
+  <div class="section" style="page-break-before:always;break-before:page;">
+    <div class="section-label">03 — Approach</div>
+    <h2 class="section-heading">A 10-tab workbook that tracks the full RFQ lifecycle</h2>
+    <div class="section-body">
+      <p>The tracker captures every RFQ from initial issue through supplier response, bid evaluation, and final award. KPIs, SLA flags, formula-driven supplier scorecard metrics, and savings calculations are all powered by the data you enter. Every calculation runs through a centralized Settings tab. No macros. No VBA. Pure Excel logic.</p>
+    </div>
+
+    <div class="lifecycle-flow">
+      <div class="lf-step">
+        <div class="lf-step-num">01</div>
+        <div class="lf-step-name">Issue</div>
+        <div class="lf-step-detail">RFQ created<br>SLA clock starts</div>
+      </div>
+      <div class="lf-arrow">→</div>
+      <div class="lf-step">
+        <div class="lf-step-num">02</div>
+        <div class="lf-step-name">Track</div>
+        <div class="lf-step-detail">Days until due<br>SLA flag auto-set</div>
+      </div>
+      <div class="lf-arrow">→</div>
+      <div class="lf-step">
+        <div class="lf-step-num">03</div>
+        <div class="lf-step-name">Quote</div>
+        <div class="lf-step-detail">Responses received<br>Price vs target</div>
+      </div>
+      <div class="lf-arrow">→</div>
+      <div class="lf-step">
+        <div class="lf-step-num">04</div>
+        <div class="lf-step-name">Evaluate</div>
+        <div class="lf-step-detail">Bid comparison<br>Source selection</div>
+      </div>
+      <div class="lf-arrow">→</div>
+      <div class="lf-step active">
+        <div class="lf-step-num">05</div>
+        <div class="lf-step-name">Award</div>
+        <div class="lf-step-detail">Cycle time logged<br>SLA compliance set</div>
+      </div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:28px;">Workbook Architecture: 10 Tabs</div>
+    <div class="workbook-map">
+      <div class="wb-tab">
+        <div class="wb-tab-name">Cover</div>
+        <div class="wb-tab-desc">Version, audience, workbook table of contents</div>
+        <div class="wb-tab-type">Reference</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Executive Summary</div>
+        <div class="wb-tab-desc">Portfolio-level KPIs and spend overview for leadership. Single-page snapshot designed for stakeholder reviews.</div>
+        <div class="wb-tab-type">Dashboard</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">RFQ Tracker</div>
+        <div class="wb-tab-desc">Primary data entry. 27 columns per RFQ, from issue to award. KPI banner and status breakdown auto-populate.</div>
+        <div class="wb-tab-type">Data Entry + KPIs</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Bid Comparison</div>
+        <div class="wb-tab-desc">Side-by-side supplier evaluation per RFQ. Up to 5 suppliers. Variance calculations and sourcing recommendation.</div>
+        <div class="wb-tab-type">Analysis</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Supplier Scorecard</div>
+        <div class="wb-tab-desc">Formula-driven metrics per supplier: RFQs sent, response rate, win rate, average quote, performance rating.</div>
+        <div class="wb-tab-type">Auto-Calculated</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Analytics</div>
+        <div class="wb-tab-desc">Volume metrics, cycle time trends, savings analysis, priority breakdown, commodity distribution, and portfolio intelligence.</div>
+        <div class="wb-tab-type">Dashboard</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Pipeline View</div>
+        <div class="wb-tab-desc">12-month heat map showing RFQs issued, responses due, and awards made by month.</div>
+        <div class="wb-tab-type">Visual</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Supplier Directory</div>
+        <div class="wb-tab-desc">Approved supplier list: CAGE codes, AS9100 status, commodity, location, primary contact.</div>
+        <div class="wb-tab-type">Reference</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Settings</div>
+        <div class="wb-tab-desc">Organization name, SLA target, overdue warning, min quotes, fiscal year. Powers all formulas.</div>
+        <div class="wb-tab-type">Configuration</div>
+      </div>
+      <div class="wb-tab">
+        <div class="wb-tab-name">Instructions</div>
+        <div class="wb-tab-desc">Quick start guide, field definitions, color coding reference, best practices, and limitations.</div>
+        <div class="wb-tab-type">Documentation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 CORE DATA MODEL -->
+  <div class="section" style="page-break-before:always;break-before:page;">
+    <div class="section-label">04 — Core Data Model</div>
+    <h2 class="section-heading">27 fields per RFQ, and each one earns its column</h2>
+    <div class="section-body">
+      <p>The RFQ Tracker sheet captures the full lifecycle in a single row per RFQ. Seven fields are user-entered. The remaining twenty are calculated, derived, or auto-flagged by formula.</p>
+    </div>
+
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-icon">ID</div>
+        <div class="dim-title">Identification</div>
+        <ul class="dim-items">
+          <li>RFQ Number</li>
+          <li>Part Number</li>
+          <li>Part Description</li>
+          <li>Program / Project</li>
+          <li>Commodity Code</li>
+        </ul>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">SLA</div>
+        <div class="dim-title">Timeline & Compliance</div>
+        <ul class="dim-items">
+          <li>Issue Date</li>
+          <li>Response Due Date</li>
+          <li>Days Until Due (auto)</li>
+          <li>SLA Flag (auto)</li>
+          <li>Cycle Time (auto)</li>
+          <li>SLA Met? (auto)</li>
+        </ul>
+      </div>
+      <div class="dim-card">
+        <div class="dim-icon">$</div>
+        <div class="dim-title">Pricing & Award</div>
+        <ul class="dim-items">
+          <li>Target Price</li>
+          <li>Lowest Quote</li>
+          <li>2nd Lowest Quote</li>
+          <li>Savings vs Target (auto)</li>
+          <li>Savings % (auto)</li>
+          <li>Awarded Supplier</li>
+          <li>Award Date</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Core Calculations</div>
+      <div class="formula-main">Cycle Time = Award Date − Issue Date &nbsp;|&nbsp; Savings = Target Price − Lowest Quote &nbsp;|&nbsp; SLA Met = Cycle Time ≤ SLA Target</div>
+      <div class="formula-modes">SLA Flag = response due-date compliance (overdue / at risk / OK). &nbsp;SLA Met = issue-to-award cycle time ≤ SLA target.<br>SLA Target, Overdue Warning, and Min Quotes Required are all configurable in the Settings tab. &nbsp;|&nbsp; Default SLA: 30 days &nbsp;|&nbsp; Default Warning: 3 days &nbsp;|&nbsp; Default Min Quotes: 3</div>
+    </div>
+  </div>
+
+  <!-- 05 SLA & STATUS LOGIC -->
+  <div class="section">
+    <div class="section-label">05 — SLA & Status Logic</div>
+    <h2 class="section-heading">Color-coded triage without manual tagging</h2>
+    <div class="section-body">
+      <p>Every RFQ row is automatically color-coded based on its SLA status. The system evaluates the response due date against today's date and the configurable warning window. No manual intervention required. Overdue RFQs surface immediately.</p>
+    </div>
+
+    <div class="color-strip">
+      <div class="color-strip-item strip-red">
+        <div class="strip-label">Overdue</div>
+        Open past due date. Immediate action required.
+      </div>
+      <div class="color-strip-item strip-amber">
+        <div class="strip-label">At Risk</div>
+        Due within warning window (default 3 days).
+      </div>
+      <div class="color-strip-item strip-yellow">
+        <div class="strip-label">Pending</div>
+        Open, no response yet, due date still future.
+      </div>
+      <div class="color-strip-item strip-green">
+        <div class="strip-label">Closed</div>
+        Awarded. No further action needed.
+      </div>
+      <div class="color-strip-item strip-grey">
+        <div class="strip-label">Cancelled</div>
+        Voided. Retained for audit trail.
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>Priority classification (Critical, High, Medium, Low) is set by the user at issuance. Critical indicates a program-stopper that must be awarded immediately. The KPI banner surfaces counts by priority and status in real time.</p>
+    </div>
+  </div>
+
+  <!-- 06 KEY CAPABILITIES -->
+  <div class="section">
+    <div class="section-label">06 — Key Capabilities</div>
+    <h2 class="section-heading">Seven features that make it ops-ready</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>KPI Banner</td>
+          <td>Seven real-time metrics at the top of the tracker: Open RFQs, Overdue count, At Risk count, Avg Cycle Time, Response Rate, Savings Realized, and Sole Source Award %. No scrolling required to see portfolio health.</td>
+        </tr>
+        <tr>
+          <td>Bid Comparison Matrix</td>
+          <td>Dedicated tab for side-by-side supplier evaluation. Up to 5 suppliers per RFQ. Auto-calculates variance vs target, flags lowest quote, and includes a structured sourcing recommendation section for audit documentation.</td>
+        </tr>
+        <tr>
+          <td>Supplier Scorecard</td>
+          <td>Formula-driven performance metrics per supplier, pulled directly from tracker data: RFQs sent, response rate, awards won, win rate, and performance rating. No manual data entry. The scorecard builds itself.</td>
+        </tr>
+        <tr>
+          <td>Portfolio Intelligence</td>
+          <td>Second-order analytics: stalling RFQs (open past SLA, zero quotes), over-target spend patterns, cycle time by commodity group, and critical parts currently open. Surfaces systemic issues, not just individual RFQs.</td>
+        </tr>
+        <tr>
+          <td>Pipeline Heat Map</td>
+          <td>12-month view showing RFQs issued, responses due, and awards made by month. Conditional formatting shows workload intensity. Identifies capacity crunches before they happen.</td>
+        </tr>
+        <tr>
+          <td>Quote Sufficiency Flag</td>
+          <td>Each RFQ is evaluated against the minimum competitive bids target (configurable in Settings, default 3). RFQs that fall short are flagged to ensure competitive rigor before award.</td>
+        </tr>
+        <tr>
+          <td>AutoFilter + Data Validation</td>
+          <td>AutoFilter is enabled on all columns for instant sorting and filtering by any field. Drop-down data validation is applied to Priority, Status, Commodity, and Sole Source columns, reducing entry errors and making large portfolios navigable without scrolling through every row.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 07 OUTPUT EXAMPLE -->
+  <div class="section" style="page-break-before:always;break-before:page;">
+    <div class="section-label">07 — Output Example</div>
+    <h2 class="section-heading">What a sourcing manager sees on Monday morning</h2>
+    <div class="section-body">
+      <p>The KPI banner gives an instant portfolio snapshot. Below it, the status breakdown shows where attention is needed. Every metric is formula-driven from the RFQ data. No pivot tables, no manual counts.</p>
+    </div>
+
+    <div class="output-card">
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Dashboard KPIs (Formula-Driven)</div>
+
+      <div class="output-kpi-row">
+        <div class="output-kpi-item">
+          <div class="output-kpi-label">Open RFQs</div>
+          <div class="output-kpi-val neutral">6</div>
+        </div>
+        <div class="output-kpi-item">
+          <div class="output-kpi-label">Overdue</div>
+          <div class="output-kpi-val red">2</div>
+        </div>
+        <div class="output-kpi-item">
+          <div class="output-kpi-label">Avg Cycle Time</div>
+          <div class="output-kpi-val neutral">38d</div>
+        </div>
+        <div class="output-kpi-item">
+          <div class="output-kpi-label">Savings Realized</div>
+          <div class="output-kpi-val green">$3,950</div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Priority Breakdown</div>
+      <div class="status-row">
+        <div class="status-chip chip-critical"><span class="chip-count">2</span><span class="chip-label">Critical</span></div>
+        <div class="status-chip chip-high"><span class="chip-count">3</span><span class="chip-label">High</span></div>
+        <div class="status-chip chip-medium"><span class="chip-count">2</span><span class="chip-label">Medium</span></div>
+        <div class="status-chip chip-low"><span class="chip-count">2</span><span class="chip-label">Low</span></div>
+        <div class="status-chip chip-closed"><span class="chip-count">4</span><span class="chip-label">Closed</span></div>
+      </div>
+
+      <div class="output-footnote" style="border-top:none;padding-top:0;margin-top:4px;">Values reflect the 60-RFQ synthetic dataset built into the workbook. All RFQs, part numbers, suppliers, and amounts are illustrative only.</div>
+    </div>
+
+    <!-- BID COMPARISON -->
+    <div style="margin-top:28px;">
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Bid Comparison Tab: RFQ-2025-003, Composite Skin Panel Assy</div>
+      <div class="output-card" style="margin-top:0;">
+        <table class="bid-table">
+          <thead>
+            <tr>
+              <th>Criteria</th>
+              <th>AeroComposites Inc</th>
+              <th>Vertex Composites</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">Quoted Price</td>
+              <td class="winner">$88,500</td>
+              <td>$94,200</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">vs Target ($90K)</td>
+              <td class="under-target">−$1,500 (1.7% under)</td>
+              <td class="over-target">+$4,200 (4.7% over)</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Lead Time</td>
+              <td class="winner">45 days</td>
+              <td>60 days</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">AS9100D</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">OTD Rating</td>
+              <td class="winner">98%</td>
+              <td>95%</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Technical Exceptions</td>
+              <td>None</td>
+              <td>Minor notes</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="action-row" style="margin-top:14px;">
+          <div class="action-label">Recommendation</div>
+          <div class="action-value">Award to AeroComposites Inc: lowest compliant bid, $1,500 below target, no exceptions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 PORTFOLIO INTELLIGENCE -->
+  <div class="section">
+    <div class="section-label">08 — Portfolio Intelligence</div>
+    <h2 class="section-heading">Second-order analytics that surface systemic issues</h2>
+    <div class="section-body">
+      <p>The Analytics tab goes beyond basic counts. It identifies patterns that individual RFQ tracking misses: which RFQs are stalling, where spend is running over target, and which commodity groups carry the longest cycle times.</p>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Metric Category</th>
+          <th>What It Surfaces</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stalling RFQs</td>
+          <td>Open past SLA target. Open with zero quotes received. Open with no supplier response. Critical parts currently sitting in open status. These are the RFQs that need a phone call, not a follow-up email.</td>
+        </tr>
+        <tr>
+          <td>Spend vs Target</td>
+          <td>Count and dollar value of closed RFQs that exceeded target price. Over-target rate. Answers the question: "Are we actually saving money, or are we just processing paper?"</td>
+        </tr>
+        <tr>
+          <td>Cycle Time by Commodity</td>
+          <td>Average days from issue to award, broken out across eight commodity groups: Machined Parts, Fasteners, Composites, Bearings, Raw Material, Actuation, Forgings, and Seals/Gaskets.</td>
+        </tr>
+        <tr>
+          <td>Volume & Breakdown</td>
+          <td>Total RFQs issued, open/closed/cancelled split, sole source vs competitive awards, priority distribution, and response rate across the entire portfolio.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 09 COMPLIANCE -->
+  <div class="section">
+    <div class="section-label">09 — Compliance & Audit Readiness</div>
+    <h2 class="section-heading">Built for environments where documentation isn't optional</h2>
+    <div class="section-body">
+      <p>Aerospace sourcing operates under regulatory frameworks (FAR, DFARS) where traceability matters. The tracker is designed with audit readiness as a first-class concern, not an afterthought.</p>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Audit Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sole Source Flag</td>
+          <td>Every RFQ is marked Y/N for sole source. Y triggers a documentation expectation: written justification should be on file per FAR 6.302 / DFARS 206. The tracker makes sole source visibility default, not buried.</td>
+        </tr>
+        <tr>
+          <td>Bid Comparison Tab</td>
+          <td>Duplicatable per RFQ. Documents all quotes received, evaluation criteria, and sourcing recommendation in one place. This is the source selection record.</td>
+        </tr>
+        <tr>
+          <td>Cancelled RFQ Retention</td>
+          <td>Cancelled RFQs are marked, not deleted. Row history is preserved for audit trail. Status-based filtering lets users hide them without destroying data.</td>
+        </tr>
+        <tr>
+          <td>Notes Column</td>
+          <td>Free-text field for sourcing rationale, issues, or actions taken. Supports the "why" behind every award decision when auditors come asking.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 10 BROADER CONTEXT -->
+  <div class="section">
+    <div class="section-label">10 — Broader Context</div>
+    <h2 class="section-heading">Second tool in a sourcing operations suite</h2>
+    <div class="section-body">
+      <p>The RFQ Lifecycle Tracker is the second tool in a growing series designed to address common pain points in aerospace procurement. Each tool is standalone, solves a specific operational problem, and produces outputs defensible in a leadership setting.</p>
+    </div>
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="context-card-label">Suite Progress</div>
+        <ul class="upcoming-list">
+          <li>Part Prioritization Framework — Complete</li>
+          <li>RFQ Lifecycle Tracker — V4 Complete</li>
+          <li>Parametric Should-Cost Model — In Development</li>
+          <li>Supplier Performance & Risk Scorecard — Planned</li>
+          <li>Make vs. Buy Decision Framework — Planned</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <div class="context-card-label">Design Philosophy</div>
+        <div class="context-card-body">Excel-native. No macros, no VBA, no external dependencies. Compatible with Excel 2019+ and Microsoft 365. Each tool is designed for the sourcing professional who needs to present defensible outputs to leadership, not for the analyst building dashboards. Clarity over complexity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 CLOSING -->
+  <div class="section">
+    <div class="section-label">11 — Closing Note</div>
+    <div class="closing-box">
+      <p>Built to bring visibility to the RFQ lifecycle in environments where procurement decisions carry program-level consequences. The system captures issuance, tracks compliance, evaluates bids, scores suppliers, and surfaces portfolio-level patterns, all in a single workbook. <strong>The tracker surfaces the data. The sourcing manager makes the call.</strong></p>
+      <div class="closing-meta">Excel-native RFQ lifecycle management tool. &nbsp;|&nbsp; 10-tab workbook, 27-column data model. &nbsp;|&nbsp; Designed capacity: 500 RFQs. &nbsp;|&nbsp; 60-RFQ synthetic dataset across 6 aerospace programs. &nbsp;|&nbsp; 15 approved suppliers. &nbsp;|&nbsp; No macros, no VBA. &nbsp;|&nbsp; Compatible with Excel 2019+ / Microsoft 365. &nbsp;|&nbsp; Built for audit-ready aerospace sourcing.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Aerospace RFQ Tracker — Case Study</span>
+    <span>Kenyon Woodley</span>
+  </div>
+
+</div>
+</body>
+</html>

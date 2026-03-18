@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenyon Woodley — Sourcing Operations Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #f5f4f0;
+    --ink:     #1a1a1a;
+    --muted:   #6b6b6b;
+    --accent:  #c94a1e;
+    --rule:    #d0cfc9;
+    --card-bg: #ffffff;
+    --mono:    'Space Mono', 'Courier New', monospace;
+    --sans:    'Inter', 'Helvetica Neue', sans-serif;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 64px 40px 96px; }
+
+  /* HEADER */
+  .header {
+    border-top: 2px solid var(--ink);
+    padding-top: 24px;
+    margin-bottom: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .header-name {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .header-bio {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    font-family: var(--mono);
+  }
+  .header-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    padding-top: 4px;
+    flex-shrink: 0;
+  }
+  .contact-link {
+    font-family: var(--mono);
+    font-size: 0.67rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.15s;
+  }
+  .contact-link:hover { color: var(--accent); }
+  .contact-icon { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.55; }
+  .contact-link:hover .contact-icon { opacity: 1; }
+
+  /* SECTION */
+  .section { margin-bottom: 52px; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.35;
+  }
+
+  /* ABOUT */
+  .about-text {
+    font-size: 0.9rem;
+    color: #2a2a2a;
+    line-height: 1.85;
+    max-width: 720px;
+  }
+  .about-text strong { color: var(--ink); font-weight: 600; }
+
+  /* SUITE PROGRESS */
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .progress-count {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .progress-bar-track {
+    height: 5px;
+    background: var(--rule);
+    border-radius: 1px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 60%;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .progress-tools { display: flex; gap: 0; }
+  .progress-tool {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    padding: 8px 10px;
+    border: 1px solid var(--rule);
+    border-right: none;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .progress-tool:last-child { border-right: 1px solid var(--rule); }
+  .progress-tool.done {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .progress-tool-name { font-weight: 700; font-size: 0.57rem; display: block; margin-bottom: 1px; }
+  .progress-tool-status { font-size: 0.54rem; opacity: 0.65; }
+  .progress-tool.done .progress-tool-status { color: #e8825a; opacity: 1; }
+
+  /* TOOL CARDS */
+  .tool-card {
+    border: 1px solid var(--rule);
+    background: var(--card-bg);
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 64px 1fr 148px;
+  }
+  .tool-num {
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.04em;
+  }
+  .tool-body {
+    padding: 20px 22px;
+    border-left: 1px solid var(--rule);
+  }
+  .tool-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.57rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .tool-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 7px;
+    line-height: 1.3;
+  }
+  .tool-desc {
+    font-size: 0.8rem;
+    color: #3a3a3a;
+    line-height: 1.65;
+    margin-bottom: 13px;
+  }
+  .tool-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #ebebeb;
+    color: var(--ink);
+    padding: 3px 7px;
+  }
+  .tag-live { background: var(--accent); color: #fff; }
+
+  /* ACTIONS */
+  .tool-actions {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    border-left: 1px solid var(--rule);
+  }
+  .btn {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 8px 12px;
+    text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+  .btn-secondary:hover { border-color: var(--ink); }
+  .btn-live { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .btn-live:hover { background: #a83a14; border-color: #a83a14; }
+
+  /* planned */
+  .tool-card.planned { opacity: 0.32; pointer-events: none; border-style: dashed; }
+  .tool-card.planned .tool-num { background: #b0b0b0; }
+
+  /* FOOTER */
+  .page-footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    margin-top: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 700px) {
+    .page { padding: 32px 20px 64px; }
+    .header { flex-direction: column; gap: 20px; }
+    .header-contact { align-items: flex-start; }
+    .tool-card { grid-template-columns: 48px 1fr; }
+    .tool-actions {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      border-left: none;
+      border-top: 1px solid var(--rule);
+      padding: 12px 14px;
+    }
+    .progress-tools { flex-wrap: wrap; }
+    .progress-tool { flex: 1 1 40%; border-right: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">Sourcing Operations Portfolio</div>
+      <div class="header-name">Kenyon Woodley</div>
+      <div class="header-bio">Senior, Manufacturing &amp; Supply Chain Management<br>Western Washington University &nbsp;|&nbsp; 2026 &nbsp;|&nbsp; Aerospace, Defense &amp; Tech</div>
+    </div>
+    <div class="header-contact">
+      <a class="contact-link" href="mailto:woodleykenyon@gmail.com">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <polyline points="2,4 12,13 22,4"/>
+        </svg>
+        woodleykenyon@gmail.com
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/kenyonwoodley/" target="_blank" rel="noopener">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="3"/>
+          <line x1="8" y1="11" x2="8" y2="17"/>
+          <line x1="8" y1="7" x2="8" y2="7.5"/>
+          <path d="M12 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4"/>
+          <line x1="12" y1="11" x2="12" y2="17"/>
+        </svg>
+        linkedin.com/in/kenyonwoodley
+      </a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-label">About This Portfolio</div>
+    <p class="about-text">I'm a senior at Western Washington University studying manufacturing and supply chain management, with experience across sourcing, operations, and manufacturing workflows. I built this portfolio to show how I approach ambiguous operational problems: I break them down, structure the decision logic, and turn them into usable systems.</p>
+    <p class="about-text" style="margin-top: 14px;">Most of these projects are grounded in workflow opportunities I observed firsthand during internships and applied work, especially in sourcing and manufacturing environments, but the broader point is bigger than procurement alone. This portfolio is about how I think and build: identifying operational bottlenecks, defining the logic behind better decisions, and creating systems that are practical enough to be used.</p>
+  </div>
+
+  <!-- SUITE PROGRESS -->
+  <div class="section">
+    <div class="section-label">Suite Progress</div>
+    <div class="progress-header">
+      <span class="progress-label">Sourcing Operations Portfolio</span>
+      <span class="progress-count">3 of 5 Complete</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <div class="progress-tools">
+      <div class="progress-tool done">
+        <span class="progress-tool-name">Part Prioritization</span>
+        <span class="progress-tool-status">Complete</span>
+      </div>
+      <div class="progress-tool done">
+        <span class="progress-tool-name">RFQ Tracker</span>
+        <span class="progress-tool-status">Complete</span>
+      </div>
+      <div class="progress-tool done">
+        <span class="progress-tool-name">Should-Cost Model</span>
+        <span class="progress-tool-status">Complete</span>
+      </div>
+      <div class="progress-tool">
+        <span class="progress-tool-name">Supplier Scorecard</span>
+        <span class="progress-tool-status">Planned</span>
+      </div>
+      <div class="progress-tool">
+        <span class="progress-tool-name">Make vs. Buy</span>
+        <span class="progress-tool-status">Planned</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section">
+    <div class="section-label">Tools</div>
+
+    <div class="tool-card">
+      <div class="tool-num">01</div>
+      <div class="tool-body">
+        <div class="tool-eyebrow">Excel — Scoring Engine</div>
+        <div class="tool-title">Part Prioritization Framework</div>
+        <div class="tool-desc">Solves the triage problem: given a portfolio of 50-100 parts, which ones actually need attention first? A weighted scoring engine ranks parts across production impact, supply risk, cost exposure, and instability into defensible action categories. Outputs a ranked list with plain-language AI reason codes, ready for leadership review.</div>
+        <div class="tool-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Claude AI</span>
+          <span class="tag">60-Part Dataset</span>
+          <span class="tag">V2</span>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <a class="btn btn-primary" href="case-studies/part-prioritization.html">Case Study</a>
+        <a class="btn btn-secondary" href="tools/Part_Prioritization_Tool.xlsx" download>Download Tool</a>
+        <a class="btn btn-secondary" href="pdfs/Part_Prioritization_Case_Study.pdf" target="_blank">Download PDF</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-num">02</div>
+      <div class="tool-body">
+        <div class="tool-eyebrow">Excel — Lifecycle Tracker</div>
+        <div class="tool-title">Aerospace RFQ Tracker</div>
+        <div class="tool-desc">Solves the visibility problem: RFQs disappear into inboxes and nobody knows what's overdue. A 10-tab, 27-column workbook tracks the full lifecycle from issuance through award, surfacing cycle time, compliance rates, savings against target, and supplier response patterns. No macros, no VBA, built for audit-ready aerospace sourcing.</div>
+        <div class="tool-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">60-RFQ Dataset</span>
+          <span class="tag">V4</span>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <a class="btn btn-primary" href="case-studies/rfq-tracker.html">Case Study</a>
+        <a class="btn btn-secondary" href="tools/RFQ_Tracker.xlsx" download>Download Tool</a>
+        <a class="btn btn-secondary" href="pdfs/RFQ_Tracker_Case_Study.pdf" target="_blank">Download PDF</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-num">03</div>
+      <div class="tool-body">
+        <div class="tool-eyebrow">Python + Streamlit — Cost Engine</div>
+        <div class="tool-title">Parametric Should-Cost Model V2</div>
+        <div class="tool-desc">Solves the negotiation problem: without an independent cost estimate, every supplier quote is a number you can't challenge. A Python engine produces a three-scenario price band (low / mid / high) for machined parts from parametric inputs. V2 adds STEP geometry ingestion, buy-to-fly derivation, AI narrative layer, and a live browser UI. Excel export included.</div>
+        <div class="tool-tags">
+          <span class="tag">Python</span>
+          <span class="tag">cadquery</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">Excel</span>
+          <span class="tag tag-live">Live</span>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <a class="btn btn-live" href="https://kenyon-should-cost.streamlit.app" target="_blank" rel="noopener">Live Tool</a>
+        <a class="btn btn-primary" href="case-studies/should-cost.html">Case Study</a>
+        <a class="btn btn-secondary" href="pdfs/Should_Cost_Case_Study.pdf" target="_blank">Download PDF</a>
+      </div>
+    </div>
+
+    <div class="tool-card planned">
+      <div class="tool-num">04</div>
+      <div class="tool-body">
+        <div class="tool-eyebrow">In Development</div>
+        <div class="tool-title">Supplier Performance &amp; Risk Scorecard</div>
+        <div class="tool-desc">A structured scorecard for evaluating and ranking suppliers across delivery, quality, responsiveness, and risk. Designed for quarterly business reviews and strategic sourcing decisions.</div>
+        <div class="tool-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Planned</span>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <a class="btn btn-secondary" href="#">Coming Soon</a>
+      </div>
+    </div>
+
+    <div class="tool-card planned">
+      <div class="tool-num">05</div>
+      <div class="tool-body">
+        <div class="tool-eyebrow">In Development</div>
+        <div class="tool-title">Make vs. Buy Decision Framework</div>
+        <div class="tool-desc">A structured decision framework for evaluating insourcing vs. outsourcing trade-offs across cost, capacity, risk, and strategic fit. Built for sourcing teams presenting recommendations to operations leadership.</div>
+        <div class="tool-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Planned</span>
+        </div>
+      </div>
+      <div class="tool-actions">
+        <a class="btn btn-secondary" href="#">Coming Soon</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Kenyon Woodley — Sourcing Operations Portfolio</span>
+    <span>Western Washington University &nbsp;|&nbsp; 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

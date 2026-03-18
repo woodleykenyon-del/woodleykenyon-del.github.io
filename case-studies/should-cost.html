@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parametric Should-Cost Model V2 — Case Study | Kenyon Woodley</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c94a1e;
+    --accent2: #e8622a;
+    --rule: #d0cfc9;
+    --card-bg: #ffffff;
+    --tag-bg: #ebebeb;
+    --mono: 'Space Mono', 'Courier New', monospace;
+    --sans: 'Inter', 'Helvetica Neue', 'Helvetica', sans-serif;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 64px 40px 80px; }
+
+  /* HEADER */
+  .header { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .header-eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .header-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-family: var(--mono); }
+  .header-badge { flex-shrink: 0; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 1.1rem; font-weight: 700; padding: 10px 18px; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+  .section-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--accent); opacity: 0.4; }
+  .section-heading { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 14px; }
+  .section-body { font-size: 0.88rem; color: #2a2a2a; line-height: 1.7; }
+  .section-body p + p { margin-top: 10px; }
+  .section-body em { font-style: italic; color: var(--muted); }
+  .pull-quote { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); border-left: 3px solid var(--accent); padding: 8px 16px; margin: 18px 0; background: #f0eeea; }
+
+  /* FORMULA BOX */
+  .formula-box { background: var(--ink); color: #fff; padding: 22px 28px; margin: 24px 0; font-family: var(--mono); font-size: 0.78rem; line-height: 1.65; }
+  .formula-box .formula-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .formula-box .formula-main { font-size: 0.88rem; color: #fff; font-weight: 700; margin-bottom: 10px; }
+  .formula-box .formula-sub { color: #bbb; font-size: 0.72rem; line-height: 1.8; }
+
+  /* COMPONENT GRID */
+  .component-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+  .component-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 14px 13px; }
+  .component-num { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 4px; }
+  .component-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid var(--rule); padding-bottom: 5px; }
+  .component-body { font-size: 0.71rem; color: var(--muted); line-height: 1.6; }
+
+  /* STYLED TABLE */
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 18px; }
+  .styled-table thead tr { background: var(--ink); color: #fff; }
+  .styled-table thead th { padding: 10px 14px; text-align: left; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .styled-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .styled-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .styled-table td { padding: 11px 14px; vertical-align: top; line-height: 1.55; }
+  .styled-table td:first-child { font-weight: 600; font-size: 0.8rem; color: var(--ink); }
+  .styled-table td { color: #2a2a2a; font-size: 0.83rem; }
+
+  /* DATASET TABLE */
+  .dataset-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 18px; }
+  .dataset-table thead tr { background: var(--ink); color: #fff; }
+  .dataset-table thead th { padding: 9px 12px; text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; }
+  .dataset-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .dataset-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .dataset-table td { padding: 10px 12px; vertical-align: middle; line-height: 1.45; }
+  .dataset-table td:first-child { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); font-weight: 700; }
+  .dataset-table .band-cell { font-family: var(--mono); font-size: 0.75rem; }
+  .dataset-table .conf-high { color: #2d7a4e; font-weight: 700; font-family: var(--mono); font-size: 0.72rem; }
+  .dataset-table .conf-med { color: #c4a227; font-weight: 700; font-family: var(--mono); font-size: 0.72rem; }
+
+  /* OUTPUT CARD */
+  .output-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 24px 26px; margin-top: 20px; }
+  .output-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+  .output-part-id { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 3px; }
+  .output-part-name { font-size: 1.05rem; font-weight: 700; }
+  .output-part-meta { font-size: 0.72rem; color: var(--muted); margin-top: 3px; font-family: var(--mono); }
+  .output-band { text-align: right; flex-shrink: 0; }
+  .output-band-mid { font-family: var(--mono); font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .output-band-range { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+
+  .band-bar-wrap { margin: 16px 0 20px; }
+  .band-bar-label { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .band-bar { height: 10px; background: var(--rule); border-radius: 2px; position: relative; overflow: visible; }
+  .band-bar-fill { height: 100%; background: linear-gradient(90deg, #e8b86d, var(--accent), #c94a1e); border-radius: 2px; }
+  .band-bar-markers { display: flex; justify-content: space-between; margin-top: 5px; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+  .band-mid-marker { color: var(--accent); font-weight: 700; }
+
+  .breakdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .breakdown-item { border: 1px solid var(--rule); padding: 9px 10px; }
+  .breakdown-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 3px; }
+  .breakdown-val { font-family: var(--mono); font-size: 0.88rem; font-weight: 700; }
+  .breakdown-pct { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 1px; }
+
+  .driver-row { background: #1a1a1a; color: #fff; padding: 12px 16px; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
+  .driver-label { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: #888; flex-shrink: 0; padding-top: 2px; min-width: 80px; }
+  .driver-value { font-size: 0.83rem; font-weight: 600; color: var(--accent2); font-family: var(--mono); }
+
+  .conf-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .conf-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .conf-dot-high { background: #2d7a4e; }
+  .conf-dot-med { background: #c4a227; }
+  .conf-text { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+
+  .output-footnote { font-size: 0.7rem; color: var(--muted); font-style: italic; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule); }
+
+  /* SENSITIVITY TABLE */
+  .sens-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 16px; }
+  .sens-table thead tr { background: var(--ink); color: #fff; }
+  .sens-table thead th { padding: 9px 14px; text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .sens-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .sens-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .sens-table td { padding: 10px 14px; vertical-align: middle; }
+  .sens-table td:first-child { font-family: var(--mono); font-size: 0.75rem; color: var(--ink); font-weight: 600; }
+  .sens-bar-cell { width: 200px; }
+  .sens-bar { height: 6px; background: var(--accent); border-radius: 1px; }
+
+  /* CONFIDENCE SECTION */
+  .conf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .conf-card { border: 1px solid var(--rule); padding: 16px 14px; background: var(--card-bg); }
+  .conf-card-level { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+  .conf-card-level-high { color: #2d7a4e; }
+  .conf-card-level-med { color: #c4a227; }
+  .conf-card-level-low { color: var(--accent); }
+  .conf-card-body { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+  .conf-card-body li { list-style: none; padding: 2px 0; }
+  .conf-card-body li::before { content: '— '; }
+
+  /* CONTROLS */
+  .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .control-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 16px 14px; }
+  .control-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 5px; }
+  .control-body { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+
+  /* LIMITATIONS */
+  .limit-list { margin-top: 14px; }
+  .limit-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.84rem; }
+  .limit-item:last-child { border-bottom: none; }
+  .limit-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--tag-bg); padding: 3px 8px; flex-shrink: 0; height: fit-content; margin-top: 2px; color: var(--ink); }
+  .limit-tag-v2 { background: var(--ink); color: #fff; }
+  .limit-text { color: #2a2a2a; line-height: 1.55; }
+
+  /* CONTEXT */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .context-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .context-card-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .context-card-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+  .upcoming-list { margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
+  .upcoming-list li { list-style: none; padding: 4px 0; border-bottom: 1px dashed var(--rule); font-family: var(--mono); font-size: 0.72rem; }
+  .upcoming-list li::before { content: '→ '; color: var(--accent); }
+
+  /* CLOSING */
+  .closing-box { background: var(--ink); color: #fff; padding: 28px 32px; margin-top: 20px; }
+  .closing-box p { font-size: 0.88rem; line-height: 1.7; color: #ccc; }
+  .closing-box p strong { color: #fff; }
+  .closing-meta { margin-top: 14px; font-family: var(--mono); font-size: 0.68rem; color: #666; border-top: 1px solid #333; padding-top: 12px; }
+
+  /* FOOTER */
+  .page-footer { border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 56px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+
+  @media (max-width: 680px) {
+    .page { padding: 32px 20px 48px; }
+    .component-grid { grid-template-columns: repeat(2, 1fr); }
+    .breakdown-grid { grid-template-columns: repeat(2, 1fr); }
+    .conf-grid, .controls-grid, .context-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">— Portfolio Case Study</div>
+      <div class="header-title">Parametric Should-Cost<br>Model V2</div>
+      <div class="header-sub">Defensible price estimation for machined aerospace parts<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + cadquery + Streamlit + Excel</div>
+    </div>
+    <div class="header-badge">SCM</div>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <div class="section">
+    <div class="section-label">01 — Problem</div>
+    <h2 class="section-heading">Without a cost model, every supplier quote is a guess you can't challenge.</h2>
+    <div class="section-body">
+      <p>In aerospace manufacturing, sourcing engineers receive supplier quotes and are expected to evaluate them. But evaluation without an independent cost estimate is not evaluation; it is acceptance. The sourcing professional has no leverage, no floor to negotiate from, and no way to explain to leadership why a quote is too high or surprisingly low.</p>
+      <p>Commercially available should-cost tools exist (aPriori, Costimator, SEER-MFG) but they require engineering data, trained analysts, and enterprise licensing. They are not accessible to a sourcing team making fast portfolio decisions across dozens of parts.</p>
+      <div class="pull-quote">"What's your should-cost on this part?" A question that should take minutes to answer, not days. Rarely had a structured answer at all.</div>
+    </div>
+  </div>
+
+  <!-- 02 INSIGHT -->
+  <div class="section">
+    <div class="section-label">02 — Insight</div>
+    <h2 class="section-heading">You don't need geometry to estimate cost. You need the right parameters.</h2>
+    <div class="section-body">
+      <p>Feature-based costing tools like aPriori read CAD files and count holes, pockets, and tolerances. That precision is valuable, but it requires tooling that most sourcing teams don't have at the point of negotiation. The vast majority of sourcing decisions are made from a drawing title, a material, and a complexity characterization, not a fully instrumented CAM file.</p>
+      <p>A parametric model trades geometric precision for speed and accessibility. Given material, part weight, complexity tier, tolerance tier, volume, and region, the model produces a defensible price band: not a single number, but a structured range that tells the sourcing engineer where the floor is, where the ceiling is, and which cost driver dominates the estimate.</p>
+      <p><em>The model doesn't replace aPriori. It fills the gap between "I have no idea" and "I have a routing." That gap is where most sourcing conversations happen.</em></p>
+    </div>
+  </div>
+
+  <!-- 03 APPROACH -->
+  <div class="section">
+    <div class="section-label">03 — Approach</div>
+    <h2 class="section-heading">A modular Python engine with a traceable, deterministic cost model</h2>
+    <div class="section-body">
+      <p>The engine is built in Python with a strict separation of concerns: the cost engine produces all numbers deterministically, a separate AI layer generates plain-language narrative from those numbers, and an Excel exporter surfaces everything in a format a sourcing team can actually use in a meeting. Every number traces back to an assumption. No black boxes.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Build Order — Cost Engine</div>
+      <div class="formula-main">Unit Price = (Material + Machining + Setup + Outside Processes + Scrap) × (1 + Overhead Rate) × (1 + Margin Rate)</div>
+      <div class="formula-sub">
+        Three scenarios computed in parallel: Low (optimistic rates + margin), Mid (baseline), High (conservative)<br>
+        Overhead basis configurable: all direct cost (default) or labor + machine only<br>
+        Price floor enforced by complexity tier: low band cannot fall below a defensible minimum<br>
+        Sensitivity: top 3 cost drivers identified by +10% perturbation analysis<br>
+        Confidence: demerit-based scoring (High / Medium / Low) driven by input quality and material volatility
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The engine is fully modular. Data files (material prices, machine rates, buy-to-fly ratios, outside process costs) live in CSV and JSON, editable without touching code. All assumptions are surfaced in the Excel output so every number is auditable.</p>
+      <p>V2 added STEP geometry ingestion via cadquery, auto-populating bounding box, volume, and buy-to-fly ratio from uploaded part files, and a Streamlit UI wrapper that puts the full engine in a browser without requiring Python.</p>
+    </div>
+  </div>
+
+  <!-- 04 MODEL COMPONENTS -->
+  <div class="section">
+    <div class="section-label">04 — Model Components</div>
+    <h2 class="section-heading">Eight cost elements, each traceable to a configurable assumption</h2>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-num">01</div>
+        <div class="component-title">Material</div>
+        <div class="component-body">Blank weight = finished weight × buy-to-fly ratio. BTF sourced from an 8-material × 5-tier table. Material price per lb in low/mid/high bands. Dominant cost element for heavy, high-BTF parts.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">02</div>
+        <div class="component-title">Machining</div>
+        <div class="component-body">Machine rate × machining hours. Hours estimated from complexity tier (1–5) and tolerance tier (standard / tight). Machine type (3-axis, 4-axis, 5-axis, turning) assigned by complexity tier. Dominant driver for most machined parts.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">03</div>
+        <div class="component-title">Setup</div>
+        <div class="component-body">Setup hours × machine rate, amortized over batch size. Larger batches reduce setup cost per piece. Complexity tier 5 carries 4× the setup hours of tier 1.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">04</div>
+        <div class="component-title">Outside Processes</div>
+        <div class="component-body">Optional stack: heat treat, anodize, hard anodize, chromate, nickel plate, passivation, shot peen, CMM inspection, paint. Each carries independent low/mid/high cost bands. Per-piece costs. Batch economics are a noted V2 item.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">05</div>
+        <div class="component-title">Scrap</div>
+        <div class="component-body">Applied to direct cost as a scrap factor (low: 1%, mid: 3%, high: 7%). Surfaced as an explicit line item, not hidden inside overhead. Varies across the price band.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">06</div>
+        <div class="component-title">Overhead</div>
+        <div class="component-body">Applied as a rate on top of direct cost. Basis is configurable: all direct cost (default, conservative, treating overhead as full SG&A proxy) or labor + machine only (treating material as a passthrough). US default: 35%.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">07</div>
+        <div class="component-title">Margin</div>
+        <div class="component-body">Supplier margin applied to total cost. Low/mid/high bands by region. US: 8% / 14% / 22%. Asia carries a wider margin band (10% / 18% / 28%) reflecting higher variance in supplier tier and commercial terms.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">08</div>
+        <div class="component-title">Price Band</div>
+        <div class="component-body">Three scenarios computed in parallel using low, mid, and high assumptions across material price, machine rate, scrap factor, and margin. Floor check enforced. Sensitivity identifies top 3 cost drivers by dollar impact.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 PRICE BAND LOGIC -->
+  <div class="section">
+    <div class="section-label">05 — Price Band Logic</div>
+    <h2 class="section-heading">A range with a rationale, not a number with false precision</h2>
+    <div class="section-body">
+      <p>The model produces three scenarios simultaneously: Low (optimistic assumptions: best-case material pricing, lowest machine rates, tightest margin), Mid (baseline assumptions, the primary reference point), and High (conservative assumptions: worst-case on all four variable inputs). The band is not a confidence interval in the statistical sense. It is a structured range that reflects real variance in the four inputs that move most: material price, machine rate, scrap rate, and supplier margin.</p>
+      <p>In leadership reviews, the instinct is to anchor on the mid number. The right framing is different: the low is the floor to negotiate toward, the high is the ceiling that justifies walking away, and the mid is the starting position for a supplier conversation. <strong>The band is the tool. The mid is a reference point, not a target.</strong></p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">What Moves Across the Band</div>
+      <div class="formula-main">Low: price_low/lb + rate_low/hr + scrap 1% + margin 8%&nbsp;&nbsp;|&nbsp;&nbsp;Mid: price_mid/lb + rate_mid/hr + scrap 3% + margin 14%&nbsp;&nbsp;|&nbsp;&nbsp;High: price_high/lb + rate_high/hr + scrap 7% + margin 22%</div>
+      <div class="formula-sub">Machining hours and setup hours are held constant across all three scenarios; they are geometry-driven, not market-driven.<br>Outside process costs have independent low/mid/high values and vary across the band.<br>Overhead rate is region-configurable (US: 35%, EU: 38%, Asia: 22%) but held constant within a single estimate’s three scenarios, reflecting facility structure rather than market volatility.<br>Band width narrows as outside process and material cost become a larger share of total cost.</div>
+    </div>
+  </div>
+
+  <!-- 06 SENSITIVITY ANALYSIS -->
+  <div class="section">
+    <div class="section-label">06 — Sensitivity Analysis</div>
+    <h2 class="section-heading">Which lever matters most, before the negotiation starts</h2>
+    <div class="section-body">
+      <p>For every estimate, the engine perturbs four key variables by +10% and measures the resulting change in the mid unit price. The top three drivers are returned in rank order. This answers the most important pre-negotiation question: where is the cost actually coming from?</p>
+      <p><em>For machined parts, machine rate and machining hours dominate almost universally. Material price becomes a significant driver only when buy-to-fly is high or material is inherently expensive (Ti, Inconel). Knowing this in advance changes the negotiation strategy.</em></p>
+    </div>
+
+    <table class="sens-table">
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>What It Represents</th>
+          <th>Sourcing Implication</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>machine_rate</td>
+          <td>Shop hourly burden rate, driven by region, equipment, and facility overhead</td>
+          <td>Supplier selection and region strategy are the primary lever. Rate variation is structural, not negotiable line-item.</td>
+        </tr>
+        <tr>
+          <td>machining_hours</td>
+          <td>Cycle time, driven by complexity, tolerances, setups, and process capability</td>
+          <td>Design for manufacturability and supplier process efficiency. This is the engineering-sourcing interface.</td>
+        </tr>
+        <tr>
+          <td>material_price</td>
+          <td>Raw material cost per pound, volatile for Ti and Inconel and stable for aluminum and steel</td>
+          <td>Material escalation clauses, long-term agreements, and strategic inventory carry real value on high-BTF parts.</td>
+        </tr>
+        <tr>
+          <td>scrap_factor</td>
+          <td>Process yield loss, driven by material machinability and supplier capability</td>
+          <td>Lower impact in most cases, but high-scrap materials (Ti, Inconel) warrant explicit yield negotiation.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 07 CONFIDENCE SCORING -->
+  <div class="section">
+    <div class="section-label">07 — Confidence Scoring</div>
+    <h2 class="section-heading">The estimate tells you the number. The confidence score tells you how much to trust it.</h2>
+    <div class="section-body">
+      <p>Every estimate carries a confidence rating (High, Medium, or Low) assigned by a demerit system that evaluates input quality and inherent model uncertainty. The score is deterministic and fully traceable. It is not a gut check; it is a structured signal about where the estimate sits on the spectrum from "parametric baseline" to "specific enough to negotiate from."</p>
+    </div>
+
+    <div class="conf-grid">
+      <div class="conf-card">
+        <div class="conf-card-level conf-card-level-high">High — 0 Demerits</div>
+        <ul class="conf-card-body">
+          <li>All inputs from standard tables</li>
+          <li>No overrides applied</li>
+          <li>Standard or low-volatility material</li>
+          <li>Complexity tier 1–4</li>
+          <li>Use as: opening negotiation anchor</li>
+        </ul>
+      </div>
+      <div class="conf-card">
+        <div class="conf-card-level conf-card-level-med">Medium — 1–2 Demerits</div>
+        <ul class="conf-card-body">
+          <li>High-volatility material (Ti, Inconel)</li>
+          <li>Unverified override supplied</li>
+          <li>3+ outside processes</li>
+          <li>Use as: directional reference only</li>
+          <li>Validated estimate before award</li>
+        </ul>
+      </div>
+      <div class="conf-card">
+        <div class="conf-card-level conf-card-level-low">Low — 3+ Demerits</div>
+        <ul class="conf-card-body">
+          <li>Multiple compounding factors</li>
+          <li>Complexity tier 5</li>
+          <li>Volatile material + overrides</li>
+          <li>Use as: rough order of magnitude</li>
+          <li>Supplier quotes required before action</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin-top:16px;">
+      <p>Override semantics are explicit: an override tagged as <strong>Verified</strong> (sourced from a routing, CAM output, or supplier process sheet) carries no confidence penalty; it improves specificity. An override tagged as <strong>Unverified</strong> (a user estimate) reduces confidence by one demerit per field. The distinction prevents the confidence system from penalizing good data.</p>
+    </div>
+  </div>
+
+  <!-- 08 OUTPUT EXAMPLE -->
+  <div class="section">
+    <div class="section-label">08 — Output Example</div>
+    <h2 class="section-heading">Five parts across the material and complexity spectrum</h2>
+    <div class="section-body">
+      <p>The following outputs were generated from the live engine using the synthetic dataset. All part numbers, programs, and values are illustrative. Region adjusts machine rates, overhead rates, and margin assumptions. Geometry and hours are held constant across regions.</p>
+    </div>
+
+    <!-- Dataset Summary Table -->
+    <table class="dataset-table">
+      <thead>
+        <tr>
+          <th>Part ID</th>
+          <th>Description</th>
+          <th>Material</th>
+          <th>Complexity</th>
+          <th>Region</th>
+          <th>Low</th>
+          <th>Mid</th>
+          <th>High</th>
+          <th>Conf.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P-3001</td>
+          <td>Aluminum Mounting Bracket</td>
+          <td>AL-6061</td>
+          <td>Tier 2</td>
+          <td>US</td>
+          <td class="band-cell">$152</td>
+          <td class="band-cell" style="font-weight:700;color:var(--accent);">$211</td>
+          <td class="band-cell">$299</td>
+          <td class="conf-high">High</td>
+        </tr>
+        <tr>
+          <td>P-3002</td>
+          <td>Stainless Steel Valve Body</td>
+          <td>SS-17-4</td>
+          <td>Tier 3</td>
+          <td>US</td>
+          <td class="band-cell">$614</td>
+          <td class="band-cell" style="font-weight:700;color:var(--accent);">$886</td>
+          <td class="band-cell">$1,299</td>
+          <td class="conf-high">High</td>
+        </tr>
+        <tr>
+          <td>P-3003</td>
+          <td>Titanium Actuator Housing</td>
+          <td>Ti-6Al-4V</td>
+          <td>Tier 4</td>
+          <td>US</td>
+          <td class="band-cell">$1,572</td>
+          <td class="band-cell" style="font-weight:700;color:var(--accent);">$2,206</td>
+          <td class="band-cell">$3,158</td>
+          <td class="conf-med">Medium</td>
+        </tr>
+        <tr>
+          <td>P-3004</td>
+          <td>Inconel Combustion Liner</td>
+          <td>Inconel-718</td>
+          <td>Tier 5</td>
+          <td>US</td>
+          <td class="band-cell">$3,072</td>
+          <td class="band-cell" style="font-weight:700;color:var(--accent);">$4,295</td>
+          <td class="band-cell">$6,120</td>
+          <td class="conf-med">Medium</td>
+        </tr>
+        <tr>
+          <td>P-3005</td>
+          <td>Steel Structural Fitting</td>
+          <td>Steel-4340</td>
+          <td>Tier 3</td>
+          <td>Asia</td>
+          <td class="band-cell">$425</td>
+          <td class="band-cell" style="font-weight:700;color:var(--accent);">$609</td>
+          <td class="band-cell">$896</td>
+          <td class="conf-high">High</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Detail card: P-3003 Titanium Actuator Housing -->
+    <div style="margin-top:28px; font-family:var(--mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Detail View — P-3003 Titanium Actuator Housing</div>
+    <div class="output-card">
+      <div class="output-header">
+        <div>
+          <div class="output-part-id">P-3003</div>
+          <div class="output-part-name">Titanium Actuator Housing <span style="font-weight:400;font-size:0.8rem;color:var(--muted)">(synthetic)</span></div>
+          <div class="output-part-meta">Ti-6Al-4V &nbsp;|&nbsp; Complexity 4 &nbsp;|&nbsp; Tight Tolerances &nbsp;|&nbsp; US &nbsp;|&nbsp; Vol: 1,500/yr &nbsp;|&nbsp; Batch: 250</div>
+        </div>
+        <div class="output-band">
+          <div class="output-band-mid">$2,206</div>
+          <div class="output-band-range">$1,572 — $3,158</div>
+        </div>
+      </div>
+
+      <div class="band-bar-wrap">
+        <div class="band-bar-label">Price Band</div>
+        <div class="band-bar"><div class="band-bar-fill" style="width:100%;"></div></div>
+        <div class="band-bar-markers">
+          <span>$1,572 <span style="color:var(--muted);font-size:0.58rem;">LOW</span></span>
+          <span class="band-mid-marker">$2,206 MID</span>
+          <span>$3,158 <span style="color:var(--muted);font-size:0.58rem;">HIGH</span></span>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Cost Breakdown — Mid Scenario</div>
+      <div class="breakdown-grid">
+        <div class="breakdown-item">
+          <div class="breakdown-label">Material</div>
+          <div class="breakdown-val">$184.80</div>
+          <div class="breakdown-pct">8.4% of price</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Machining</div>
+          <div class="breakdown-val">$1,085.00</div>
+          <div class="breakdown-pct">49.2% of price</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Outside Processes</div>
+          <div class="breakdown-val">$120.00</div>
+          <div class="breakdown-pct">5.4% of price</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Overhead &amp; Margin (burdened adders)</div>
+          <div class="breakdown-val">$772.43</div>
+          <div class="breakdown-pct">35.0% of price</div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Top Cost Drivers — Sensitivity (+10% each)</div>
+      <div class="driver-row">
+        <div class="driver-label">Machine Rate</div>
+        <div class="driver-value">+$172.23 &nbsp;(+7.8%) &nbsp;| supplier selection and region strategy</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-label">Machining Hrs</div>
+        <div class="driver-value">+$171.99 &nbsp;(+7.8%) &nbsp;| cycle time and process capability</div>
+      </div>
+      <div class="driver-row" style="margin-bottom:14px;">
+        <div class="driver-label">Material Price</div>
+        <div class="driver-value">+$29.29 &nbsp;(+1.3%) &nbsp;| Ti-6Al-4V market pricing</div>
+      </div>
+
+      <div class="conf-badge">
+        <div class="conf-dot conf-dot-med"></div>
+        <div class="conf-text">Confidence: Medium. Ti-6Al-4V is a high-volatility material; material price range is wide.</div>
+      </div>
+
+      <div class="output-footnote">All parts, part numbers, programs, and values are synthetic and illustrative only.</div>
+    </div>
+
+    <div style="margin-top:18px;" class="section-body">
+      <p><em>Key observation: machining cost accounts for 49% of unit price on a Ti-6Al-4V Tier 4 part. Machine rate and machining hours are nearly equal sensitivity drivers (+$172 vs +$172 on a +10% move). Material price, despite titanium's cost, contributes only +$29. The negotiation lever is cycle time and supplier efficiency, not material markup. This is the insight a should-cost model surfaces before the first quote is received.</em></p>
+    </div>
+  </div>
+
+  <!-- 09 FRAMEWORK CONTROLS -->
+  <div class="section">
+    <div class="section-label">09 — Framework Controls</div>
+    <h2 class="section-heading">Four design decisions that make the model defensible under scrutiny</h2>
+
+    <div class="controls-grid">
+      <div class="control-card">
+        <div class="control-title">Overhead Basis Toggle</div>
+        <div class="control-body">Overhead can be applied to all direct cost (default, treating overhead as a full SG&A and facility proxy) or to labor and machine cost only (treats material and outside processes as passthroughs). The active basis is recorded in every Excel output. The distinction matters when challenging a supplier's overhead allocation in a negotiation.</div>
+      </div>
+      <div class="control-card">
+        <div class="control-title">Verified Override Source</div>
+        <div class="control-body">Overrides to machining hours or setup hours can be tagged as Verified (from a routing, CAM output, or supplier process sheet) or Unverified (user estimate). Verified overrides improve estimate specificity with no confidence penalty. Unverified overrides reduce confidence by one demerit each. The system doesn't penalize good data.</div>
+      </div>
+      <div class="control-card">
+        <div class="control-title">Price Floor Enforcement</div>
+        <div class="control-body">The low band cannot fall below a defensible minimum by complexity tier (Tier 1: $25, Tier 3: $200, Tier 5: $1,500). This prevents optimistic assumptions from stacking into an implausible result. When the floor binds, the sensitivity output notes it: a muted sensitivity delta is a signal, not a clean result.</div>
+      </div>
+      <div class="control-card">
+        <div class="control-title">AI Narrative Layer</div>
+        <div class="control-body">The top estimate can be passed through a structured Claude prompt that generates a plain-language sourcing summary covering cost drivers, band interpretation, and negotiation implication. The AI receives only computed outputs and generates explanation text only. It never produces, modifies, or overrides any cost number. Scoring is fully deterministic.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 LIMITATIONS -->
+  <div class="section">
+    <div class="section-label">10 — Limitations & Scope</div>
+    <h2 class="section-heading">What this model does not do, and why that is an explicit decision</h2>
+    <div class="section-body">
+      <p>A should-cost model that doesn't acknowledge its own boundaries is more dangerous than no model at all. The following limitations are deliberate scope decisions, not oversights. Each has a corresponding V2 path if the use case demands it.</p>
+    </div>
+
+    <div class="limit-list">
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Machined parts only.</strong> Castings, forgings, sheet metal, composites, and additive are out of scope. The parametric assumptions (buy-to-fly, machine type, setup hours) are built for subtractive machining and do not translate to other manufacturing families.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Hours do not scale with part size.</strong> A 0.5 lb and a 15 lb part at the same complexity tier receive the same machining hour estimate. Size scaling via finished weight bands remains the highest-priority next improvement. Until then, the model is most reliable in the 0.5–10 lb range.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Outside process costs are per-piece benchmarks.</strong> Lot charges, minimum order quantities, and batch economics are not modeled. For high outside-process-cost parts at low volumes, actual quotes may exceed the model's per-piece estimate.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>No tooling, NRE, or first-article costs.</strong> Non-recurring engineering, fixture fabrication, and first-article inspection costs are not included. The model estimates recurring unit cost only.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Python is the source of truth.</strong> The Excel export is a read-only output. Values edited in Excel do not feed back into the engine. This is an explicit V1 scope decision; round-trip editing would create stakeholder expectation drift around model ownership.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag limit-tag-v2">V2 ✓</span>
+        <div class="limit-text"><strong>STEP file geometry ingestion.</strong> Built and live. The geometry reader extracts bounding box, volume, surface area, and derived metrics (buy-to-fly ratio, slenderness ratio) directly from uploaded STEP files. These auto-populate engine inputs and can be overridden manually. Partially closes the size-scaling gap and moves the model toward geometry-aware estimation.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag limit-tag-v2">V2 ✓</span>
+        <div class="limit-text"><strong>Streamlit UI wrapper.</strong> Built and live at kenyon-should-cost.streamlit.app. The browser-based interface allows users to upload a STEP file, adjust inputs, run the estimate, view the results dashboard, and export to Excel without touching Python.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 BROADER CONTEXT -->
+  <div class="section">
+    <div class="section-label">11 — Broader Context</div>
+    <h2 class="section-heading">Third tool in a sourcing operations suite</h2>
+    <div class="section-body">
+      <p>The Should-Cost Model is the technical centerpiece of a five-tool sourcing operations suite. Each tool is standalone, solves a specific operational problem, and produces outputs defensible in a leadership setting. The suite is designed for the sourcing professional who needs to present structured decisions to leadership, not for the analyst building dashboards.</p>
+    </div>
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="context-card-label">Suite Progress</div>
+        <ul class="upcoming-list">
+          <li>Part Prioritization Framework — Complete</li>
+          <li>RFQ Lifecycle Tracker — Complete</li>
+          <li>Parametric Should-Cost Model — Complete</li>
+          <li>Supplier Performance & Risk Scorecard — Planned</li>
+          <li>Make vs. Buy Decision Framework — Planned</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <div class="context-card-label">Design Philosophy</div>
+        <div class="context-card-body">Clarity over complexity. Every number traces back to an assumption. Every assumption is editable. The model surfaces the estimate. The sourcing engineer makes the call. Built in Python with Excel export. No enterprise tooling required, no black boxes, no licensing dependency.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 LIVE TOOL CTA -->
+  <div class="section" style="break-inside:avoid;">
+    <div class="section-label">12 — Live Tool</div>
+    <div style="border:2px solid var(--ink); padding:28px 32px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:1.1rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:6px;">Try the model live</div>
+        <div style="font-family:var(--mono); font-size:0.72rem; color:var(--muted);">kenyon-should-cost.streamlit.app</div>
+        <div style="font-size:0.82rem; color:#2a2a2a; margin-top:8px; line-height:1.6;">Enter a part, select material and complexity, upload a STEP file or enter part inputs manually. The engine generates a three-scenario price band, sensitivity analysis, and AI narrative in seconds. Excel export included.</div>
+      </div>
+      <a href="https://kenyon-should-cost.streamlit.app" target="_blank" rel="noopener" style="flex-shrink:0; background:var(--accent); color:#fff; font-family:var(--mono); font-size:0.78rem; font-weight:700; padding:14px 24px; text-decoration:none; letter-spacing:0.04em; white-space:nowrap;">OPEN TOOL →</a>
+    </div>
+  </div>
+
+  <!-- 13 CLOSING -->
+  <div class="section">
+    <div class="section-label">13 — Closing Note</div>
+    <div class="closing-box">
+      <p>Built to close the gap between "I have no idea what this should cost" and "I have a defensible number to negotiate from." Parametric by design, explainable by requirement, and modular enough to extend when the use case demands it. <strong>The model produces the estimate. The sourcing engineer decides what to do with it.</strong></p>
+      <div class="closing-meta">Python cost engine + Excel export + Streamlit UI. &nbsp;|&nbsp; 8 materials, 5 complexity tiers, 3 regions, 9 outside processes. &nbsp;|&nbsp; Three-scenario price band (low / mid / high). &nbsp;|&nbsp; Sensitivity analysis, confidence scoring, AI narrative layer. &nbsp;|&nbsp; STEP geometry ingestion with buy-to-fly derivation. &nbsp;|&nbsp; Overhead basis toggle, verified override semantics, price floor enforcement. &nbsp;|&nbsp; 26 passing tests. &nbsp;|&nbsp; Synthetic dataset benchmarked against US aerospace machining benchmarks.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Parametric Should-Cost Model V2 — Case Study</span>
+    <span>Kenyon Woodley</span>
+  </div>
+
+</div>
+</body>
+</html>

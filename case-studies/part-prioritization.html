@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Part Prioritization Framework — V2 | Kenyon Woodley</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c94a1e;
+    --accent2: #e8622a;
+    --rule: #d0cfc9;
+    --card-bg: #ffffff;
+    --tag-bg: #ebebeb;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── PAGE SHELL ─── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 40px 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .header-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 8px;
+    font-family: var(--mono);
+  }
+  .header-badge {
+    flex-shrink: 0;
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 10px 18px;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-bottom: 52px;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+  .section-heading {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .section-body {
+    font-size: 0.88rem;
+    color: #2a2a2a;
+    line-height: 1.7;
+  }
+  .section-body p + p { margin-top: 10px; }
+  .section-body em {
+    font-style: italic;
+    color: var(--muted);
+  }
+  .pull-quote {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--ink);
+    border-left: 3px solid var(--accent);
+    padding: 8px 16px;
+    margin: 18px 0;
+    background: #f0eeea;
+  }
+
+  /* ─── FORMULA BOX ─── */
+  .formula-box {
+    background: var(--ink);
+    color: #fff;
+    padding: 22px 28px;
+    margin: 24px 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+  .formula-box .formula-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .formula-box .formula-main {
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .formula-box .formula-modes {
+    color: #bbb;
+    font-size: 0.72rem;
+  }
+
+  /* ─── DIMENSIONS GRID ─── */
+  .dim-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .dim-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding: 16px 14px;
+  }
+  .dim-pct {
+    font-family: var(--mono);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .dim-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+  }
+  .dim-items {
+    list-style: none;
+    font-size: 0.73rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .dim-items li::before { content: '— '; }
+
+  /* ─── V2 UPGRADES TABLE ─── */
+  .upgrades-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-top: 18px;
+  }
+  .upgrades-table thead tr {
+    background: var(--ink);
+    color: #fff;
+  }
+  .upgrades-table thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .upgrades-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .upgrades-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .upgrades-table td { padding: 12px 14px; vertical-align: top; line-height: 1.55; }
+  .upgrades-table td:first-child {
+    font-weight: 600;
+    font-size: 0.8rem;
+    width: 28%;
+    color: var(--ink);
+  }
+  .upgrades-table td:last-child { color: #2a2a2a; font-size: 0.83rem; }
+
+  /* ─── CONTROLS TABLE (same style) ─── */
+  .controls-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-top: 18px;
+  }
+  .controls-table thead tr { background: var(--ink); color: #fff; }
+  .controls-table thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .controls-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .controls-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .controls-table td { padding: 12px 14px; vertical-align: top; line-height: 1.55; }
+  .controls-table td:first-child {
+    font-weight: 600;
+    font-size: 0.8rem;
+    width: 28%;
+    color: var(--ink);
+  }
+
+  /* ─── OUTPUT EXAMPLE ─── */
+  .output-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding: 24px 26px;
+    margin-top: 20px;
+  }
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px;
+  }
+  .output-part-num {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .output-part-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .output-part-note {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .output-score {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .output-score-num {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .output-score-denom {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .dim-scores-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .dim-score-item {
+    border: 1px solid var(--rule);
+    padding: 10px 12px;
+  }
+  .dim-score-label {
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .dim-score-val {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .action-row {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .action-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .action-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+  .reason-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .reason-tag {
+    background: var(--tag-bg);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 4px 9px;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+  }
+  .output-action-text {
+    font-size: 0.82rem;
+    color: #2a2a2a;
+    margin-top: 12px;
+    line-height: 1.6;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+  .output-action-text strong { color: var(--ink); }
+  .output-footnote {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ─── MATRIX PLACEHOLDER ─── */
+  .matrix-wrap {
+    margin-top: 20px;
+    border: 1px solid var(--rule);
+    background: var(--card-bg);
+    padding: 24px;
+  }
+  .matrix-title {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr 30px;
+    gap: 0;
+    height: 340px;
+  }
+  .matrix-y-label {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .matrix-y-label span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 0.67rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+  }
+  .matrix-quadrant {
+    border: 1px solid var(--rule);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+  }
+  .matrix-q-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .q-cost { color: #c4a227; }
+  .q-act  { color: var(--accent); }
+  .q-mon  { color: #888; }
+  .q-risk { color: #2d7a4e; }
+  .matrix-q-desc {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .matrix-q-parts {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: #aaa;
+  }
+  .matrix-x-axis {
+    grid-column: 2 / 4;
+    grid-row: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.67rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+  }
+  .matrix-corner { grid-column: 1; grid-row: 4; }
+  .matrix-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    color: var(--muted);
+    justify-content: center;
+  }
+  .leg-item { display: flex; align-items: center; gap: 5px; }
+  .leg-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* ─── ACTION LOGIC TABLE ─── */
+  .action-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-top: 18px;
+  }
+  .action-table thead tr { background: var(--ink); color: #fff; }
+  .action-table thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .action-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .action-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .action-table td { padding: 12px 16px; vertical-align: middle; }
+  .action-table td:first-child { font-size: 0.83rem; color: #2a2a2a; }
+  .action-table td:last-child {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.82rem;
+  }
+
+  /* ─── CONTEXT + CLOSING ─── */
+  .context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .context-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding: 18px;
+  }
+  .context-card-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .context-card-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+  .upcoming-list {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .upcoming-list li {
+    list-style: none;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-family: var(--mono);
+  }
+  .upcoming-list li::before { content: '→ '; color: var(--accent); }
+
+  .closing-box {
+    background: var(--ink);
+    color: #fff;
+    padding: 28px 32px;
+    margin-top: 20px;
+  }
+  .closing-box p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #ccc;
+  }
+  .closing-box p strong { color: #fff; }
+  .closing-meta {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: #666;
+    border-top: 1px solid #333;
+    padding-top: 12px;
+  }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    margin-top: 56px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 680px) {
+    .page { padding: 32px 20px 48px; }
+    .dim-grid, .dim-scores-row, .context-grid { grid-template-columns: 1fr 1fr; }
+    .matrix-grid { height: auto; grid-template-columns: 28px 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">— Portfolio Case Study</div>
+      <div class="header-title">AI Part Prioritization<br>Framework</div>
+      <div class="header-sub">Systemizing sourcing triage under ambiguity<br>Kenyon Woodley | Western Washington University | V2 — 2026 | Stack: Excel + Claude AI</div>
+    </div>
+    <div class="header-badge">V2.0</div>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <div class="section">
+    <div class="section-label">01 — Problem</div>
+    <h2 class="section-heading">If everything is important, what is actually urgent?</h2>
+    <div class="section-body">
+      <p>Sourcing engineers in complex manufacturing are routinely handed portfolios of 50 to 100 parts and asked to drive impact. There is rarely a structured method to determine where to allocate effort, which risks are existential versus noise, or which cost opportunities represent real leverage.</p>
+      <p>Prioritization defaults to reactive, meeting-driven, and personality-influenced, not system-driven.</p>
+      <div class="pull-quote">"Why are you working on that part first?" A question that rarely had a data-backed answer.</div>
+    </div>
+  </div>
+
+  <!-- 02 INSIGHT -->
+  <div class="section">
+    <div class="section-label">02 — Insight</div>
+    <h2 class="section-heading">Production continuity first. Not spend alone.</h2>
+    <div class="section-body">
+      <p>A $50K part that stops a line is more urgent than a $2M part with diversified supply and stable delivery. The right system must be explainable, surface operational risk, and produce defensible action categories without relying on escalation pressure or institutional memory.</p>
+      <p><em>Supply continuity failures in aerospace are catastrophic and difficult to reverse. Cost opportunity, while meaningful, is a second-order priority.</em></p>
+    </div>
+  </div>
+
+  <!-- 03 APPROACH -->
+  <div class="section">
+    <div class="section-label">03 — Approach</div>
+    <h2 class="section-heading">A weighted scoring engine across four dimensions</h2>
+
+    <div class="formula-box">
+      <div class="formula-label">Priority Score Formula</div>
+      <div class="formula-main">Score = ((Production Impact × 0.35) + (Supply Risk × 0.30) + (Cost Exposure × 0.20) + (Instability × 0.15)) / 5 × 100</div>
+      <div class="formula-modes">Weights are configurable. &nbsp;Production First (Default): 35/30/20/15 &nbsp;|&nbsp; Cost Down: 15/20/40/25 &nbsp;|&nbsp; Supply Resilience: 25/40/20/15 &nbsp;|&nbsp; Custom: user-defined</div>
+    </div>
+
+    <div class="dim-grid">
+      <div class="dim-card">
+        <div class="dim-pct">35%</div>
+        <div class="dim-title">Production Impact</div>
+        <ul class="dim-items">
+          <li>CTB status</li>
+          <li>Line-stop risk</li>
+          <li>Safety stock (days)</li>
+        </ul>
+      </div>
+      <div class="dim-card">
+        <div class="dim-pct">30%</div>
+        <div class="dim-title">Supply Risk</div>
+        <ul class="dim-items">
+          <li>Single-source exposure</li>
+          <li>Supplier count</li>
+          <li>Geographic concentration</li>
+          <li>Special process requirements</li>
+        </ul>
+      </div>
+      <div class="dim-card">
+        <div class="dim-pct">20%</div>
+        <div class="dim-title">Cost Exposure</div>
+        <ul class="dim-items">
+          <li>Annual spend</li>
+          <li>Should-cost delta (%)</li>
+        </ul>
+      </div>
+      <div class="dim-card">
+        <div class="dim-pct">15%</div>
+        <div class="dim-title">Instability</div>
+        <ul class="dim-items">
+          <li>On-time delivery %</li>
+          <li>Quality issues</li>
+          <li>Chronic open status</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>Default weights reflect a production-continuity-first philosophy. All weights are configurable in the SETTINGS tab. Switch modes to reprioritize the portfolio based on current business objective without rebuilding the model.</p>
+    </div>
+  </div>
+
+  <!-- 04 V2 UPGRADES -->
+  <div class="section">
+    <div class="section-label">04 — V2 Upgrades</div>
+    <h2 class="section-heading">Four new capabilities built on the V1 foundation</h2>
+    <table class="upgrades-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dynamic Weight Configuration</td>
+          <td>A dedicated SETTINGS tab allows users to switch between three preset scoring modes: Production First, Cost Down, and Supply Resilience, or define custom weights. The entire ranking updates instantly without touching any formulas.</td>
+        </tr>
+        <tr>
+          <td>Reason Codes</td>
+          <td>Each ranked part now displays a plain-language reason code in the OUTPUT tab explaining why it scored where it did. Example: "CTB, Single Source, OTD Critical, High Cost Delta." Eliminates the need to scan across eight columns in leadership meetings.</td>
+        </tr>
+        <tr>
+          <td>Should-Cost Flag</td>
+          <td>Parts missing should-cost delta data are flagged with a warning in the OUTPUT tab. Surfaces incomplete data before sourcing action is taken rather than silently treating missing values as zero.</td>
+        </tr>
+        <tr>
+          <td>Risk vs. Opportunity Matrix</td>
+          <td>A dedicated MATRIX tab plots all 60 parts across Supply Risk (X) and Cost Exposure (Y). Four quadrants — Act Now, Cost Opportunity, Risk Watch, and Monitor — give an instant visual overview of portfolio composition and sourcing priorities.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 05 FRAMEWORK CONTROLS -->
+  <div class="section">
+    <div class="section-label">05 — Framework Controls</div>
+    <h2 class="section-heading">Three features that make the model ops-ready for day-to-day sourcing workflows</h2>
+    <table class="controls-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Data Confidence Flag</td>
+          <td>Each part is rated H/M/L for input reliability. Low-confidence parts surface a warning before action is taken. The tool informs, the sourcing manager decides.</td>
+        </tr>
+        <tr>
+          <td>Escalation Override</td>
+          <td>Leadership-escalated parts receive a minimum score of 70 and forced action category without corrupting the underlying calculated score. Political context stays visible without contaminating model integrity.</td>
+        </tr>
+        <tr>
+          <td>AI Rationale Layer</td>
+          <td>Top 10 ranked parts are passed through a structured Claude prompt generating a 3-sentence business rationale and action recommendation in plain language, ready for leadership reviews. AI does not create scores or facts — it only rewrites computed drivers into a narrative. Scoring and action categories are fully deterministic.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 06 OUTPUT EXAMPLE -->
+  <div class="section">
+    <div class="section-label">06 — Output Example</div>
+    <h2 class="section-heading">From qualitative noise to structured tradeoffs</h2>
+    <div class="section-body">
+      <p>Instead of "Part A feels urgent," the system produces a scored, ranked, and explainable output with reason codes automatically generated from the underlying data:</p>
+    </div>
+
+    <div class="output-card">
+      <div class="output-header">
+        <div>
+          <div class="output-part-num">P-1040</div>
+          <div class="output-part-name">High-Temp Injector Plate <span style="font-weight:400;font-size:0.8rem;color:var(--muted)">(synthetic)</span></div>
+        </div>
+        <div class="output-score">
+          <div class="output-score-num">90</div>
+          <div class="output-score-denom">/ 100</div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Dimension Scores</div>
+      <div class="dim-scores-row">
+        <div class="dim-score-item">
+          <div class="dim-score-label">Production Impact</div>
+          <div class="dim-score-val">5.0</div>
+        </div>
+        <div class="dim-score-item">
+          <div class="dim-score-label">Supply Risk</div>
+          <div class="dim-score-val">4.0</div>
+        </div>
+        <div class="dim-score-item">
+          <div class="dim-score-label">Cost Exposure</div>
+          <div class="dim-score-val">4.0</div>
+        </div>
+        <div class="dim-score-item">
+          <div class="dim-score-label">Instability</div>
+          <div class="dim-score-val">5.0</div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Action Category</div>
+      <div class="action-row">
+        <div class="action-label">Category</div>
+        <div class="action-value">ESCALATE — Supplier Crisis + Production Risk</div>
+      </div>
+
+      <div class="reason-tags">
+        <span class="reason-tag">CTB</span>
+        <span class="reason-tag">Single Source</span>
+        <span class="reason-tag">OTD Critical</span>
+        <span class="reason-tag">High Cost Delta</span>
+        <span class="reason-tag">$1M+ Spend</span>
+        <span class="reason-tag">Low Safety Stock</span>
+      </div>
+
+      <div class="output-action-text">
+        <strong>Immediate action:</strong> dual-source qualification and cost recovery negotiation.
+      </div>
+
+      <div class="output-footnote">All parts, part numbers, and values shown above are synthetic and illustrative only.</div>
+    </div>
+
+    <div style="margin-top:14px;font-family:var(--mono);font-size:0.65rem;color:var(--muted);">OUTPUT Tab — 60-Part Ranked Priority List with Reason Codes</div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="section">
+    <div class="section-label" style="margin-bottom:14px;">Matrix Tab — Risk vs. Opportunity Matrix</div>
+    <div style="background:#0f1929; border-radius:2px; padding:24px 20px 16px;">
+      <canvas id="matrixChart" style="width:100%; display:block;"></canvas>
+      <div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center; margin-top:14px; font-family:var(--mono); font-size:0.62rem;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:#e8503a;display:inline-block;"></span><span style="color:#aaa;">Act Now: High Risk + High Opportunity</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:#d4a82a;display:inline-block;"></span><span style="color:#aaa;">Cost Opportunity: Low Risk + High Opportunity</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:#e07c30;display:inline-block;"></span><span style="color:#aaa;">Risk Watch: High Risk + Low Opportunity</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:50%;background:#6b7a8d;display:inline-block;"></span><span style="color:#aaa;">Monitor: Low Risk + Low Opportunity</span></div>
+      </div>
+      <div style="text-align:center; margin-top:10px; font-family:var(--mono); font-size:0.6rem; color:#4a5568; font-style:italic;">X-axis: Supply Risk score &nbsp;|&nbsp; Y-axis: Cost Exposure score &nbsp;|&nbsp; Parts in top-right quadrant require immediate sourcing action</div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    const canvas = document.getElementById('matrixChart');
+    // Set actual pixel dimensions
+    const W = 820, H = 480;
+    canvas.width = W;
+    canvas.height = H;
+
+    const ctx = canvas.getContext('2d');
+
+    // Margins
+    const ml = 58, mr = 20, mt = 40, mb = 50;
+    const pw = W - ml - mr;
+    const ph = H - mt - mb;
+
+    // All 60 synthetic parts: [id, supplyRisk, costExposure]
+    const parts = [
+      // Act Now (high risk ≥2.5, high cost ≥2.5) — red
+      ['P-1006', 3.8, 4.1], ['P-1037', 4.1, 4.0], ['P-1025', 4.2, 3.9],
+      ['P-1040', 3.9, 3.75], ['P-1034', 3.6, 3.5], ['P-1001', 3.85, 3.5],
+      ['P-1047', 4.0, 3.45], ['P-1016', 4.3, 3.2], ['P-1022', 3.5, 3.0],
+      ['P-1041', 4.4, 3.05], ['P-1031', 3.7, 3.0], ['P-1020', 3.85, 2.85],
+      ['P-1048', 4.1, 2.8], ['P-1003', 3.9, 2.75], ['P-1046', 3.35, 2.6],
+      ['P-1029', 4.05, 2.5], ['P-1027', 4.5, 2.5], ['P-1043', 4.3, 2.4],
+      // Cost Opportunity (low risk <2.5, high cost ≥2.5) — gold
+      ['P-1051', 1.2, 4.05], ['P-1052', 1.35, 3.5], ['P-1058', 1.6, 3.6],
+      ['P-1053', 1.5, 3.3], ['P-1055', 0.15, 2.9], ['P-1054', 1.3, 3.05],
+      ['P-1057', 1.55, 3.0], ['P-1010', 1.7, 2.95], ['P-1028', 1.75, 2.9],
+      ['P-1056', 1.35, 2.75], ['P-1045', 1.2, 2.55], ['P-1060', 1.3, 2.45],
+      ['P-1038', 1.65, 2.6], ['P-1059', 1.45, 2.35], ['P-1019', 1.55, 2.3],
+      ['P-1013', 1.5, 2.1], ['P-1023', 1.6, 2.05], ['P-1007', 1.7, 2.0],
+      // Monitor (low risk <2.5, low cost <2.5) — gray
+      ['P-1839', 0.15, 1.4], ['P-1049', 1.65, 1.5], ['P-1044', 1.5, 1.45],
+      ['P-1024', 1.55, 1.4], ['P-1002', 1.8, 1.05], ['P-1032', 0.95, 0.9],
+      ['P-1036', 1.1, 0.85], ['P-1011', 1.2, 0.8], ['P-1021', 1.05, 0.65],
+      ['P-1026', 1.1, 0.6], ['P-1070', 1.0, 0.55], ['P-1074', 0.85, 0.55],
+      ['P-1068', 0.95, 0.5], ['P-1015', 0.8, 0.5], ['P-1030', 0.75, 0.45],
+      ['P-1031b',0.7, 0.35], ['P-1014', 0.7, 0.3], ['P-1048b',0.65, 0.25],
+      ['P-1039', 0.55, 0.2], ['P-1018', 0.5, 0.15], ['P-1033', 0.45, 0.1],
+      ['P-1009', 0.4, 0.05],
+    ];
+
+    function toX(v) { return ml + (v / 5) * pw; }
+    function toY(v) { return mt + ph - (v / 5) * ph; }
+
+    function quadrantColor(sx, sy) {
+      if (sx >= 2.5 && sy >= 2.5) return '#e8503a';   // Act Now
+      if (sx < 2.5  && sy >= 2.5) return '#d4a82a';   // Cost Opportunity
+      if (sx >= 2.5 && sy < 2.5)  return '#e07c30';   // Risk Watch
+      return '#6b7a8d';                                // Monitor
+    }
+
+    // Background
+    ctx.fillStyle = '#0f1929';
+    ctx.fillRect(0, 0, W, H);
+
+    // Quadrant fills
+    const mid = 2.5;
+    const mx = toX(mid), my = toY(mid);
+
+    // Cost Opportunity (top-left)
+    ctx.fillStyle = 'rgba(212,168,42,0.06)';
+    ctx.fillRect(ml, mt, mx - ml, my - mt);
+    // Act Now (top-right)
+    ctx.fillStyle = 'rgba(232,80,58,0.08)';
+    ctx.fillRect(mx, mt, W - mx - mr, my - mt);
+    // Monitor (bottom-left)
+    ctx.fillStyle = 'rgba(107,122,141,0.04)';
+    ctx.fillRect(ml, my, mx - ml, H - my - mb);
+    // Risk Watch (bottom-right)
+    ctx.fillStyle = 'rgba(224,124,48,0.05)';
+    ctx.fillRect(mx, my, W - mx - mr, H - my - mb);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = 1;
+    for (let v = 0; v <= 5; v += 0.5) {
+      // horizontal
+      ctx.beginPath(); ctx.moveTo(ml, toY(v)); ctx.lineTo(W - mr, toY(v)); ctx.stroke();
+      // vertical
+      ctx.beginPath(); ctx.moveTo(toX(v), mt); ctx.lineTo(toX(v), H - mb); ctx.stroke();
+    }
+
+    // Midpoint dividers
+    ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath(); ctx.moveTo(mx, mt); ctx.lineTo(mx, H - mb); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ml, my); ctx.lineTo(W - mr, my); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Axis lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(ml, mt); ctx.lineTo(ml, H - mb); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ml, H - mb); ctx.lineTo(W - mr, H - mb); ctx.stroke();
+
+    // Tick labels
+    ctx.fillStyle = '#8899aa';
+    ctx.font = '11px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    for (let v = 0; v <= 5; v += 0.5) {
+      ctx.fillText(v.toFixed(1), toX(v), H - mb + 16);
+    }
+    ctx.textAlign = 'right';
+    for (let v = 0; v <= 5; v += 0.5) {
+      ctx.fillText(v.toFixed(1), ml - 8, toY(v) + 4);
+    }
+
+    // Axis titles
+    ctx.fillStyle = '#c0cfe0';
+    ctx.font = 'bold 11px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Supply Risk Score (0-5)', ml + pw / 2, H - 6);
+
+    ctx.save();
+    ctx.translate(13, mt + ph / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Cost Exposure Score (0-5)', 0, 0);
+    ctx.restore();
+
+    // Chart title
+    ctx.fillStyle = '#e8edf2';
+    ctx.font = 'bold 14px "Inter", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Risk vs. Opportunity Matrix', W / 2, 22);
+
+    // Quadrant labels
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#d4a82a';
+    ctx.fillText('COST OPPORTUNITY', ml + 10, mt + 20);
+    ctx.fillStyle = '#e8503a';
+    ctx.fillText('ACT NOW', mx + 10, mt + 20);
+    ctx.fillStyle = '#6b7a8d';
+    ctx.fillText('MONITOR', ml + 10, H - mb - 14);
+    ctx.fillStyle = '#e07c30';
+    ctx.fillText('RISK WATCH', mx + 10, H - mb - 14);
+
+    // Plot points
+    parts.forEach(([id, sx, sy]) => {
+      const x = toX(sx), y = toY(sy);
+      const col = quadrantColor(sx, sy);
+
+      // Glow
+      const grd = ctx.createRadialGradient(x, y, 0, x, y, 9);
+      grd.addColorStop(0, col + 'aa');
+      grd.addColorStop(1, col + '00');
+      ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = grd; ctx.fill();
+
+      // Dot
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+
+      // Label
+      ctx.fillStyle = 'rgba(200,215,230,0.75)';
+      ctx.font = '8px "Space Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(id, x + 7, y + 3);
+    });
+  })();
+  </script>
+
+  <!-- 07 ACTION LOGIC -->
+  <div class="section">
+    <div class="section-label">07 — Action Logic</div>
+    <h2 class="section-heading">Score profile drives action, not total score alone</h2>
+    <div class="section-body">
+      <p>The same overall score can result from very different underlying conditions. Action categories are assigned by profile. Supplier Crisis takes precedence over Dual Source escalation when both conditions are met.</p>
+    </div>
+    <table class="action-table">
+      <thead>
+        <tr>
+          <th>Condition</th>
+          <th>Action Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Leadership Escalation = Y</td>
+          <td>ESCALATE — Active Leadership</td>
+        </tr>
+        <tr>
+          <td>Production Impact 4+ and Instability 4+</td>
+          <td>ESCALATE — Supplier Crisis + Production Risk</td>
+        </tr>
+        <tr>
+          <td>Production Impact 4+ and Supply Risk 3.5+</td>
+          <td>ESCALATE — Dual Source + Eng Review</td>
+        </tr>
+        <tr>
+          <td>Production Impact 4+</td>
+          <td>Dual Source Priority</td>
+        </tr>
+        <tr>
+          <td>Supply Risk 3+ and Cost Exposure 3+</td>
+          <td>Strategic RFQ — Cost Down + Risk</td>
+        </tr>
+        <tr>
+          <td>Supply Risk 4+</td>
+          <td>Supply Risk Mitigation</td>
+        </tr>
+        <tr>
+          <td>Cost Exposure 4+</td>
+          <td>Cost Down / RFQ</td>
+        </tr>
+        <tr>
+          <td>Instability 3+</td>
+          <td>Supplier Performance Review</td>
+        </tr>
+        <tr>
+          <td>Priority Score 40 or below</td>
+          <td>Monitor</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 08 BROADER CONTEXT -->
+  <div class="section">
+    <div class="section-label">08 — Broader Context</div>
+    <h2 class="section-heading">One tool in a sourcing operations suite</h2>
+    <div class="section-body">
+      <p>This framework is the first in a series of structured sourcing tools being built to address the most common pain points in manufacturing procurement. Each tool is designed to stand alone, solve a specific operational problem, and produce outputs that are defensible in a leadership setting.</p>
+    </div>
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="context-card-label">Upcoming Tools in Development</div>
+        <ul class="upcoming-list">
+          <li>RFQ Tracker</li>
+          <li>Should-Cost Model Assistant</li>
+          <li>Supplier Risk Scorecard</li>
+          <li>Make vs. Buy Decision Framework</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <div class="context-card-label">Tool Design Philosophy</div>
+        <div class="context-card-body">Each tool is designed to stand alone, solve a specific operational problem, and produce outputs that are defensible in a leadership setting. Structured. Explainable. Action-oriented.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 CLOSING -->
+  <div class="section">
+    <div class="section-label">09 — Closing Note</div>
+    <div class="closing-box">
+      <p>Built to structure sourcing decisions under pressure. Intentionally simple in structure, rigorous in logic. The goal is clarity, repeatability, and leverage — not complexity. <strong>The model surfaces the data. The sourcing manager makes the call.</strong></p>
+      <div class="closing-meta">Excel-native decision support tool, built iteratively across two versions. &nbsp;|&nbsp; 60-part synthetic dataset, structure validated against real workflow constraints. &nbsp;|&nbsp; 7-tab workbook. &nbsp;|&nbsp; Production-continuity-first philosophy.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>AI Part Prioritization Framework — V2</span>
+    <span>Kenyon Woodley</span>
+  </div>
+
+</div>
+</body>
+</html>
