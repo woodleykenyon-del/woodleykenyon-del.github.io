@@ -226,6 +226,19 @@
   }
   .tag-live { background: var(--accent); color: #fff; }
 
+  .pdf-link {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: var(--muted);
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 0.04em;
+    padding-top: 4px;
+    transition: color 0.15s;
+  }
+  .pdf-link:hover { color: var(--ink); }
+
   /* ACTIONS */
   .tool-actions {
     padding: 18px 16px;
@@ -384,7 +397,7 @@
       <div class="tool-actions">
         <a class="btn btn-primary" href="case-studies/part-prioritization.html">Case Study</a>
         <a class="btn btn-secondary" href="tools/Part_Prioritization_Tool.xlsx" download>Download Tool</a>
-        <a class="btn btn-secondary" href="pdfs/Part_Prioritization_Case_Study.pdf" target="_blank">Download PDF</a>
+        <a class="pdf-link" href="pdfs/Part_Prioritization_Case_Study.pdf" target="_blank">PDF version</a>
       </div>
     </div>
 
@@ -403,7 +416,7 @@
       <div class="tool-actions">
         <a class="btn btn-primary" href="case-studies/rfq-tracker.html">Case Study</a>
         <a class="btn btn-secondary" href="tools/RFQ_Tracker.xlsx" download>Download Tool</a>
-        <a class="btn btn-secondary" href="pdfs/RFQ_Tracker_Case_Study.pdf" target="_blank">Download PDF</a>
+        <a class="pdf-link" href="pdfs/RFQ_Tracker_Case_Study.pdf" target="_blank">PDF version</a>
       </div>
     </div>
 
@@ -424,7 +437,7 @@
       <div class="tool-actions">
         <a class="btn btn-live" href="https://kenyon-should-cost.streamlit.app" target="_blank" rel="noopener">Live Tool</a>
         <a class="btn btn-primary" href="case-studies/should-cost.html">Case Study</a>
-        <a class="btn btn-secondary" href="pdfs/Should_Cost_Case_Study.pdf" target="_blank">Download PDF</a>
+        <a class="pdf-link" href="pdfs/Should_Cost_Case_Study.pdf" target="_blank">PDF version</a>
       </div>
     </div>
 
