@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Performance & Risk Scorecard: Case Study | Kenyon Woodley</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c94a1e;
+    --accent2: #e8622a;
+    --rule: #d0cfc9;
+    --card-bg: #ffffff;
+    --tag-bg: #ebebeb;
+    --mono: 'Space Mono', 'Courier New', monospace;
+    --sans: 'Inter', 'Helvetica Neue', 'Helvetica', sans-serif;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 64px 40px 80px; }
+
+  /* HEADER */
+  .header { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .header-eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .header-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-family: var(--mono); }
+  .header-badge { flex-shrink: 0; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 1.1rem; font-weight: 700; padding: 10px 18px; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+  .section-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--accent); opacity: 0.4; }
+  .section-heading { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 14px; }
+  .section-body { font-size: 0.88rem; color: #2a2a2a; line-height: 1.7; }
+  .section-body p + p { margin-top: 10px; }
+  .section-body em { font-style: italic; color: var(--muted); }
+  .pull-quote { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); border-left: 3px solid var(--accent); padding: 8px 16px; margin: 18px 0; background: #f0eeea; }
+
+  /* FORMULA BOX */
+  .formula-box { background: var(--ink); color: #fff; padding: 22px 28px; margin: 24px 0; font-family: var(--mono); font-size: 0.78rem; line-height: 1.65; }
+  .formula-box .formula-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .formula-box .formula-main { font-size: 0.88rem; color: #fff; font-weight: 700; margin-bottom: 10px; }
+  .formula-box .formula-sub { color: #bbb; font-size: 0.72rem; line-height: 1.8; }
+
+  /* COMPONENT GRID */
+  .component-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+  .component-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 14px 13px; }
+  .component-num { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 4px; }
+  .component-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid var(--rule); padding-bottom: 5px; }
+  .component-body { font-size: 0.71rem; color: var(--muted); line-height: 1.6; }
+
+  /* STYLED TABLE */
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 18px; }
+  .styled-table thead tr { background: var(--ink); color: #fff; }
+  .styled-table thead th { padding: 10px 14px; text-align: left; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .styled-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .styled-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .styled-table td { padding: 11px 14px; vertical-align: top; line-height: 1.55; }
+  .styled-table td:first-child { font-weight: 600; font-size: 0.8rem; color: var(--ink); }
+  .styled-table td { color: #2a2a2a; font-size: 0.83rem; }
+
+  /* TWO-COL GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .two-col-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .two-col-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .two-col-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+
+  /* SCORE BAND TABLE */
+  .band-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+  .band-card { padding: 14px; border: 1px solid var(--rule); }
+  .band-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
+  .band-range { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
+  .band-action { font-size: 0.75rem; color: #2a2a2a; line-height: 1.5; }
+  .band-preferred { background: #E8F5E9; border-color: #2E7D32; }
+  .band-preferred .band-label { color: #2E7D32; }
+  .band-acceptable { background: #FFF9C4; border-color: #F57F17; }
+  .band-acceptable .band-label { color: #F57F17; }
+  .band-atrisk { background: #FFE0B2; border-color: #E65100; }
+  .band-atrisk .band-label { color: #E65100; }
+  .band-critical { background: #FFCDD2; border-color: #B71C1C; }
+  .band-critical .band-label { color: #B71C1C; }
+
+  /* COMPLIANCE FLAG DISPLAY */
+  .flag-list { margin-top: 16px; }
+  .flag-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+  .flag-item:last-child { border-bottom: none; }
+  .flag-cert { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; min-width: 80px; flex-shrink: 0; padding-top: 2px; }
+  .flag-type { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; flex-shrink: 0; margin-top: 2px; }
+  .flag-type-critical { background: #B71C1C; color: #fff; }
+  .flag-type-warning { background: #F57F17; color: #fff; }
+  .flag-type-info { background: var(--tag-bg); color: var(--muted); }
+  .flag-text { font-size: 0.82rem; color: #2a2a2a; line-height: 1.55; }
+
+  /* LIMITATIONS */
+  .limit-list { margin-top: 14px; }
+  .limit-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.84rem; }
+  .limit-item:last-child { border-bottom: none; }
+  .limit-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--tag-bg); padding: 3px 8px; flex-shrink: 0; height: fit-content; margin-top: 2px; color: var(--ink); }
+  .limit-text { color: #2a2a2a; line-height: 1.55; }
+
+  /* CLOSING */
+  .closing-box { background: var(--ink); color: #fff; padding: 28px 32px; margin-top: 20px; }
+  .closing-box p { font-size: 0.88rem; line-height: 1.7; color: #ccc; }
+  .closing-box p strong { color: #fff; }
+  .closing-meta { margin-top: 14px; font-family: var(--mono); font-size: 0.68rem; color: #666; border-top: 1px solid #333; padding-top: 12px; }
+
+  /* CONTEXT */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .context-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .context-card-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .context-card-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+  .upcoming-list { margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
+  .upcoming-list li { list-style: none; padding: 4px 0; border-bottom: 1px dashed var(--rule); font-family: var(--mono); font-size: 0.72rem; }
+  .upcoming-list li::before { content: '→ '; color: var(--accent); }
+
+  /* FOOTER */
+  .page-footer { border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 56px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+
+  @media (max-width: 680px) {
+    .page { padding: 32px 20px 48px; }
+    .component-grid { grid-template-columns: repeat(2, 1fr); }
+    .band-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .context-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">— Portfolio Case Study</div>
+      <div class="header-title">Supplier Performance<br>&amp; Risk Scorecard</div>
+      <div class="header-sub">Forward-looking supplier evaluation for aerospace and defense sourcing<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + Streamlit + Claude API</div>
+    </div>
+    <div class="header-badge">SCM</div>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <div class="section">
+    <div class="section-label">01 — Problem</div>
+    <h2 class="section-heading">Most supplier evaluations are report cards. They describe the past. They don't surface the risk that's coming.</h2>
+    <div class="section-body">
+      <p>In aerospace and defense, many late deliveries are not complete surprises. The signals were there: a supplier running single-site, a sole-source relationship with no qualified alternate, a geography with increasing geopolitical friction. Sourcing teams see those signals in isolation, in scattered spreadsheets and quarterly reviews, but rarely in a system that aggregates them into a coherent risk picture before the problem lands on the production line.</p>
+      <p>The default approach: tracking OTD and quality, escalating when something breaks: is reactive by design. It treats every supplier as a known quantity until it isn't. In a supply chain where lead times are measured in months and re-sourcing is measured in years, reactive is expensive.</p>
+      <div class="pull-quote">"How healthy is this supplier, really?" A question that deserves a structured answer, not a gut check: and one that should surface risk before it materializes, not after.</div>
+    </div>
+  </div>
+
+  <!-- 02 INSIGHT -->
+  <div class="section">
+    <div class="section-label">02 — Insight</div>
+    <h2 class="section-heading">Performance tells you what happened. Risk tells you what's coming. A useful scorecard needs both layers.</h2>
+    <div class="section-body">
+      <p>Standard supplier scorecards measure delivery, quality, and responsiveness. Those dimensions matter, but they are backward-looking by nature. A supplier with 97% OTD and ITAR registration missing is not a safe supplier for defense work. A supplier with strong quality metrics and a single manufacturing site in a geopolitically exposed region carries asymmetric downside risk that the performance score doesn't capture.</p>
+      <p>The key architectural decision was to split the engine into two explicit layers: a Performance layer that scores what the supplier has done, and a Risk and Resilience layer that scores what could go wrong. Both layers contribute to the composite score, but they are computed independently and displayed separately. A sourcing manager can see in a single view whether a supplier's composite is being held up by strong performance despite high risk, or vice versa: and act accordingly.</p>
+      <p><em>Compliance is handled outside both layers entirely. A missing ITAR registration or AS9100 gap is not a scoring input: it is a hard flag that renders independently and can cap the recommendation regardless of composite score.</em></p>
+    </div>
+  </div>
+
+  <!-- 03 ENGINE ARCHITECTURE -->
+  <div class="section">
+    <div class="section-label">03 — Engine Architecture</div>
+    <h2 class="section-heading">A deterministic two-layer scoring engine with ordinal recommendation logic</h2>
+    <div class="section-body">
+      <p>The engine is built in Python across five modules with strict separation of concerns. Scoring, compliance, and recommendation are fully deterministic. Claude generates the plain-language narrative and improvement actions from the computed scores: it never generates or modifies a number.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Composite Score Formula</div>
+      <div class="formula-main">Composite = (Performance Score × Layer Weight) + (Risk Score × Layer Weight)</div>
+      <div class="formula-sub">
+        Three scoring modes shift layer emphasis without changing dimension weights within each layer:<br>
+        Balanced: Performance 50% / Risk 50% (default)<br>
+        Performance Recovery: Performance 70% / Risk 30% (use when rehabilitating a supplier)<br>
+        Risk Reduction: Performance 30% / Risk 70% (use when evaluating geopolitical or single-source exposure)<br><br>
+        Dimension weights within each layer are commodity-profile-aware: Machined Parts, Electronics, Raw Material, Castings/Forgings, Standard<br>
+        All lookup tables, band definitions, and mode weights are centralized in models.py — single source of truth
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The recommendation engine produces one of four outcomes in fixed order of severity: Expand relationship, Maintain with monitoring, Issue corrective action plan, Initiate re-sourcing evaluation. Compliance caps are applied after the score-based recommendation. Caps can only increase severity, never reduce it. A supplier with a high composite score and a critical compliance gap will receive a more severe recommendation than the score alone would produce. The AI narrative receives the final recommendation as a fixed input and explains it. It cannot change it.</p>
+    </div>
+  </div>
+
+  <!-- 04 SCORING DIMENSIONS -->
+  <div class="section">
+    <div class="section-label">04 — Scoring Dimensions</div>
+    <h2 class="section-heading">Nine dimensions across two layers, each tied to a specific input and an explicit scoring function</h2>
+
+    <div class="section-body" style="margin-bottom: 16px;">
+      <p><strong>Performance Layer</strong>: scores historical supplier behavior across four dimensions.</p>
+    </div>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-num">P1</div>
+        <div class="component-title">On-Time Delivery</div>
+        <div class="component-body">OTD % trailing 12 months. Piecewise linear scoring; baseline expectation 95%+. Weight shifts upward under Performance Recovery mode for commodity profiles where schedule is paramount.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">P2</div>
+        <div class="component-title">Quality</div>
+        <div class="component-body">Defect rate in PPM or % (whole percent convention: 1 = 1%). Normalized to PPM internally via half-open band lookup, which eliminates boundary ambiguity. Castings/Forgings profile weights quality at 40%, the highest of any dimension.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">P3</div>
+        <div class="component-title">Responsiveness</div>
+        <div class="component-body">Average business days to respond to commercial inquiries: PO acknowledgment, change requests, RFQ responses. One metric, one input. No blended averages that obscure the source.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">P4</div>
+        <div class="component-title">Cost Stability</div>
+        <div class="component-body">Purchase price variance % trailing 12 months. Positive PPV = cost creep. Piecewise linear; negative PPV (savings) scores 100. Raw Material profile weights this at 30%, reflecting commodity price sensitivity.</div>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin: 20px 0 16px;">
+      <p><strong>Risk &amp; Resilience Layer</strong>: scores forward-looking exposure across five dimensions.</p>
+    </div>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-num">R1</div>
+        <div class="component-title">Single-Source Exposure</div>
+        <div class="component-body">Nested lookup: single_source status sets base severity, backup source count refines within that condition. Annual spend drives an optional criticality multiplier: $1M+ single-source triggers an additional 20% penalty. Highest-weight risk dimension across all commodity profiles.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">R2</div>
+        <div class="component-title">Geographic Concentration</div>
+        <div class="component-body">Four-tier risk system. Tier 4 (China, Taiwan) reflects geopolitical tension, export control friction, and strategic competition risk. Taiwan designated separately given semiconductor concentration and cross-strait exposure. Electronics profile weights this at 35%: highest geo weight of any profile.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">R3</div>
+        <div class="component-title">Financial Fragility</div>
+        <div class="component-body">Explicit deduction model: base score by size (Small 50, Mid 70, Large 85), minus financial concern flag (−25), minus price volatility band (Medium −10, High −25). Floor at 0. Max intentionally capped at 85: proxy, not verified financials.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">R4</div>
+        <div class="component-title">Lead Time Volatility</div>
+        <div class="component-body">Quoted vs. actual lead time variance %. Piecewise linear interpolation: eliminates the 20-point band cliffs that occur in step-function scoring. Signals capacity or production planning instability.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">R5</div>
+        <div class="component-title">Operational Redundancy</div>
+        <div class="component-body">Single manufacturing site vs. multiple. Binary input, explicit score (90 / 20). Single-site suppliers carry disproportionate disruption risk for precision parts with no domestic backup manufacturing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 RATING BANDS -->
+  <div class="section">
+    <div class="section-label">05 — Rating Bands &amp; Recommendation Logic</div>
+    <h2 class="section-heading">Four bands. One deterministic recommendation. Compliance caps the ceiling.</h2>
+
+    <div class="band-grid">
+      <div class="band-card band-preferred">
+        <div class="band-label">Preferred</div>
+        <div class="band-range">85: 100</div>
+        <div class="band-action">Expand relationship. Consider for additional scope and strategic sourcing agreements.</div>
+      </div>
+      <div class="band-card band-acceptable">
+        <div class="band-label">Acceptable</div>
+        <div class="band-range">70: 84</div>
+        <div class="band-action">Maintain with monitoring. Targeted improvement plan for lowest-scoring dimensions.</div>
+      </div>
+      <div class="band-card band-atrisk">
+        <div class="band-label">At Risk</div>
+        <div class="band-range">55: 69</div>
+        <div class="band-action">Issue corrective action plan. Evaluate dual-sourcing for critical parts.</div>
+      </div>
+      <div class="band-card band-critical">
+        <div class="band-label">Critical</div>
+        <div class="band-range">0: 54</div>
+        <div class="band-action">Initiate re-sourcing evaluation. Immediate escalation to leadership.</div>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin-top: 18px;">
+      <p>Compliance caps are applied after the score-based recommendation using ordinal index comparison: never string matching. Caps only increase recommendation severity, never reduce it. A supplier scoring 91 (Expand) with missing ITAR registration on applicable work is capped at Issue Corrective Action Plan. The cap reason is passed directly to the AI narrative, which must acknowledge it explicitly.</p>
+    </div>
+  </div>
+
+  <!-- 06 COMPLIANCE FLAGS -->
+  <div class="section">
+    <div class="section-label">06 — Compliance Hard Flags</div>
+    <h2 class="section-heading">Compliance is not a scoring dimension. It is a hard gate that operates independently of composite score.</h2>
+    <div class="section-body">
+      <p>Each certification is evaluated against an applicability toggle: ITAR, CMMC, and NADCAP flags only apply when the scope of work makes them relevant. A supplier without ITAR registration on commercial-only work receives no flag. A supplier without ITAR registration on defense-applicable work receives a critical flag and a recommendation cap.</p>
+    </div>
+
+    <div class="flag-list">
+      <div class="flag-item">
+        <div class="flag-cert">AS9100</div>
+        <span class="flag-type flag-type-warning">Warning</span>
+        <div class="flag-text">Aerospace quality management system standard. Always evaluated regardless of program type. Missing AS9100 caps recommendation at Maintain with monitoring: treated as a baseline expectation gap, not a disqualifier.</div>
+      </div>
+      <div class="flag-item">
+        <div class="flag-cert">ITAR</div>
+        <span class="flag-type flag-type-critical">Critical</span>
+        <div class="flag-text">U.S. State Department registration for defense-related articles and services. Evaluated only when ITAR-applicable work is confirmed. Missing registration means the supplier should not be awarded ITAR-relevant work until registration is resolved. Caps recommendation at Issue corrective action plan and renders a critical flag regardless of composite score.</div>
+      </div>
+      <div class="flag-item">
+        <div class="flag-cert">CMMC</div>
+        <span class="flag-type flag-type-warning">Warning</span>
+        <div class="flag-text">Cybersecurity Maturity Model Certification: DoD supply chain requirement. Evaluated only when DoD work is applicable. Level 2 required for controlled unclassified information (CUI). Level 3 called out distinctly for highest-sensitivity programs. Below Level 2 caps recommendation at Maintain with monitoring.</div>
+      </div>
+      <div class="flag-item">
+        <div class="flag-cert">NADCAP</div>
+        <span class="flag-type flag-type-warning">Warning</span>
+        <div class="flag-text">Special process accreditation for heat treat, NDT, plating, and similar operations. Evaluated only when applicable processes are confirmed. Missing accreditation caps recommendation at Issue corrective action plan. Suppliers holding NADCAP without it being required receive a positive "Additional Capability" signal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 AI LAYER -->
+  <div class="section">
+    <div class="section-label">07 — AI Narrative Layer</div>
+    <h2 class="section-heading">Deterministic first. AI explains the result — it does not generate it.</h2>
+    <div class="section-body">
+      <p>The AI layer serves one purpose: translate a structured score profile into a readable supplier evaluation brief and a specific, actionable set of improvement recommendations. Every score and recommendation is computed before the AI is called. The prompt passes computed scores as fixed facts and instructs the model that implying a different recommendation is a defect.</p>
+      <p>When compliance caps are triggered: whether or not they escalated the recommendation: the prompt explicitly surfaces the gap and requires the narrative to address it. If ITAR is missing on applicable work, the brief must state "this supplier is disqualified from ITAR-relevant work until registration is obtained." Softened compliance language is treated as a prompt failure.</p>
+    </div>
+
+    <div class="two-col" style="margin-top: 18px;">
+      <div class="two-col-card">
+        <div class="two-col-label">What AI Generates</div>
+        <div class="two-col-body">Supplier summary (2–3 sentences), key strengths grounded in high-scoring dimensions, primary risk factors in order of severity, suggested improvement actions specific enough for a supplier review meeting. One comparative paragraph when 2+ suppliers are loaded into the session table.</div>
+      </div>
+      <div class="two-col-card">
+        <div class="two-col-label">What AI Never Touches</div>
+        <div class="two-col-body">Numerical scores, rating band assignment, recommendation selection, compliance flag status, cap logic. All of these are computed deterministically before the AI call. The model string and max_tokens are fixed in code: the AI layer is boxed, not open-ended.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 ADDITIONAL FEATURES -->
+  <div class="section">
+    <div class="section-label">08 — Additional Features</div>
+    <h2 class="section-heading">Data confidence scoring, what-if sensitivity, and multi-supplier comparison</h2>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>What It Does</th>
+          <th>Why It Matters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Data Confidence Badge</td>
+          <td>Scores data quality 0–100 from months of history, transaction volume, data source, and audit recency. Renders as High / Medium / Low badge alongside composite score.</td>
+          <td>A 92 composite on 18 months of audited data is not the same as a 92 on three POs and a vendor self-report. The badge makes that distinction visible.</td>
+        </tr>
+        <tr>
+          <td>What-If Sensitivity</td>
+          <td>Computes composite lift from realistic improvements on the two lowest-scoring performance dimensions. Filters zero and negative deltas: only genuine improvements are shown.</td>
+          <td>Converts the scorecard from a snapshot into a planning tool. Tells the sourcing manager which dimension improvement has the most leverage before the supplier review meeting.</td>
+        </tr>
+        <tr>
+          <td>Commodity Profile Weights</td>
+          <td>Five profiles (Standard, Machined Parts, Electronics, Raw Material, Castings/Forgings) shift dimension weights within each layer. Layer weights remain user-controlled via scoring mode.</td>
+          <td>Electronics suppliers should be weighted heavily on geographic risk. Castings should be weighted heavily on quality. A single fixed weight table treats all commodities identically: this doesn't.</td>
+        </tr>
+        <tr>
+          <td>Spend Criticality Multiplier</td>
+          <td>Annual spend field applies a penalty to single-source dimension score. $250K+ triggers 10% reduction; $1M+ triggers 20% reduction.</td>
+          <td>Single-source on a $2K/year part is not the same risk as single-source on a $2M/year part. Consequence scales with exposure.</td>
+        </tr>
+        <tr>
+          <td>Multi-Supplier Comparison</td>
+          <td>Session-state comparison table accumulates up to 5 suppliers. Plotly heatmap with green-to-red diverging scale across all 9 dimensions. Best fit by scoring mode shown for all three modes simultaneously.</td>
+          <td>Supplier decisions are rarely made in isolation. The comparison view surfaces which supplier wins under each evaluation lens: and lets the sourcing manager see the tradeoff before committing.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 09 SCORE LINEAGE -->
+  <div class="section">
+    <div class="section-label">09 — Score Lineage</div>
+    <h2 class="section-heading">Every composite score is fully auditable from input to output</h2>
+    <div class="section-body">
+      <p>The Score Lineage expander in the UI renders a Plotly Sankey diagram showing exactly how weighted dimension scores flow into layer scores, and how layer scores combine into the composite. Each link's width is proportional to its weighted contribution. A sourcing manager being challenged on a score can open the lineage view and walk any reviewer through the exact math: dimension by dimension, weight by weight.</p>
+      <p>This is not decoration. In aerospace and defense sourcing, every recommendation is potentially reviewed by program managers, contracts, and legal. A scorecard that can't explain itself in a challenge setting is a liability. Score lineage makes the deterministic math fully transparent without requiring the reviewer to read code.</p>
+    </div>
+  </div>
+
+  <!-- 10 TECHNICAL DESIGN -->
+  <div class="section">
+    <div class="section-label">10 — Technical Design</div>
+    <h2 class="section-heading">Five modules, 92 passing tests, one centralized source of truth</h2>
+
+    <div class="formula-box">
+      <div class="formula-label">Module Structure</div>
+      <div class="formula-main">models.py → scoring.py + compliance.py → recommendation.py → ai_narrative.py → streamlit_app.py</div>
+      <div class="formula-sub">
+        models.py: all constants, lookup tables, enums, validated input schema: single source of truth<br>
+        scoring.py: two-layer deterministic engine, confidence score, sensitivity analysis<br>
+        compliance.py: flag evaluation, applicability-gated cap logic<br>
+        recommendation.py: ordinal recommendation + compliance cap resolution<br>
+        ai_narrative.py: Anthropic SDK call, prompt construction, comparison narrative<br>
+        streamlit_app.py: full UI layer — imports from all five backend modules
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The test suite enforces 92 assertions including: PPM band boundary correctness, lead time piecewise interpolation (no band cliffs), validation bounds across all input fields, cap logic separation (cap_triggered vs cap_escalated), same-severity compliance triggering, sensitivity filtering, weight table integrity across all commodity profiles, and confidence score label assignment.</p>
+    </div>
+  </div>
+
+  <!-- 11 LIMITATIONS -->
+  <div class="section">
+    <div class="section-label">11 — Limitations &amp; Scope</div>
+    <h2 class="section-heading">What this tool does not do — and why those are explicit decisions</h2>
+
+    <div class="limit-list">
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Manual inputs only.</strong> No ERP integration, no supplier portal, no automated data pull. All inputs are entered by the sourcing analyst from memory, PO records, or a supplier review. This is a deliberate scope decision: integration dependencies would make the tool brittle and harder to demo in any environment.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>No persistent supplier database.</strong> The comparison table accumulates within a session and resets on refresh. There is no saved state, no supplier history, and no longitudinal tracking. Trend analysis across quarters would require a database layer that is explicitly out of scope.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Financial fragility is a proxy, not verified financials.</strong> The financial dimension uses supplier size, a concern flag, and price volatility as inputs: not Dun &amp; Bradstreet data, not audited financials. The 85-point maximum for the most favorable inputs is intentionally conservative to reflect this uncertainty.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Geographic risk is tier-based, not real-time.</strong> Country tiers are static and do not reflect breaking news or real-time geopolitical events. The tier system is auditable and explainable: that's the tradeoff for not having a live data dependency.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>No export.</strong> The Streamlit screen is the artifact. There is no PDF or Excel export. Score lineage, compliance flags, and AI narrative are designed to be presented from the live tool, not forwarded as a document.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 BROADER CONTEXT -->
+  <div class="section">
+    <div class="section-label">12 — Broader Context</div>
+    <h2 class="section-heading">Fourth tool in the sourcing operations portfolio</h2>
+    <div class="section-body">
+      <p>The Supplier Performance &amp; Risk Scorecard is the deepest engine in the portfolio so far, with the most scoring dimensions and the most complex recommendation logic. It is designed to sit downstream of the Part Prioritization Framework (which surfaces which suppliers need attention first) and inform the Make vs. Buy Decision Framework (which decides whether to source at all).</p>
+    </div>
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="context-card-label">Suite Progress</div>
+        <ul class="upcoming-list">
+          <li>Part Prioritization Framework: Complete</li>
+          <li>RFQ Lifecycle Tracker: Complete</li>
+          <li>Parametric Should-Cost Model: Complete</li>
+          <li>Supplier Performance &amp; Risk Scorecard: Complete</li>
+          <li>Make vs. Buy Decision Framework: In Development</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <div class="context-card-label">Design Philosophy</div>
+        <div class="context-card-body">Deterministic scoring. AI explains outputs, never generates them. Every number traces to an auditable input. Compliance is a hard gate, not a weighted variable. The tool produces the assessment: the sourcing engineer makes the call. Built for the sourcing professional who needs to defend a recommendation in a leadership setting, not for the analyst building dashboards.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 CLOSING -->
+  <div class="section">
+    <div class="section-label">13 — Closing Note</div>
+    <div class="closing-box">
+      <p>Built to close the gap between "we track OTD in a spreadsheet" and "we have a structured, defensible view of supplier health across performance, risk, and compliance." Deterministic by design. Explainable by requirement. Aerospace-specific by intent. <strong>The engine produces the assessment. The sourcing engineer makes the call.</strong></p>
+      <div class="closing-meta">Python engine + Streamlit UI + Claude API. &nbsp;|&nbsp; Two-layer scoring: 4 performance dimensions, 5 risk dimensions. &nbsp;|&nbsp; Three scoring modes, five commodity profiles. &nbsp;|&nbsp; Four compliance hard flags with applicability toggles and ordinal cap logic. &nbsp;|&nbsp; Data confidence scoring, what-if sensitivity, spend criticality multiplier. &nbsp;|&nbsp; Multi-supplier comparison heatmap with session state. &nbsp;|&nbsp; Score Lineage Sankey diagram. &nbsp;|&nbsp; 92 passing tests across 18 assertion groups. &nbsp;|&nbsp; Geo risk tiering across 40+ countries.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Supplier Performance &amp; Risk Scorecard: Case Study</span>
+    <span>Kenyon Woodley</span>
+  </div>
+
+</div>
+</body>
+</html>
