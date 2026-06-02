@@ -145,7 +145,7 @@
   }
   .progress-bar-fill {
     height: 100%;
-    width: 80%;
+    width: 100%;
     background: var(--accent);
     border-radius: 1px;
   }
@@ -295,25 +295,109 @@
     .tool-actions {
       grid-column: 1 / -1;
       flex-direction: row;
-  
+      flex-wrap: wrap;
+      gap: 8px;
       border-left: none;
       border-top: 1px solid var(--rule);
       padding: 12px 14px;
     }
+    .tool-actions .btn { flex: 1 1 140px; }
     .progress-tools { flex-wrap: wrap; }
     .progress-tool { flex: 1 1 40%; border-right: 1px solid var(--rule); }
+  }
+
+  /* ===== DIRECTION B ENHANCEMENTS ===== */
+
+  .top-accent {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--accent);
+    z-index: 100;
+  }
+
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .page { position: relative; z-index: 1; }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .hero-photo {
+    width: 132px; height: 132px;
+    border-radius: 2px;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    filter: grayscale(12%);
+  }
+  .hero-positioning {
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: #2a2a2a;
+    margin-top: 12px;
+    max-width: 46ch;
+  }
+  .hero-positioning strong { color: var(--accent); font-weight: 600; }
+
+  .tool-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top left;
+    border: 1px solid var(--rule);
+    margin-bottom: 16px;
+    background: #eceae4;
+  }
+
+  .tool-card {
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(28,27,24,0.10);
+    border-color: var(--ink);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  .tag-live { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  @media (max-width: 680px) {
+    .hero-grid { grid-template-columns: 88px 1fr; gap: 18px; }
+    .hero-photo { width: 88px; height: 88px; }
+    .hero-positioning { font-size: 0.9rem; }
   }
 </style>
 </head>
 <body>
+<div class="top-accent"></div>
 <div class="page">
 
   <!-- HEADER -->
   <div class="header">
     <div style="min-width: 320px;">
-      <div class="header-eyebrow">Sourcing Operations Portfolio</div>
-      <div class="header-name">Kenyon Woodley</div>
-      <div class="header-bio">BS Manufacturing &amp; Supply Chain Management<br>WWU &nbsp;|&nbsp; Graduating June 2026 &nbsp;|&nbsp; Aerospace, Defense &amp; Tech</div>
+      <div class="hero-grid">
+        <img class="hero-photo" src="assets/headshot.jpg" alt="Kenyon Woodley">
+        <div>
+          <div class="header-eyebrow">Sourcing Operations Portfolio</div>
+          <div class="header-name">Kenyon Woodley</div>
+          <div class="header-bio">BS Manufacturing &amp; Supply Chain Management<br>WWU &nbsp;|&nbsp; Graduating June 2026 &nbsp;|&nbsp; Aerospace, Defense &amp; Tech</div>
+        </div>
+      </div>
+      <p class="hero-positioning">I turn messy sourcing and supply chain decisions into <strong>practical tools</strong> for hardware, aerospace, and defense teams.</p>
     </div>
     <div class="header-contact">
       <a class="contact-link" href="mailto:woodleykenyon@gmail.com">
@@ -348,7 +432,7 @@
     <div class="section-label">Suite Progress</div>
     <div class="progress-header">
       <span class="progress-label">Sourcing Operations Portfolio</span>
-      <span class="progress-count">4 of 5 Complete</span>
+      <span class="progress-count">5 of 5 Complete</span>
     </div>
     <div class="progress-bar-track">
       <div class="progress-bar-fill"></div>
@@ -382,9 +466,10 @@
     <div class="section-label">Tools</div>
     <p style="font-size:0.88rem;color:#2a2a2a;line-height:1.7;margin-bottom:24px;">Each tool addresses a distinct sourcing decision problem. Together they form a system, moving from triage to execution to cost analysis to supplier evaluation.</p>
 
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <div class="tool-num">01</div>
       <div class="tool-body">
+        <img class="tool-thumb reveal" src="assets/tool-part-prioritization.jpg" alt="Part Prioritization Framework preview" loading="lazy">
         <div class="tool-eyebrow">Excel — Scoring Engine</div>
         <div class="tool-title">Part Prioritization Framework</div>
         <div class="tool-desc">Solves the triage problem: given a portfolio of 50-100 parts, which ones actually need attention first? A weighted scoring engine ranks parts across production impact, supply risk, cost exposure, and instability into defensible action categories. Outputs a ranked list with plain-language AI reason codes, ready for leadership review.</div>
@@ -392,7 +477,6 @@
           <span class="tag">Excel</span>
           <span class="tag">Claude AI</span>
           <span class="tag">60-Part Dataset</span>
-          <span class="tag">V2</span>
         </div>
       </div>
       <div class="tool-actions">
@@ -402,16 +486,16 @@
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <div class="tool-num">02</div>
       <div class="tool-body">
+        <img class="tool-thumb reveal" src="assets/tool-rfq-tracker.jpg" alt="Aerospace RFQ Tracker preview" loading="lazy">
         <div class="tool-eyebrow">Excel — Lifecycle Tracker</div>
         <div class="tool-title">Aerospace RFQ Tracker</div>
         <div class="tool-desc">Solves the visibility problem: RFQs disappear into inboxes and nobody knows what's overdue. A 10-tab, 27-column workbook tracks the full lifecycle from issuance through award, surfacing cycle time, compliance rates, savings against target, and supplier response patterns. No macros, no VBA, built for audit-ready aerospace sourcing.</div>
         <div class="tool-tags">
           <span class="tag">Excel</span>
           <span class="tag">60-RFQ Dataset</span>
-          <span class="tag">V4</span>
         </div>
       </div>
       <div class="tool-actions">
@@ -421,15 +505,15 @@
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <div class="tool-num">03</div>
       <div class="tool-body">
+        <img class="tool-thumb reveal" src="assets/tool-should-cost.jpg" alt="Parametric Should-Cost Model preview" loading="lazy">
         <div class="tool-eyebrow">Python + Streamlit — Cost Engine</div>
-        <div class="tool-title">Parametric Should-Cost Model V2</div>
-        <div class="tool-desc">Solves the negotiation problem: without an independent cost estimate, every supplier quote is a number you can't challenge. A Python engine produces a three-scenario price band (low / mid / high) for machined parts from parametric inputs. V2 adds STEP geometry ingestion, buy-to-fly derivation, AI narrative layer, and a live browser UI. Excel export included.</div>
+        <div class="tool-title">Parametric Should-Cost Model</div>
+        <div class="tool-desc">Solves the negotiation problem: without an independent cost estimate, every supplier quote is a number you can't challenge. A Python engine produces a three-scenario price band (low / mid / high) for machined parts from parametric inputs, with buy-to-fly derivation, an AI narrative layer, and a live browser UI. Excel export included.</div>
         <div class="tool-tags">
           <span class="tag">Python</span>
-          <span class="tag">cadquery</span>
           <span class="tag">Streamlit</span>
           <span class="tag">Excel</span>
           <span class="tag tag-live">Live</span>
@@ -443,9 +527,10 @@
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <div class="tool-num">04</div>
       <div class="tool-body">
+        <img class="tool-thumb reveal" src="assets/tool-scorecard.jpg" alt="Supplier Performance and Risk Scorecard preview" loading="lazy">
         <div class="tool-eyebrow">Live</div>
         <div class="tool-title">Supplier Performance &amp; Risk Scorecard</div>
         <div class="tool-desc">A two-layer scoring engine for evaluating suppliers across delivery, quality, responsiveness, risk, and compliance. Built for aerospace and defense sourcing with deterministic scoring, compliance hard flags, and an AI narrative layer.</div>
@@ -453,18 +538,20 @@
           <span class="tag">Python</span>
           <span class="tag">Streamlit</span>
           <span class="tag">Claude API</span>
+          <span class="tag">Compliance Flags</span>
         </div>
       </div>
       <div class="tool-actions">
-        <a class="btn btn-secondary" href="https://kenyon-supplier-scorecard.streamlit.app/" target="_blank" rel="noopener">Live Tool</a>
+        <a class="btn btn-live" href="https://kenyon-supplier-scorecard.streamlit.app/" target="_blank" rel="noopener">Live Tool</a>
         <a class="btn btn-primary" href="case-studies/supplier-scorecard.html">Case Study</a>
         <a class="pdf-link" href="pdfs/Supplier_Scorecard_Case_Study.pdf" target="_blank">PDF version</a>
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card reveal">
       <div class="tool-num">05</div>
       <div class="tool-body">
+        <img class="tool-thumb reveal" src="assets/tool-make-vs-buy.jpg" alt="Make vs. Buy Decision Framework preview" loading="lazy">
         <div class="tool-eyebrow">Live</div>
         <div class="tool-title">Make vs. Buy Decision Framework</div>
         <div class="tool-desc">Scores a part on two independent layers, an economic layer and a strategic layer, and places it on a make/buy quadrant. The off-diagonal cases are the point: a part can be cheaper to buy but worth making for IP, criticality, or export reasons, or cheap to make but not worth committing to. Deterministic scoring with a hard ITAR override and an AI narrative layer. Cost is one input, not the answer.</div>
@@ -472,7 +559,7 @@
           <span class="tag">Python</span>
           <span class="tag">Streamlit</span>
           <span class="tag">Claude API</span>
-          <span class="tag tag-live">Live</span>
+          <span class="tag">Decision Quadrant</span>
         </div>
       </div>
       <div class="tool-actions">
@@ -491,5 +578,21 @@
   </div>
 
 </div>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(e){ e.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
 </body>
 </html>
