@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make vs. Buy Decision Framework: Case Study | Kenyon Woodley</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f4f0;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #c94a1e;
+    --accent2: #e8622a;
+    --rule: #d0cfc9;
+    --card-bg: #ffffff;
+    --tag-bg: #ebebeb;
+    --mono: 'Space Mono', 'Courier New', monospace;
+    --sans: 'Inter', 'Helvetica Neue', 'Helvetica', sans-serif;
+    --make: #2f6b4f;
+    --buy: #9c5b1f;
+    --strategic: #c94a1e;
+  }
+
+  html { font-size: 15px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 64px 40px 80px; }
+
+  /* HEADER */
+  .header { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .header-eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .header-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-family: var(--mono); }
+  .header-badge { flex-shrink: 0; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 1.1rem; font-weight: 700; padding: 10px 18px; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+  .section-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--accent); opacity: 0.4; }
+  .section-heading { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 14px; }
+  .section-body { font-size: 0.88rem; color: #2a2a2a; line-height: 1.7; }
+  .section-body p + p { margin-top: 10px; }
+  .section-body em { font-style: italic; color: var(--muted); }
+  .section-body strong { color: var(--ink); }
+  .pull-quote { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); border-left: 3px solid var(--accent); padding: 8px 16px; margin: 18px 0; background: #f0eeea; }
+
+  /* FORMULA BOX */
+  .formula-box { background: var(--ink); color: #fff; padding: 22px 28px; margin: 24px 0; font-family: var(--mono); font-size: 0.78rem; line-height: 1.65; }
+  .formula-box .formula-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .formula-box .formula-main { font-size: 0.88rem; color: #fff; font-weight: 700; margin-bottom: 10px; }
+  .formula-box .formula-sub { color: #bbb; font-size: 0.72rem; line-height: 1.8; }
+
+  /* COMPONENT GRID */
+  .component-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+  .component-grid.five { grid-template-columns: repeat(3, 1fr); }
+  .component-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 14px 13px; }
+  .component-num { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 4px; }
+  .component-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid var(--rule); padding-bottom: 5px; }
+  .component-body { font-size: 0.71rem; color: var(--muted); line-height: 1.6; }
+
+  /* STYLED TABLE */
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 18px; }
+  .styled-table thead tr { background: var(--ink); color: #fff; }
+  .styled-table thead th { padding: 10px 14px; text-align: left; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .styled-table tbody tr { border-bottom: 1px solid var(--rule); }
+  .styled-table tbody tr:nth-child(even) { background: #f9f8f5; }
+  .styled-table td { padding: 11px 14px; vertical-align: top; line-height: 1.55; }
+  .styled-table td:first-child { font-weight: 600; font-size: 0.8rem; color: var(--ink); }
+  .styled-table td { color: #2a2a2a; font-size: 0.83rem; }
+
+  /* TWO-COL GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .two-col-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .two-col-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .two-col-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+
+  /* QUADRANT DIAGRAM */
+  .quadrant-wrap { margin: 26px 0; display: flex; flex-direction: column; align-items: center; }
+  .quadrant { position: relative; width: 100%; max-width: 460px; aspect-ratio: 1 / 1; border: 1px solid var(--rule); background: var(--card-bg); }
+  .quad-cell { position: absolute; width: 50%; height: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; text-align: center; }
+  .quad-tl { top: 0; left: 0; background: rgba(201,74,30,0.06); border-right: 1px dashed var(--rule); border-bottom: 1px dashed var(--rule); }
+  .quad-tr { top: 0; right: 0; background: rgba(47,107,79,0.06); border-bottom: 1px dashed var(--rule); }
+  .quad-bl { bottom: 0; left: 0; border-right: 1px dashed var(--rule); }
+  .quad-br { bottom: 0; right: 0; background: rgba(47,107,79,0.03); }
+  .quad-label { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; }
+  .quad-tl .quad-label { color: var(--strategic); }
+  .quad-tr .quad-label { color: var(--make); }
+  .quad-bl .quad-label { color: var(--buy); }
+  .quad-br .quad-label { color: var(--make); }
+  .quad-axis-x { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+  .quad-axis-y { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); position: absolute; left: -26px; top: 50%; transform: translateY(-50%) rotate(180deg); }
+  .quadrant-outer { position: relative; width: 100%; max-width: 460px; padding-left: 30px; }
+
+  /* SCORE BAND TABLE (recommendation outcomes) */
+  .band-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+  .band-card { padding: 14px; border: 1px solid var(--rule); }
+  .band-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
+  .band-range { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
+  .band-action { font-size: 0.75rem; color: #2a2a2a; line-height: 1.5; }
+  .band-make { background: #E8F5E9; border-color: #2E7D32; }
+  .band-make .band-label { color: #2E7D32; }
+  .band-strategic { background: #FBE9E2; border-color: var(--strategic); }
+  .band-strategic .band-label { color: var(--strategic); }
+  .band-buy { background: #FFF3E0; border-color: #E65100; }
+  .band-buy .band-label { color: #E65100; }
+  .band-marginal { background: #ECEAE4; border-color: var(--muted); }
+  .band-marginal .band-label { color: var(--muted); }
+
+  /* OVERRIDE / FLAG DISPLAY */
+  .flag-list { margin-top: 16px; }
+  .flag-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+  .flag-item:last-child { border-bottom: none; }
+  .flag-cert { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; min-width: 96px; flex-shrink: 0; padding-top: 2px; }
+  .flag-type { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; flex-shrink: 0; margin-top: 2px; }
+  .flag-type-critical { background: #B71C1C; color: #fff; }
+  .flag-type-precedence { background: var(--accent); color: #fff; }
+  .flag-text { font-size: 0.82rem; color: #2a2a2a; line-height: 1.55; }
+
+  /* LIMITATIONS */
+  .limit-list { margin-top: 14px; }
+  .limit-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.84rem; }
+  .limit-item:last-child { border-bottom: none; }
+  .limit-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--tag-bg); padding: 3px 8px; flex-shrink: 0; height: fit-content; margin-top: 2px; color: var(--ink); }
+  .limit-text { color: #2a2a2a; line-height: 1.55; }
+
+  /* CLOSING */
+  .closing-box { background: var(--ink); color: #fff; padding: 28px 32px; margin-top: 20px; }
+  .closing-box p { font-size: 0.88rem; line-height: 1.7; color: #ccc; }
+  .closing-box p strong { color: #fff; }
+  .closing-meta { margin-top: 14px; font-family: var(--mono); font-size: 0.68rem; color: #666; border-top: 1px solid #333; padding-top: 12px; }
+
+  /* CONTEXT */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .context-card { background: var(--card-bg); border: 1px solid var(--rule); padding: 18px; }
+  .context-card-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+  .context-card-body { font-size: 0.82rem; color: #2a2a2a; line-height: 1.6; }
+  .upcoming-list { margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
+  .upcoming-list li { list-style: none; padding: 4px 0; border-bottom: 1px dashed var(--rule); font-family: var(--mono); font-size: 0.72rem; }
+  .upcoming-list li::before { content: '→ '; color: var(--accent); }
+
+  /* FOOTER */
+  .page-footer { border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 56px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+
+  @media (max-width: 680px) {
+    .page { padding: 32px 20px 48px; }
+    .component-grid, .component-grid.five { grid-template-columns: repeat(2, 1fr); }
+    .band-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col, .context-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-eyebrow">— Portfolio Case Study</div>
+      <div class="header-title">Make vs. Buy<br>Decision Framework</div>
+      <div class="header-sub">Strategic sourcing decision support for aerospace and defense<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + Streamlit + Claude API</div>
+    </div>
+    <div class="header-badge">SCM</div>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <div class="section">
+    <div class="section-label">01 — Problem</div>
+    <h2 class="section-heading">Make vs. buy gets decided on a spreadsheet that optimizes unit cost. The expensive mistakes happen in the factors the spreadsheet leaves out.</h2>
+    <div class="section-body">
+      <p>The default make-vs-buy analysis is a cost comparison: model the in-house cost, get a supplier quote, pick the cheaper one. It is fast, it is defensible in a budget meeting, and it is wrong often enough to be dangerous. The decisions that come back to hurt a program are rarely the ones where the cheaper option was also the safe one. They are the ones where cost pointed one way and something the spreadsheet never captured pointed the other.</p>
+      <p>A part that is cheaper to buy but carries proprietary design IP. A flight-critical component with one qualified supplier in the market. An ITAR-controlled item where an unrestricted outsource is not viable without a qualified, compliant sourcing path. A part that looks attractive to insource until you notice the program is being retired in three years and the tooling will never amortize. None of these show up in a unit-cost delta, and all of them change the right answer.</p>
+      <div class="pull-quote">A make-vs-buy decision that ignores IP control, criticality, single-source exposure, and export status is not a sourcing decision. It is an accounting exercise.</div>
+    </div>
+  </div>
+
+  <!-- 02 INSIGHT -->
+  <div class="section">
+    <div class="section-label">02 — Insight</div>
+    <h2 class="section-heading">Cost is one input on one axis. The decision lives in two dimensions, and the interesting cases are off the diagonal.</h2>
+    <div class="section-body">
+      <p>The core architectural decision was to refuse to collapse the decision into a single number. The engine scores a part on two independent layers: an Economic layer that captures whether making is cheaper and whether you have the capacity and volume to justify it, and a Strategic layer that captures criticality, IP control, supply-market risk, export status, and where the program sits in its lifecycle. Each layer is scored 0 to 100, where higher favors Make and 50 is neutral.</p>
+      <p>Plotting the two scores against each other produces a 2x2 quadrant. The two diagonal cases are the easy ones: both layers favor Make, or both favor Buy. The value of the tool is in the two off-diagonal cases, where the layers disagree. A part can be more expensive to make and still be the right thing to make. A part can be cheaper to make and still be the wrong thing to commit to. Those are the decisions a cost-only model gets backwards.</p>
+      <p><em>The signature output is "Strategic Make": a part the economics say to buy, but criticality, IP, single-source exposure, or export control say to keep in-house. It is the recommendation a spreadsheet would never produce, and it is the one most worth getting right.</em></p>
+    </div>
+  </div>
+
+  <!-- 03 ENGINE ARCHITECTURE -->
+  <div class="section">
+    <div class="section-label">03 — Engine Architecture</div>
+    <h2 class="section-heading">A deterministic two-layer engine that places a part on a quadrant, then resolves it with explicit overrides</h2>
+    <div class="section-body">
+      <p>The engine is built in Python with strict separation between the deterministic core and the explanatory layer. Scoring, quadrant assignment, mode logic, and overrides are fully deterministic and reproducible: the same inputs always produce the same recommendation. Claude generates the plain-language rationale from the computed result. It never generates or modifies a score or a recommendation.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Two-Layer Blend</div>
+      <div class="formula-main">Blended = (Economic Score × Economic Weight) + (Strategic Score × Strategic Weight)</div>
+      <div class="formula-sub">
+        Both layers scored 0–100, higher favors Make, 50 neutral.<br>
+        Economic layer: make-vs-buy cost (45%), capital/NRE burden (25%), capacity (15%), volume stability (15%)<br>
+        Strategic layer: criticality (23%), IP control (20%), supply-market risk (20%), regulatory/export (16%), roadmap (11%), lifecycle (10%)<br><br>
+        Quadrant assignment uses the two layer scores directly. The blended score drives mode-based tipping on close calls only.<br>
+        NRE amortized over 5 years to match defense program horizons. All weights and lookup tables centralized as named constants — single source of truth, rendered live in the "How scoring works" panel.
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The recommendation is derived from the quadrant, then modified by an explicit precedence chain: scoring mode can tip genuine close calls, a sunsetting-program override enforces capital discipline, and an ITAR override sits at the top as a hard constraint. Every override surfaces as a visible flag. Nothing is folded silently into a number.</p>
+    </div>
+  </div>
+
+  <!-- 04 SCORING LAYERS -->
+  <div class="section">
+    <div class="section-label">04 — Scoring Layers</div>
+    <h2 class="section-heading">Ten factors across two layers, each tied to a specific input and a fixed scoring function</h2>
+
+    <div class="section-body" style="margin-bottom: 16px;">
+      <p><strong>Economic Layer</strong>: does making this part make financial sense right now?</p>
+    </div>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-num">E1</div>
+        <div class="component-title">Make vs Buy Cost</div>
+        <div class="component-body">Loaded make cost (including amortized NRE) against the buy quote, as a bounded ratio so the score normalizes across part values rather than swinging on raw dollar magnitude. Highest economic weight at 45%.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">E2</div>
+        <div class="component-title">Capital / NRE Burden</div>
+        <div class="component-body">Amortized tooling and qualification investment as a share of annual buy spend. Heavier burden favors Buy. Rests at neutral when no investment is required, so a zero-NRE part carries no false bias toward Make.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">E3</div>
+        <div class="component-title">Internal Capacity</div>
+        <div class="component-body">Idle / Available / Tight / Over-capacity. Idle capacity lowers the marginal cost of making and favors Make; over-capacity favors Buy.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">E4</div>
+        <div class="component-title">Volume Stability</div>
+        <div class="component-body">High and stable volume justifies absorbing fixed make costs. Low or erratic volume favors Buy to avoid fixed commitment.</div>
+      </div>
+    </div>
+
+    <div class="section-body" style="margin-bottom: 16px;">
+      <p><strong>Strategic Layer</strong>: should this part be controlled in-house regardless of cost?</p>
+    </div>
+
+    <div class="component-grid five">
+      <div class="component-card">
+        <div class="component-num">S1</div>
+        <div class="component-title">Part Criticality</div>
+        <div class="component-body">Flight-critical / Mission-critical / Important / Non-critical. Flight-critical work favors in-house control of quality, traceability, and configuration. Highest strategic weight at 23%.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">S2</div>
+        <div class="component-title">IP / Design Control</div>
+        <div class="component-body">Core proprietary / Sensitive / Standard / Commodity. Differentiating IP favors keeping production in-house to protect it; commodity parts favor Buy.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">S3</div>
+        <div class="component-title">Supply Market Risk</div>
+        <div class="component-body">Single-source / Limited / Competitive / Commodity. A fragile or concentrated market favors insourcing to de-risk; a deep competitive market favors Buy.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">S4</div>
+        <div class="component-title">Regulatory / Export</div>
+        <div class="component-body">ITAR-controlled / Export-sensitive / Regulated-process / Unrestricted. Controlled work favors domestic make. ITAR also triggers a hard override (Section 06).</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">S5</div>
+        <div class="component-title">Technology Roadmap</div>
+        <div class="component-body">Strategic-to-own / Useful / Neutral / Divesting. A capability worth owning for the future favors Make; a declining or non-core technology favors Buy.</div>
+      </div>
+      <div class="component-card">
+        <div class="component-num">S6</div>
+        <div class="component-title">Program Lifecycle</div>
+        <div class="component-body">Growing / Stable / Declining / Sunsetting. A growing program justifies building capability; a sunsetting program argues against capital investment and can trigger a hard override.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 QUADRANT & RECOMMENDATIONS -->
+  <div class="section">
+    <div class="section-label">05 — Quadrant &amp; Recommendations</div>
+    <h2 class="section-heading">The two layer scores place the part on a quadrant. The off-diagonal cases are where the tool earns its keep.</h2>
+
+    <div class="quadrant-outer">
+      <span class="quad-axis-y">Strategic layer — favors Make ↑</span>
+      <div class="quadrant">
+        <div class="quad-cell quad-tl"><span class="quad-label">Strategic Make<br><span style="font-weight:400;color:var(--muted)">expensive to make,<br>but make it anyway</span></span></div>
+        <div class="quad-cell quad-tr"><span class="quad-label">Make<br><span style="font-weight:400;color:var(--muted)">both layers agree</span></span></div>
+        <div class="quad-cell quad-bl"><span class="quad-label">Buy<br><span style="font-weight:400;color:var(--muted)">both layers agree</span></span></div>
+        <div class="quad-cell quad-br"><span class="quad-label">Opportunistic Make /<br>Dual-Source<br><span style="font-weight:400;color:var(--muted)">cheap to make,<br>low lock-in</span></span></div>
+      </div>
+    </div>
+    <div class="quad-axis-x" style="text-align:center; max-width:460px; margin-left:30px;">Economic layer — favors Make →</div>
+
+    <div class="section-body" style="margin-top: 22px;">
+      <p>The two diagonal quadrants are agreement cases. The two off-diagonal quadrants are where the layers disagree and where a cost-only analysis fails. When both layers land inside a neutral band (45 to 55 on each axis), the tool returns <strong>Marginal — Gather More Data</strong> rather than forcing a call it cannot defend. That is the human-in-the-loop principle made literal: the tool declines to fake precision on a genuine coin flip.</p>
+    </div>
+
+    <div class="band-grid" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="band-card band-strategic">
+        <div class="band-label">Strategic Make</div>
+        <div class="band-range">low economic · high strategic</div>
+        <div class="band-action">More expensive to make, but criticality, IP, single-source exposure, or export control justify keeping it in-house. The signature output.</div>
+      </div>
+      <div class="band-card band-make">
+        <div class="band-label">Make</div>
+        <div class="band-range">high economic · high strategic</div>
+        <div class="band-action">Both layers favor insourcing. A clean make case.</div>
+      </div>
+      <div class="band-card band-buy">
+        <div class="band-label">Buy / Qualify Second Source</div>
+        <div class="band-range">low economic · hedge on risk</div>
+        <div class="band-action">Buy, but single-source exposure on a critical part means hedging the buy by qualifying a second source rather than relying on one supplier.</div>
+      </div>
+      <div class="band-card band-make">
+        <div class="band-label">Opportunistic Make / Dual-Source</div>
+        <div class="band-range">high economic · low strategic</div>
+        <div class="band-action">Cheaper to make and capacity allows it, but with no strategic lock-in. Make while favorable, treat it as reversible, and hold dual-source as a hedge if capacity tightens.</div>
+      </div>
+    </div>
+
+    <div class="band-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+      <div class="band-card band-marginal">
+        <div class="band-label">Marginal — Gather More Data</div>
+        <div class="band-range">both layers inside the 45–55 neutral band</div>
+        <div class="band-action">Not a quadrant outcome but a deliberate refusal to decide. When neither layer points clearly, the tool declines to fake precision on a genuine coin flip and asks for more data instead. The human-in-the-loop principle made literal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 OVERRIDES -->
+  <div class="section">
+    <div class="section-label">06 — Overrides &amp; Precedence</div>
+    <h2 class="section-heading">Two cases where a score is not enough, resolved by explicit rules in a fixed order</h2>
+    <div class="section-body">
+      <p>Some factors do not belong on a weighted axis because they are not tradeoffs. They are constraints. The engine handles these as overrides that fire after the quadrant assignment, in a fixed precedence order, each surfacing as a visible flag rather than being absorbed into a number.</p>
+    </div>
+
+    <div class="flag-list">
+      <div class="flag-item">
+        <div class="flag-cert">Lifecycle</div>
+        <span class="flag-type flag-type-critical">Override</span>
+        <div class="flag-text"><strong>Sunsetting program with unfavorable make economics is forced off Make.</strong> Capital should not fund tooling for a program being retired, regardless of how strategically attractive the part looks. The override reads the full economic layer score, so it inherently weighs tooling, unit-cost delta, and volume together rather than a single arbitrary threshold. It lands on Buy, or Buy / Qualify Second Source when single-source risk exists, except in a commodity market where a second source is automatic.</div>
+      </div>
+      <div class="flag-item">
+        <div class="flag-cert">ITAR</div>
+        <span class="flag-type flag-type-precedence">Top Precedence</span>
+        <div class="flag-text"><strong>An ITAR-controlled part never returns an unrestricted Buy.</strong> It is floored to a domestic, qualified source. This override outranks the lifecycle override: a compliance constraint beats an economic-rationality rule every time. ITAR status also suppresses cost-driven mode tipping, because export control is precisely the reason a part is held in-house and a cost posture should not override it.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 SCORING MODE -->
+  <div class="section">
+    <div class="section-label">07 — Scoring Mode</div>
+    <h2 class="section-heading">A decision lens that tips genuine close calls without overriding clear-cut ones</h2>
+    <div class="section-body">
+      <p>Three scoring modes re-weight the blend between the two layers, matching how a sourcing organization actually frames a decision cycle: are we under cost pressure, or are we prioritizing supply security? The mode does not change the individual factor scores, and it cannot move a decisive case. It only tips a recommendation when the case is genuinely close: when the mode-weighted blend falls within a defined margin of neutral and the balanced read was already near the line.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Layer Blend by Mode</div>
+      <div class="formula-main">Balanced 50/50 &nbsp;·&nbsp; Cost-Driven 70/30 &nbsp;·&nbsp; Strategic-Driven 30/70</div>
+      <div class="formula-sub">
+        Balanced gives the structural read.<br>
+        Cost-Driven can step a borderline Strategic Make down to a hedged Buy (never an unrestricted one, and never for an ITAR part).<br>
+        Strategic-Driven can step a borderline Opportunistic Make down to Buy when there is no strategic lock-in to justify tying up capacity.<br>
+        Decisive cases and the Marginal band never flex with mode.
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>This was a deliberate correction during development. An earlier version computed a blended score that moved with the mode but never actually changed the recommendation, which made the control misleading. The fix tied mode to the recommendation in close cases only, so the lens means something without letting a posture override a clear or compliance-bound decision.</p>
+    </div>
+  </div>
+
+  <!-- 08 WORKED EXAMPLES -->
+  <div class="section">
+    <div class="section-label">08 — Worked Examples</div>
+    <h2 class="section-heading">Two off-diagonal cases that a unit-cost comparison gets backwards</h2>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Part</th>
+          <th>What the cost says</th>
+          <th>What the tool recommends, and why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Titanium structural fitting (flight-critical, ITAR, single-source, growing program)</td>
+          <td>Buying is roughly $134K/year cheaper all-in. A cost model says outsource.</td>
+          <td><strong>Strategic Make.</strong> Flight-criticality, ITAR control, and a single-source market justify the cost premium and rule out an unrestricted buy. The economics lean Buy at 31/100; strategy leans Make at 83/100. This is the case a spreadsheet gets wrong.</td>
+        </tr>
+        <tr>
+          <td>Sunsetting actuator housing (flight-critical, single-source, program winding down)</td>
+          <td>Same high-risk criticality profile as the fitting, but on a winding-down program. A strategic checklist says make it.</td>
+          <td><strong>Buy / Qualify Second Source.</strong> The program is being retired and the economics do not favor making, so the lifecycle override forbids sinking tooling capital into a dying program. But single-source exposure on a flight-critical part still needs hedging, so the buy is paired with qualifying a second source. The case a strategic checklist gets wrong.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-body" style="margin-top: 16px;">
+      <p>The two examples are deliberate mirror images. The first shows strategy correctly overriding cost. The second shows lifecycle discipline correctly overriding strategy. Neither answer falls out of a single number, and that is the entire point of the tool.</p>
+    </div>
+  </div>
+
+  <!-- 09 AI LAYER -->
+  <div class="section">
+    <div class="section-label">09 — AI Narrative Layer</div>
+    <h2 class="section-heading">Deterministic first. AI explains the result — it does not generate it.</h2>
+    <div class="section-body">
+      <p>The AI layer translates a computed decision into a short, leadership-ready rationale. Every score, the quadrant, the recommendation, and any override are computed before the model is called. The prompt passes the final recommendation as a fixed fact and instructs the model that implying a different one is a defect. The engine recommendation is also displayed directly above the narrative, so the deterministic result and its explanation can never be confused.</p>
+      <p>If no API key is present, the layer falls back to a deterministic template, so the live tool never breaks on the AI path. The narrative is honest about mode-tipped outcomes: when a part lands on Buy despite favorable economics, the explanation says so rather than claiming both layers favored buying.</p>
+    </div>
+
+    <div class="two-col" style="margin-top: 18px;">
+      <div class="two-col-card">
+        <div class="two-col-label">What AI Generates</div>
+        <div class="two-col-body">A two-to-four sentence rationale naming the dominant drivers, the cost picture, and any active override. Plain, leadership-ready language with no hedging on compliance constraints.</div>
+      </div>
+      <div class="two-col-card">
+        <div class="two-col-label">What AI Never Touches</div>
+        <div class="two-col-body">Layer scores, quadrant assignment, recommendation selection, override logic, break-even math. All computed deterministically before the call. The model string and token limit are fixed in code: the AI layer is boxed, not open-ended.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 TECHNICAL DESIGN -->
+  <div class="section">
+    <div class="section-label">10 — Technical Design</div>
+    <h2 class="section-heading">A deterministic core, an explanatory shell, and 121 passing tests</h2>
+
+    <div class="formula-box">
+      <div class="formula-label">Module Structure</div>
+      <div class="formula-main">decision_engine.py → ai_narrative.py → streamlit_app.py</div>
+      <div class="formula-sub">
+        decision_engine.py: all constants, lookup tables, validated input schema, two-layer scoring, quadrant logic, mode tipping, overrides, break-even, sensitivity — single source of truth<br>
+        ai_narrative.py: Anthropic SDK call, prompt construction, deterministic fallback<br>
+        streamlit_app.py: full UI layer, quadrant chart, comparison table, live "how scoring works" reference
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The test suite enforces 121 assertions including: cost-delta direction and break-even math, every category-to-score lookup, layer-weight integrity, mode-blend correctness, quadrant assignment across all four regions plus the neutral band, the sunsetting and ITAR overrides and their precedence, mode-driven tipping on close calls, input validation bounds, determinism (identical inputs yield identical output), and a regression lock asserting each of the six sample parts produces its intended recommendation.</p>
+      <p><em>The test suite earned its place during development: the regression lock caught a capital-burden factor that was defaulting to a Make-favoring value when no investment was required, biasing the engine toward Make on zero-NRE parts. The fix reset it to neutral. The bug was invisible without the tests.</em></p>
+    </div>
+  </div>
+
+  <!-- 11 LIMITATIONS -->
+  <div class="section">
+    <div class="section-label">11 — Limitations &amp; Scope</div>
+    <h2 class="section-heading">What this tool does not do — and why those are explicit decisions</h2>
+
+    <div class="limit-list">
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>It does not compute the make cost.</strong> The loaded make unit cost is an input, not an output. Computing it is the job of the Should-Cost Model upstream in the portfolio. This tool consumes a make cost and a buy quote and asks the higher-order question: should we make it at all.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>It does not evaluate specific suppliers.</strong> "Buy" is treated as a sourcing strategy, not a vendor. Supply-market risk is about the structure of the market, not the performance of one supplier. Evaluating a named supplier is the job of the Supplier Scorecard, a separate tool in the portfolio.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>Strategic factors are categorical, not continuous.</strong> Criticality, IP, market structure, and lifecycle are entered as named tiers, not free numeric values. This keeps the tool usable in a short working session and the scoring fully reproducible, at the cost of fine-grained nuance within a tier.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>ITAR is modeled as domestic-only.</strong> The tool treats ITAR control as requiring a domestic qualified source. Licensed international production of controlled articles exists in reality but is deliberately out of scope: modeling it would add licensing nuance with no portfolio value.</div>
+      </div>
+      <div class="limit-item">
+        <span class="limit-tag">Known</span>
+        <div class="limit-text"><strong>No export, no persistence.</strong> The live tool is the artifact. The session comparison table accumulates up to six parts and resets on refresh. There is no saved state and no document export, consistent with the rest of the portfolio.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 BROADER CONTEXT -->
+  <div class="section">
+    <div class="section-label">12 — Broader Context</div>
+    <h2 class="section-heading">The decision layer that sits above should-cost and beside supplier scoring</h2>
+    <div class="section-body">
+      <p>The Make vs. Buy Decision Framework is the highest-altitude tool in the portfolio. It operates at the level a sourcing leader works at: not "what should this part cost" or "how good is this supplier," but "should we make this at all, given that cost is only one of the factors that matter." It consumes a make-cost figure that the Should-Cost Model can produce, and it treats the buy path as a strategy that the Supplier Scorecard can then evaluate vendor by vendor. Together the tools form a buy-side decision system from part prioritization through award.</p>
+    </div>
+    <div class="context-grid">
+      <div class="context-card">
+        <div class="context-card-label">Suite Progress</div>
+        <ul class="upcoming-list">
+          <li>Part Prioritization Framework: Complete</li>
+          <li>RFQ Lifecycle Tracker: Complete</li>
+          <li>Parametric Should-Cost Model: Complete</li>
+          <li>Supplier Performance &amp; Risk Scorecard: Complete</li>
+          <li>Make vs. Buy Decision Framework: Complete</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <div class="context-card-label">Design Philosophy</div>
+        <div class="context-card-body">Deterministic scoring. AI explains outputs, never generates them. Cost is one weighted input, never the answer. Constraints like export control are hard overrides, not weighted variables. The tool produces the recommendation and shows its work; the sourcing professional makes the call, and the tool is honest enough to say when the call is too close to make.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 CLOSING -->
+  <div class="section">
+    <div class="section-label">13 — Closing Note</div>
+    <div class="closing-box">
+      <p>Built to close the gap between "the supplier quote is lower, so we outsource" and "we have a structured, defensible view of whether a part belongs in-house across cost, control, risk, and program life." Deterministic by design. Explainable by requirement. Aerospace-specific by intent. <strong>The cheapest option is often the wrong one, and the most strategic option is not always worth the capital. The tool surfaces both. The sourcing professional decides.</strong></p>
+      <div class="closing-meta">Python engine + Streamlit UI + Claude API. &nbsp;|&nbsp; Two-layer scoring: 4 economic factors, 6 strategic factors. &nbsp;|&nbsp; 2x2 decision quadrant with off-diagonal Strategic Make and Opportunistic Make outputs. &nbsp;|&nbsp; Three scoring modes that tip genuine close calls. &nbsp;|&nbsp; Sunsetting and ITAR overrides with fixed precedence. &nbsp;|&nbsp; Break-even volume and sensitivity flag. &nbsp;|&nbsp; Marginal band for genuine coin-flips. &nbsp;|&nbsp; Six engineered sample scenarios. &nbsp;|&nbsp; 121 passing tests with a sample-recommendation regression lock.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <span>Make vs. Buy Decision Framework: Case Study</span>
+    <span>Kenyon Woodley</span>
+  </div>
+
+</div>
+</body>
+</html>
