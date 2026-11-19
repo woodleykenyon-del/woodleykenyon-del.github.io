@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Part Prioritization Framework — V2 | Kenyon Woodley</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Part Prioritization Framework | Kenyon Woodley</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -572,23 +571,34 @@
     .matrix-grid { height: auto; grid-template-columns: 28px 1fr 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../assets/site-theme.css">
+<link rel="stylesheet" href="../assets/case-study.css">
 </head>
 <body>
-<div class="page">
+<a class="case-skip" href="#main">Skip to content</a>
+<nav class="case-nav" aria-label="Portfolio">
+  <div>
+    <a class="case-wordmark" href="../">Kenyon Woodley</a>
+    <a href="../#work">Selected work</a>
+  </div>
+</nav>
+<main id="main" class="page" tabindex="-1">
 
   <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="header-eyebrow">— Portfolio Case Study</div>
-      <div class="header-title">AI Part Prioritization<br>Framework</div>
-      <div class="header-sub">Systemizing sourcing triage under ambiguity<br>Kenyon Woodley | Western Washington University | V2 — 2026 | Stack: Excel + Claude AI</div>
+  <header class="header">
+    <p class="header-eyebrow">Sourcing Operations Suite</p>
+    <h1 class="header-title">Part Prioritization Framework</h1>
+    <p class="case-intro">Rank parts by production impact, supply risk, cost exposure, and instability.</p>
+    <p class="header-sub">Excel workbook · 60 fictional parts</p>
+    <div class="case-actions">
+      <a class="case-primary" href="../tools/Part_Prioritization_Tool.xlsx" download>Download workbook</a>
+      <a href="../pdfs/Part_Prioritization_Case_Study.pdf">PDF case study</a>
     </div>
-    <div class="header-badge">V2.0</div>
-  </div>
+  </header>
 
   <!-- 01 PROBLEM -->
   <div class="section">
-    <div class="section-label">01 — Problem</div>
+    <div class="section-label">Problem</div>
     <h2 class="section-heading">If everything is important, what is actually urgent?</h2>
     <div class="section-body">
       <p>Sourcing engineers in complex manufacturing are routinely handed portfolios of 50 to 100 parts and asked to drive impact. There is rarely a structured method to determine where to allocate effort, which risks are existential versus noise, or which cost opportunities represent real leverage.</p>
@@ -599,7 +609,7 @@
 
   <!-- 02 INSIGHT -->
   <div class="section">
-    <div class="section-label">02 — Insight</div>
+    <div class="section-label">Insight</div>
     <h2 class="section-heading">Production continuity first. Not spend alone.</h2>
     <div class="section-body">
       <p>A $50K part that stops a line is more urgent than a $2M part with diversified supply and stable delivery. The right system must be explainable, surface operational risk, and produce defensible action categories without relying on escalation pressure or institutional memory.</p>
@@ -609,7 +619,7 @@
 
   <!-- 03 APPROACH -->
   <div class="section">
-    <div class="section-label">03 — Approach</div>
+    <div class="section-label">Approach</div>
     <h2 class="section-heading">A weighted scoring engine across four dimensions</h2>
 
     <div class="formula-box">
@@ -664,9 +674,10 @@
 
   <!-- 04 V2 UPGRADES -->
   <div class="section">
-    <div class="section-label">04 — V2 Upgrades</div>
+    <div class="section-label">V2 Upgrades</div>
     <h2 class="section-heading">Four new capabilities built on the V1 foundation</h2>
-    <table class="upgrades-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+      <table class="upgrades-table">
       <thead>
         <tr>
           <th>Capability</th>
@@ -692,13 +703,15 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <!-- 05 FRAMEWORK CONTROLS -->
   <div class="section">
-    <div class="section-label">05 — Framework Controls</div>
+    <div class="section-label">Framework Controls</div>
     <h2 class="section-heading">Three features that make the model ops-ready for day-to-day sourcing workflows</h2>
-    <table class="controls-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+      <table class="controls-table">
       <thead>
         <tr>
           <th>Feature</th>
@@ -715,16 +728,17 @@
           <td>Leadership-escalated parts receive a minimum score of 70 and forced action category without corrupting the underlying calculated score. Political context stays visible without contaminating model integrity.</td>
         </tr>
         <tr>
-          <td>AI Rationale Layer</td>
-          <td>Top 10 ranked parts are passed through a structured Claude prompt generating a 3-sentence business rationale and action recommendation in plain language, ready for leadership reviews. AI does not create scores or facts — it only rewrites computed drivers into a narrative. Scoring and action categories are fully deterministic.</td>
+          <td>Original rationale workflow</td>
+          <td>The original project used a separate Claude prompt to turn the top-ranked parts into a written brief. The workbook calculates rankings and action categories locally in Excel.</td>
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <!-- 06 OUTPUT EXAMPLE -->
   <div class="section">
-    <div class="section-label">06 — Output Example</div>
+    <div class="section-label">Output Example</div>
     <h2 class="section-heading">From qualitative noise to structured tradeoffs</h2>
     <div class="section-body">
       <p>Instead of "Part A feels urgent," the system produces a scored, ranked, and explainable output with reason codes automatically generated from the underlying data:</p>
@@ -968,12 +982,13 @@
 
   <!-- 07 ACTION LOGIC -->
   <div class="section">
-    <div class="section-label">07 — Action Logic</div>
+    <div class="section-label">Action Logic</div>
     <h2 class="section-heading">Score profile drives action, not total score alone</h2>
     <div class="section-body">
       <p>The same overall score can result from very different underlying conditions. Action categories are assigned by profile. Supplier Crisis takes precedence over Dual Source escalation when both conditions are met.</p>
     </div>
-    <table class="action-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+      <table class="action-table">
       <thead>
         <tr>
           <th>Condition</th>
@@ -1019,23 +1034,24 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <!-- 08 BROADER CONTEXT -->
   <div class="section">
-    <div class="section-label">08 — Broader Context</div>
+    <div class="section-label">Broader Context</div>
     <h2 class="section-heading">One tool in a sourcing operations suite</h2>
     <div class="section-body">
-      <p>This framework is the first in a series of structured sourcing tools being built to address the most common pain points in manufacturing procurement. Each tool is designed to stand alone, solve a specific operational problem, and produce outputs that are defensible in a leadership setting.</p>
+      <p>This framework is the first in a five-tool suite addressing the most common pain points in manufacturing procurement. Each tool is designed to stand alone, solve a specific operational problem, and produce outputs that are defensible in a leadership setting.</p>
     </div>
     <div class="context-grid">
       <div class="context-card">
-        <div class="context-card-label">Upcoming Tools in Development</div>
+        <div class="context-card-label">Other case studies</div>
         <ul class="upcoming-list">
-          <li>RFQ Tracker</li>
-          <li>Should-Cost Model Assistant</li>
-          <li>Supplier Risk Scorecard</li>
-          <li>Make vs. Buy Decision Framework</li>
+          <li><a href="rfq-tracker.html">Aerospace RFQ Tracker</a></li>
+          <li><a href="should-cost.html">Parametric Should-Cost Model</a></li>
+          <li><a href="supplier-scorecard.html">Supplier Performance &amp; Risk Scorecard</a></li>
+          <li><a href="make-vs-buy.html">Make vs. Buy Decision Framework</a></li>
         </ul>
       </div>
       <div class="context-card">
@@ -1047,7 +1063,7 @@
 
   <!-- 09 CLOSING -->
   <div class="section">
-    <div class="section-label">09 — Closing Note</div>
+    <div class="section-label">Closing Note</div>
     <div class="closing-box">
       <p>Built to structure sourcing decisions under pressure. Intentionally simple in structure, rigorous in logic. The goal is clarity, repeatability, and leverage — not complexity. <strong>The model surfaces the data. The sourcing manager makes the call.</strong></p>
       <div class="closing-meta">Excel-native decision support tool, built iteratively across two versions. &nbsp;|&nbsp; 60-part synthetic dataset, structure validated against real workflow constraints. &nbsp;|&nbsp; 7-tab workbook. &nbsp;|&nbsp; Production-continuity-first philosophy.</div>
@@ -1055,11 +1071,9 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="page-footer">
-    <span>AI Part Prioritization Framework — V2</span>
-    <span>Kenyon Woodley</span>
-  </div>
-
-</div>
+  <footer class="page-footer">
+    <a href="../#work">← Back to selected work</a>
+  </footer>
+</main>
 </body>
 </html>

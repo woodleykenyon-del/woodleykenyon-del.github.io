@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parametric Should-Cost Model V2 — Case Study | Kenyon Woodley</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Parametric Should-Cost Model | Kenyon Woodley</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -181,23 +180,35 @@
     .conf-grid, .controls-grid, .context-grid { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../assets/site-theme.css">
+<link rel="stylesheet" href="../assets/case-study.css">
 </head>
 <body>
-<div class="page">
+<a class="case-skip" href="#main">Skip to content</a>
+<nav class="case-nav" aria-label="Portfolio">
+  <div>
+    <a class="case-wordmark" href="../">Kenyon Woodley</a>
+    <a href="../#work">Selected work</a>
+  </div>
+</nav>
+<main id="main" class="page" tabindex="-1">
 
   <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="header-eyebrow">— Portfolio Case Study</div>
-      <div class="header-title">Parametric Should-Cost<br>Model V2</div>
-      <div class="header-sub">Defensible price estimation for machined aerospace parts<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + cadquery + Streamlit + Excel</div>
+  <header class="header">
+    <p class="header-eyebrow">Sourcing Operations Suite</p>
+    <h1 class="header-title">Parametric Should-Cost Model</h1>
+    <p class="case-intro">Estimate a price range for a machined part and see which inputs move the result.</p>
+    <p class="header-sub">Python · Streamlit · Excel export</p>
+    <div class="case-actions">
+      <a class="case-primary" href="https://kenyon-should-cost.streamlit.app/">Open demo</a>
+      <a href="../pdfs/Should_Cost_Case_Study.pdf">PDF case study</a>
+      <a href="https://www.loom.com/share/4c30fa0c907b4ec09fbb3cc50c390ab8">Original walkthrough</a>
     </div>
-    <div class="header-badge">SCM</div>
-  </div>
+  </header>
 
   <!-- 01 PROBLEM -->
   <div class="section">
-    <div class="section-label">01 — Problem</div>
+    <div class="section-label">Problem</div>
     <h2 class="section-heading">Without a cost model, every supplier quote is a guess you can't challenge.</h2>
     <div class="section-body">
       <p>In aerospace manufacturing, sourcing engineers receive supplier quotes and are expected to evaluate them. But evaluation without an independent cost estimate is not evaluation; it is acceptance. The sourcing professional has no leverage, no floor to negotiate from, and no way to explain to leadership why a quote is too high or surprisingly low.</p>
@@ -208,7 +219,7 @@
 
   <!-- 02 INSIGHT -->
   <div class="section">
-    <div class="section-label">02 — Insight</div>
+    <div class="section-label">Insight</div>
     <h2 class="section-heading">You don't need geometry to estimate cost. You need the right parameters.</h2>
     <div class="section-body">
       <p>Feature-based costing tools like aPriori read CAD files and count holes, pockets, and tolerances. That precision is valuable, but it requires tooling that most sourcing teams don't have at the point of negotiation. The vast majority of sourcing decisions are made from a drawing title, a material, and a complexity characterization, not a fully instrumented CAM file.</p>
@@ -219,10 +230,10 @@
 
   <!-- 03 APPROACH -->
   <div class="section">
-    <div class="section-label">03 — Approach</div>
+    <div class="section-label">Approach</div>
     <h2 class="section-heading">A modular Python engine with a traceable, deterministic cost model</h2>
     <div class="section-body">
-      <p>The engine is built in Python with a strict separation of concerns: the cost engine produces all numbers deterministically, a separate AI layer generates plain-language narrative from those numbers, and an Excel exporter surfaces everything in a format a sourcing team can actually use in a meeting. Every number traces back to an assumption. No black boxes.</p>
+      <p>The Python engine calculates each scenario from editable assumptions. The sourcing summary uses the calculated price band, sensitivity, and confidence. The Excel export includes the same summary alongside the detailed results.</p>
     </div>
 
     <div class="formula-box">
@@ -239,13 +250,13 @@
 
     <div class="section-body">
       <p>The engine is fully modular. Data files (material prices, machine rates, buy-to-fly ratios, outside process costs) live in CSV and JSON, editable without touching code. All assumptions are surfaced in the Excel output so every number is auditable.</p>
-      <p>V2 added STEP geometry ingestion via cadquery, auto-populating bounding box, volume, and buy-to-fly ratio from uploaded part files, and a Streamlit UI wrapper that puts the full engine in a browser without requiring Python.</p>
+      <p>The browser demo uses manual weight entry and a table-driven buy-to-fly ratio. The repository also contains a local STEP geometry parser.</p>
     </div>
   </div>
 
   <!-- 04 MODEL COMPONENTS -->
   <div class="section">
-    <div class="section-label">04 — Model Components</div>
+    <div class="section-label">Model Components</div>
     <h2 class="section-heading">Eight cost elements, each traceable to a configurable assumption</h2>
 
     <div class="component-grid">
@@ -294,7 +305,7 @@
 
   <!-- 05 PRICE BAND LOGIC -->
   <div class="section">
-    <div class="section-label">05 — Price Band Logic</div>
+    <div class="section-label">Price Band Logic</div>
     <h2 class="section-heading">A range with a rationale, not a number with false precision</h2>
     <div class="section-body">
       <p>The model produces three scenarios simultaneously: Low (optimistic assumptions: best-case material pricing, lowest machine rates, tightest margin), Mid (baseline assumptions, the primary reference point), and High (conservative assumptions: worst-case on all four variable inputs). The band is not a confidence interval in the statistical sense. It is a structured range that reflects real variance in the four inputs that move most: material price, machine rate, scrap rate, and supplier margin.</p>
@@ -310,14 +321,16 @@
 
   <!-- 06 SENSITIVITY ANALYSIS -->
   <div class="section">
-    <div class="section-label">06 — Sensitivity Analysis</div>
+    <div class="section-label">Sensitivity Analysis</div>
     <h2 class="section-heading">Which lever matters most, before the negotiation starts</h2>
     <div class="section-body">
       <p>For every estimate, the engine perturbs four key variables by +10% and measures the resulting change in the mid unit price. The top three drivers are returned in rank order. This answers the most important pre-negotiation question: where is the cost actually coming from?</p>
       <p><em>For machined parts, machine rate and machining hours dominate almost universally. Material price becomes a significant driver only when buy-to-fly is high or material is inherently expensive (Ti, Inconel). Knowing this in advance changes the negotiation strategy.</em></p>
     </div>
 
-    <table class="sens-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+
+      <table class="sens-table">
       <thead>
         <tr>
           <th>Variable</th>
@@ -348,11 +361,13 @@
         </tr>
       </tbody>
     </table>
+
+    </div>
   </div>
 
   <!-- 07 CONFIDENCE SCORING -->
   <div class="section">
-    <div class="section-label">07 — Confidence Scoring</div>
+    <div class="section-label">Confidence Scoring</div>
     <h2 class="section-heading">The estimate tells you the number. The confidence score tells you how much to trust it.</h2>
     <div class="section-body">
       <p>Every estimate carries a confidence rating (High, Medium, or Low) assigned by a demerit system that evaluates input quality and inherent model uncertainty. The score is deterministic and fully traceable. It is not a gut check; it is a structured signal about where the estimate sits on the spectrum from "parametric baseline" to "specific enough to negotiate from."</p>
@@ -398,14 +413,15 @@
 
   <!-- 08 OUTPUT EXAMPLE -->
   <div class="section">
-    <div class="section-label">08 — Output Example</div>
+    <div class="section-label">Output Example</div>
     <h2 class="section-heading">Five parts across the material and complexity spectrum</h2>
     <div class="section-body">
       <p>The following outputs were generated from the live engine using the synthetic dataset. All part numbers, programs, and values are illustrative. Region adjusts machine rates, overhead rates, and margin assumptions. Geometry and hours are held constant across regions.</p>
     </div>
 
     <!-- Dataset Summary Table -->
-    <table class="dataset-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+      <table class="dataset-table">
       <thead>
         <tr>
           <th>Part ID</th>
@@ -477,6 +493,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
 
     <!-- Detail card: P-3003 Titanium Actuator Housing -->
     <div style="margin-top:28px; font-family:var(--mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Detail View — P-3003 Titanium Actuator Housing</div>
@@ -556,7 +573,7 @@
 
   <!-- 09 FRAMEWORK CONTROLS -->
   <div class="section">
-    <div class="section-label">09 — Framework Controls</div>
+    <div class="section-label">Framework Controls</div>
     <h2 class="section-heading">Four design decisions that make the model defensible under scrutiny</h2>
 
     <div class="controls-grid">
@@ -573,15 +590,15 @@
         <div class="control-body">The low band cannot fall below a defensible minimum by complexity tier (Tier 1: $25, Tier 3: $200, Tier 5: $1,500). This prevents optimistic assumptions from stacking into an implausible result. When the floor binds, the sensitivity output notes it: a muted sensitivity delta is a signal, not a clean result.</div>
       </div>
       <div class="control-card">
-        <div class="control-title">AI Narrative Layer</div>
-        <div class="control-body">The top estimate can be passed through a structured Claude prompt that generates a plain-language sourcing summary covering cost drivers, band interpretation, and negotiation implication. The AI receives only computed outputs and generates explanation text only. It never produces, modifies, or overrides any cost number. Scoring is fully deterministic.</div>
+        <div class="control-title">Sourcing summary</div>
+        <div class="control-body">The sourcing summary explains the price band, names the most influential input from the sensitivity checks, and reports confidence in the estimate. It is built from the computed results and runs without an API key.</div>
       </div>
     </div>
   </div>
 
   <!-- 10 LIMITATIONS -->
   <div class="section">
-    <div class="section-label">10 — Limitations & Scope</div>
+    <div class="section-label">Limitations & Scope</div>
     <h2 class="section-heading">What this model does not do, and why that is an explicit decision</h2>
     <div class="section-body">
       <p>A should-cost model that doesn't acknowledge its own boundaries is more dangerous than no model at all. The following limitations are deliberate scope decisions, not oversights. Each has a corresponding V2 path if the use case demands it.</p>
@@ -610,31 +627,30 @@
       </div>
       <div class="limit-item">
         <span class="limit-tag limit-tag-v2">V2 ✓</span>
-        <div class="limit-text"><strong>STEP file geometry ingestion.</strong> Built and live. The geometry reader extracts bounding box, volume, surface area, and derived metrics (buy-to-fly ratio, slenderness ratio) directly from uploaded STEP files. These auto-populate engine inputs and can be overridden manually. Partially closes the size-scaling gap and moves the model toward geometry-aware estimation.</div>
+        <div class="limit-text"><strong>Local STEP geometry parser.</strong> The repository includes a cadquery utility for inspecting bounding boxes, volume, surface area, and geometry-derived estimates. The public app uses manual inputs.</div>
       </div>
       <div class="limit-item">
         <span class="limit-tag limit-tag-v2">V2 ✓</span>
-        <div class="limit-text"><strong>Streamlit UI wrapper.</strong> Built and live at kenyon-should-cost.streamlit.app. The browser-based interface allows users to upload a STEP file, adjust inputs, run the estimate, view the results dashboard, and export to Excel without touching Python.</div>
+        <div class="limit-text"><strong>Browser demo.</strong> Enter fictional part inputs, review the estimate and its cost drivers, and download the Excel report.</div>
       </div>
     </div>
   </div>
 
   <!-- 11 BROADER CONTEXT -->
   <div class="section">
-    <div class="section-label">11 — Broader Context</div>
+    <div class="section-label">Broader Context</div>
     <h2 class="section-heading">Third tool in a sourcing operations suite</h2>
     <div class="section-body">
       <p>The Should-Cost Model is the technical centerpiece of a five-tool sourcing operations suite. Each tool is standalone, solves a specific operational problem, and produces outputs defensible in a leadership setting. The suite is designed for the sourcing professional who needs to present structured decisions to leadership, not for the analyst building dashboards.</p>
     </div>
     <div class="context-grid">
       <div class="context-card">
-        <div class="context-card-label">Suite Progress</div>
+        <div class="context-card-label">Other case studies</div>
         <ul class="upcoming-list">
-          <li>Part Prioritization Framework — Complete</li>
-          <li>RFQ Lifecycle Tracker — Complete</li>
-          <li>Parametric Should-Cost Model — Complete</li>
-          <li>Supplier Performance & Risk Scorecard — Planned</li>
-          <li>Make vs. Buy Decision Framework — Planned</li>
+          <li><a href="part-prioritization.html">Part Prioritization Framework</a></li>
+          <li><a href="rfq-tracker.html">Aerospace RFQ Tracker</a></li>
+          <li><a href="supplier-scorecard.html">Supplier Performance &amp; Risk Scorecard</a></li>
+          <li><a href="make-vs-buy.html">Make vs. Buy Decision Framework</a></li>
         </ul>
       </div>
       <div class="context-card">
@@ -644,34 +660,19 @@
     </div>
   </div>
 
-  <!-- 12 LIVE TOOL CTA -->
-  <div class="section" style="break-inside:avoid;">
-    <div class="section-label">12 — Live Tool</div>
-    <div style="border:2px solid var(--ink); padding:28px 32px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;">
-      <div>
-        <div style="font-size:1.1rem; font-weight:700; letter-spacing:-0.01em; margin-bottom:6px;">Try the model live</div>
-        <div style="font-family:var(--mono); font-size:0.72rem; color:var(--muted);">kenyon-should-cost.streamlit.app</div>
-        <div style="font-size:0.82rem; color:#2a2a2a; margin-top:8px; line-height:1.6;">Enter a part, select material and complexity, upload a STEP file or enter part inputs manually. The engine generates a three-scenario price band, sensitivity analysis, and AI narrative in seconds. Excel export included.</div>
-      </div>
-      <a href="https://kenyon-should-cost.streamlit.app" target="_blank" rel="noopener" style="flex-shrink:0; background:var(--accent); color:#fff; font-family:var(--mono); font-size:0.78rem; font-weight:700; padding:14px 24px; text-decoration:none; letter-spacing:0.04em; white-space:nowrap;">OPEN TOOL →</a>
-    </div>
-  </div>
-
   <!-- 13 CLOSING -->
   <div class="section">
-    <div class="section-label">13 — Closing Note</div>
+    <div class="section-label">Closing Note</div>
     <div class="closing-box">
       <p>Built to close the gap between "I have no idea what this should cost" and "I have a defensible number to negotiate from." Parametric by design, explainable by requirement, and modular enough to extend when the use case demands it. <strong>The model produces the estimate. The sourcing engineer decides what to do with it.</strong></p>
-      <div class="closing-meta">Python cost engine + Excel export + Streamlit UI. &nbsp;|&nbsp; 8 materials, 5 complexity tiers, 3 regions, 9 outside processes. &nbsp;|&nbsp; Three-scenario price band (low / mid / high). &nbsp;|&nbsp; Sensitivity analysis, confidence scoring, AI narrative layer. &nbsp;|&nbsp; STEP geometry ingestion with buy-to-fly derivation. &nbsp;|&nbsp; Overhead basis toggle, verified override semantics, price floor enforcement. &nbsp;|&nbsp; 26 passing tests. &nbsp;|&nbsp; Synthetic dataset benchmarked against US aerospace machining benchmarks.</div>
+      <div class="closing-meta">Python cost engine + Excel export + Streamlit UI. &nbsp;|&nbsp; 8 materials, 5 complexity tiers, 3 regions, 9 outside processes. &nbsp;|&nbsp; Three-scenario price band (low / mid / high). &nbsp;|&nbsp; Sensitivity analysis, confidence scoring, and a deterministic sourcing summary. &nbsp;|&nbsp; Local STEP geometry parser. &nbsp;|&nbsp; Overhead basis toggle, verified override semantics, price floor enforcement. &nbsp;|&nbsp; Synthetic dataset benchmarked against US aerospace machining benchmarks.</div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <div class="page-footer">
-    <span>Parametric Should-Cost Model V2 — Case Study</span>
-    <span>Kenyon Woodley</span>
-  </div>
-
-</div>
+  <footer class="page-footer">
+    <a href="../#work">← Back to selected work</a>
+  </footer>
+</main>
 </body>
 </html>

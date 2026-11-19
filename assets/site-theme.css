@@ -1,0 +1,9 @@
+:root {
+  color-scheme: light;
+  --paper: #fafafa;
+  --ink: #161616;
+  --muted: #545454;
+  --rule: #d5d5d5;
+  --hover: #333;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

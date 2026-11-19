@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aerospace RFQ Tracker — Case Study | Kenyon Woodley</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Aerospace RFQ Tracker | Kenyon Woodley</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -165,23 +164,34 @@
     .color-strip { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../assets/site-theme.css">
+<link rel="stylesheet" href="../assets/case-study.css">
 </head>
 <body>
-<div class="page">
+<a class="case-skip" href="#main">Skip to content</a>
+<nav class="case-nav" aria-label="Portfolio">
+  <div>
+    <a class="case-wordmark" href="../">Kenyon Woodley</a>
+    <a href="../#work">Selected work</a>
+  </div>
+</nav>
+<main id="main" class="page" tabindex="-1">
 
   <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="header-eyebrow">— Portfolio Case Study</div>
-      <div class="header-title">Aerospace RFQ Tracker</div>
-      <div class="header-sub">Ops-ready RFQ lifecycle management for aerospace sourcing<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Excel</div>
+  <header class="header">
+    <p class="header-eyebrow">Sourcing Operations Suite</p>
+    <h1 class="header-title">Aerospace RFQ Tracker</h1>
+    <p class="case-intro">Follow requests for quotation from issuance through award in one workbook.</p>
+    <p class="header-sub">Excel workbook · 60 fictional RFQs</p>
+    <div class="case-actions">
+      <a class="case-primary" href="../tools/RFQ_Tracker.xlsx" download>Download workbook</a>
+      <a href="../pdfs/RFQ_Tracker_Case_Study.pdf">PDF case study</a>
     </div>
-    <div class="header-badge">RFQ</div>
-  </div>
+  </header>
 
   <!-- 01 PROBLEM -->
   <div class="section">
-    <div class="section-label">01 — Problem</div>
+    <div class="section-label">Problem</div>
     <h2 class="section-heading">RFQs disappear into inboxes. Cycle time balloons. Nobody knows what's overdue.</h2>
     <div class="section-body">
       <p>In aerospace sourcing, a single missed RFQ response can stall a production line. But most organizations track RFQs in email threads, scattered spreadsheets, and memory. There is no single view of what's been issued, what's been quoted, what's overdue, and what the savings picture looks like.</p>
@@ -192,7 +202,7 @@
 
   <!-- 02 INSIGHT -->
   <div class="section">
-    <div class="section-label">02 — Insight</div>
+    <div class="section-label">Insight</div>
     <h2 class="section-heading">The RFQ isn't a document. It's a lifecycle.</h2>
     <div class="section-body">
       <p>Most tracking tools treat an RFQ as a line item: issued, done. But the sourcing value sits in what happens between issue and award. How many quotes came back. Whether the response was on time. What the price delta was against target. Whether the supplier earned the business on merit or by default.</p>
@@ -203,7 +213,7 @@
 
   <!-- 03 APPROACH -->
   <div class="section" style="page-break-before:always;break-before:page;">
-    <div class="section-label">03 — Approach</div>
+    <div class="section-label">Approach</div>
     <h2 class="section-heading">A 10-tab workbook that tracks the full RFQ lifecycle</h2>
     <div class="section-body">
       <p>The tracker captures every RFQ from initial issue through supplier response, bid evaluation, and final award. KPIs, SLA flags, formula-driven supplier scorecard metrics, and savings calculations are all powered by the data you enter. Every calculation runs through a centralized Settings tab. No macros. No VBA. Pure Excel logic.</p>
@@ -298,7 +308,7 @@
 
   <!-- 04 CORE DATA MODEL -->
   <div class="section" style="page-break-before:always;break-before:page;">
-    <div class="section-label">04 — Core Data Model</div>
+    <div class="section-label">Core Data Model</div>
     <h2 class="section-heading">27 fields per RFQ, and each one earns its column</h2>
     <div class="section-body">
       <p>The RFQ Tracker sheet captures the full lifecycle in a single row per RFQ. Seven fields are user-entered. The remaining twenty are calculated, derived, or auto-flagged by formula.</p>
@@ -352,7 +362,7 @@
 
   <!-- 05 SLA & STATUS LOGIC -->
   <div class="section">
-    <div class="section-label">05 — SLA & Status Logic</div>
+    <div class="section-label">SLA & Status Logic</div>
     <h2 class="section-heading">Color-coded triage without manual tagging</h2>
     <div class="section-body">
       <p>Every RFQ row is automatically color-coded based on its SLA status. The system evaluates the response due date against today's date and the configurable warning window. No manual intervention required. Overdue RFQs surface immediately.</p>
@@ -388,9 +398,10 @@
 
   <!-- 06 KEY CAPABILITIES -->
   <div class="section">
-    <div class="section-label">06 — Key Capabilities</div>
+    <div class="section-label">Key Capabilities</div>
     <h2 class="section-heading">Seven features that make it ops-ready</h2>
-    <table class="styled-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+      <table class="styled-table">
       <thead>
         <tr>
           <th>Capability</th>
@@ -428,11 +439,12 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <!-- 07 OUTPUT EXAMPLE -->
   <div class="section" style="page-break-before:always;break-before:page;">
-    <div class="section-label">07 — Output Example</div>
+    <div class="section-label">Output Example</div>
     <h2 class="section-heading">What a sourcing manager sees on Monday morning</h2>
     <div class="section-body">
       <p>The KPI banner gives an instant portfolio snapshot. Below it, the status breakdown shows where attention is needed. Every metric is formula-driven from the RFQ data. No pivot tables, no manual counts.</p>
@@ -476,7 +488,8 @@
     <div style="margin-top:28px;">
       <div style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Bid Comparison Tab: RFQ-2025-003, Composite Skin Panel Assy</div>
       <div class="output-card" style="margin-top:0;">
-        <table class="bid-table">
+        <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+          <table class="bid-table">
           <thead>
             <tr>
               <th>Criteria</th>
@@ -517,6 +530,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="action-row" style="margin-top:14px;">
           <div class="action-label">Recommendation</div>
@@ -528,13 +542,15 @@
 
   <!-- 08 PORTFOLIO INTELLIGENCE -->
   <div class="section">
-    <div class="section-label">08 — Portfolio Intelligence</div>
+    <div class="section-label">Portfolio Intelligence</div>
     <h2 class="section-heading">Second-order analytics that surface systemic issues</h2>
     <div class="section-body">
       <p>The Analytics tab goes beyond basic counts. It identifies patterns that individual RFQ tracking misses: which RFQs are stalling, where spend is running over target, and which commodity groups carry the longest cycle times.</p>
     </div>
 
-    <table class="styled-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+
+      <table class="styled-table">
       <thead>
         <tr>
           <th>Metric Category</th>
@@ -560,17 +576,21 @@
         </tr>
       </tbody>
     </table>
+
+    </div>
   </div>
 
   <!-- 09 COMPLIANCE -->
   <div class="section">
-    <div class="section-label">09 — Compliance & Audit Readiness</div>
+    <div class="section-label">Compliance & Audit Readiness</div>
     <h2 class="section-heading">Built for environments where documentation isn't optional</h2>
     <div class="section-body">
       <p>Aerospace sourcing operates under regulatory frameworks (FAR, DFARS) where traceability matters. The tracker is designed with audit readiness as a first-class concern, not an afterthought.</p>
     </div>
 
-    <table class="styled-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+
+      <table class="styled-table">
       <thead>
         <tr>
           <th>Feature</th>
@@ -596,24 +616,25 @@
         </tr>
       </tbody>
     </table>
+
+    </div>
   </div>
 
   <!-- 10 BROADER CONTEXT -->
   <div class="section">
-    <div class="section-label">10 — Broader Context</div>
+    <div class="section-label">Broader Context</div>
     <h2 class="section-heading">Second tool in a sourcing operations suite</h2>
     <div class="section-body">
       <p>The RFQ Lifecycle Tracker is the second tool in a growing series designed to address common pain points in aerospace procurement. Each tool is standalone, solves a specific operational problem, and produces outputs defensible in a leadership setting.</p>
     </div>
     <div class="context-grid">
       <div class="context-card">
-        <div class="context-card-label">Suite Progress</div>
+        <div class="context-card-label">Other case studies</div>
         <ul class="upcoming-list">
-          <li>Part Prioritization Framework — Complete</li>
-          <li>RFQ Lifecycle Tracker — V4 Complete</li>
-          <li>Parametric Should-Cost Model — In Development</li>
-          <li>Supplier Performance & Risk Scorecard — Planned</li>
-          <li>Make vs. Buy Decision Framework — Planned</li>
+          <li><a href="part-prioritization.html">Part Prioritization Framework</a></li>
+          <li><a href="should-cost.html">Parametric Should-Cost Model</a></li>
+          <li><a href="supplier-scorecard.html">Supplier Performance &amp; Risk Scorecard</a></li>
+          <li><a href="make-vs-buy.html">Make vs. Buy Decision Framework</a></li>
         </ul>
       </div>
       <div class="context-card">
@@ -625,7 +646,7 @@
 
   <!-- 11 CLOSING -->
   <div class="section">
-    <div class="section-label">11 — Closing Note</div>
+    <div class="section-label">Closing Note</div>
     <div class="closing-box">
       <p>Built to bring visibility to the RFQ lifecycle in environments where procurement decisions carry program-level consequences. The system captures issuance, tracks compliance, evaluates bids, scores suppliers, and surfaces portfolio-level patterns, all in a single workbook. <strong>The tracker surfaces the data. The sourcing manager makes the call.</strong></p>
       <div class="closing-meta">Excel-native RFQ lifecycle management tool. &nbsp;|&nbsp; 10-tab workbook, 27-column data model. &nbsp;|&nbsp; Designed capacity: 500 RFQs. &nbsp;|&nbsp; 60-RFQ synthetic dataset across 6 aerospace programs. &nbsp;|&nbsp; 15 approved suppliers. &nbsp;|&nbsp; No macros, no VBA. &nbsp;|&nbsp; Compatible with Excel 2019+ / Microsoft 365. &nbsp;|&nbsp; Built for audit-ready aerospace sourcing.</div>
@@ -633,11 +654,9 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="page-footer">
-    <span>Aerospace RFQ Tracker — Case Study</span>
-    <span>Kenyon Woodley</span>
-  </div>
-
-</div>
+  <footer class="page-footer">
+    <a href="../#work">← Back to selected work</a>
+  </footer>
+</main>
 </body>
 </html>

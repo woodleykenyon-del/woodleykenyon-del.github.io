@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Make vs. Buy Decision Framework: Case Study | Kenyon Woodley</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Make vs. Buy Decision Framework | Kenyon Woodley</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -98,7 +97,7 @@
   .quad-bl .quad-label { color: var(--buy); }
   .quad-br .quad-label { color: var(--make); }
   .quad-axis-x { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
-  .quad-axis-y { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); position: absolute; left: -26px; top: 50%; transform: translateY(-50%) rotate(180deg); }
+  .quad-axis-y { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; position: absolute; left: 0; top: 50%; transform: translateY(-50%) rotate(180deg); }
   .quadrant-outer { position: relative; width: 100%; max-width: 460px; padding-left: 30px; }
 
   /* SCORE BAND TABLE (recommendation outcomes) */
@@ -155,26 +154,39 @@
     .page { padding: 32px 20px 48px; }
     .component-grid, .component-grid.five { grid-template-columns: repeat(2, 1fr); }
     .band-grid { grid-template-columns: repeat(2, 1fr); }
+    .flag-item { flex-wrap: wrap; gap: 6px 12px; }
+    .flag-text { flex-basis: 100%; }
     .two-col, .context-grid { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../assets/site-theme.css">
+<link rel="stylesheet" href="../assets/case-study.css">
 </head>
 <body>
-<div class="page">
+<a class="case-skip" href="#main">Skip to content</a>
+<nav class="case-nav" aria-label="Portfolio">
+  <div>
+    <a class="case-wordmark" href="../">Kenyon Woodley</a>
+    <a href="../#work">Selected work</a>
+  </div>
+</nav>
+<main id="main" class="page" tabindex="-1">
 
   <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="header-eyebrow">— Portfolio Case Study</div>
-      <div class="header-title">Make vs. Buy<br>Decision Framework</div>
-      <div class="header-sub">Strategic sourcing decision support for aerospace and defense<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + Streamlit + Claude API</div>
+  <header class="header">
+    <p class="header-eyebrow">Sourcing Operations Suite</p>
+    <h1 class="header-title">Make vs. Buy Decision Framework</h1>
+    <p class="case-intro">Compare the cost of making a part in-house with the strategic reasons to retain control.</p>
+    <p class="header-sub">Python · Streamlit</p>
+    <div class="case-actions">
+      <a class="case-primary" href="https://kenyon-make-vs-buy.streamlit.app/">Open demo</a>
+      <a href="../pdfs/Make_vs_Buy_Case_Study.pdf">PDF case study</a>
     </div>
-    <div class="header-badge">SCM</div>
-  </div>
+  </header>
 
   <!-- 01 PROBLEM -->
   <div class="section">
-    <div class="section-label">01 — Problem</div>
+    <div class="section-label">Problem</div>
     <h2 class="section-heading">Make vs. buy gets decided on a spreadsheet that optimizes unit cost. The expensive mistakes happen in the factors the spreadsheet leaves out.</h2>
     <div class="section-body">
       <p>The default make-vs-buy analysis is a cost comparison: model the in-house cost, get a supplier quote, pick the cheaper one. It is fast, it is defensible in a budget meeting, and it is wrong often enough to be dangerous. The decisions that come back to hurt a program are rarely the ones where the cheaper option was also the safe one. They are the ones where cost pointed one way and something the spreadsheet never captured pointed the other.</p>
@@ -185,7 +197,7 @@
 
   <!-- 02 INSIGHT -->
   <div class="section">
-    <div class="section-label">02 — Insight</div>
+    <div class="section-label">Insight</div>
     <h2 class="section-heading">Cost is one input on one axis. The decision lives in two dimensions, and the interesting cases are off the diagonal.</h2>
     <div class="section-body">
       <p>The core architectural decision was to refuse to collapse the decision into a single number. The engine scores a part on two independent layers: an Economic layer that captures whether making is cheaper and whether you have the capacity and volume to justify it, and a Strategic layer that captures criticality, IP control, supply-market risk, export status, and where the program sits in its lifecycle. Each layer is scored 0 to 100, where higher favors Make and 50 is neutral.</p>
@@ -196,10 +208,10 @@
 
   <!-- 03 ENGINE ARCHITECTURE -->
   <div class="section">
-    <div class="section-label">03 — Engine Architecture</div>
+    <div class="section-label">Engine Architecture</div>
     <h2 class="section-heading">A deterministic two-layer engine that places a part on a quadrant, then resolves it with explicit overrides</h2>
     <div class="section-body">
-      <p>The engine is built in Python with strict separation between the deterministic core and the explanatory layer. Scoring, quadrant assignment, mode logic, and overrides are fully deterministic and reproducible: the same inputs always produce the same recommendation. Claude generates the plain-language rationale from the computed result. It never generates or modifies a score or a recommendation.</p>
+      <p>The Python engine calculates the scores, quadrant, recommendation, and any applicable overrides. The rationale describes the outcome using those results, including the annual cost difference and the factors behind the recommendation.</p>
     </div>
 
     <div class="formula-box">
@@ -221,7 +233,7 @@
 
   <!-- 04 SCORING LAYERS -->
   <div class="section">
-    <div class="section-label">04 — Scoring Layers</div>
+    <div class="section-label">Scoring Layers</div>
     <h2 class="section-heading">Ten factors across two layers, each tied to a specific input and a fixed scoring function</h2>
 
     <div class="section-body" style="margin-bottom: 16px;">
@@ -291,7 +303,7 @@
 
   <!-- 05 QUADRANT & RECOMMENDATIONS -->
   <div class="section">
-    <div class="section-label">05 — Quadrant &amp; Recommendations</div>
+    <div class="section-label">Quadrant &amp; Recommendations</div>
     <h2 class="section-heading">The two layer scores place the part on a quadrant. The off-diagonal cases are where the tool earns its keep.</h2>
 
     <div class="quadrant-outer">
@@ -343,7 +355,7 @@
 
   <!-- 06 OVERRIDES -->
   <div class="section">
-    <div class="section-label">06 — Overrides &amp; Precedence</div>
+    <div class="section-label">Overrides &amp; Precedence</div>
     <h2 class="section-heading">Two cases where a score is not enough, resolved by explicit rules in a fixed order</h2>
     <div class="section-body">
       <p>Some factors do not belong on a weighted axis because they are not tradeoffs. They are constraints. The engine handles these as overrides that fire after the quadrant assignment, in a fixed precedence order, each surfacing as a visible flag rather than being absorbed into a number.</p>
@@ -365,7 +377,7 @@
 
   <!-- 07 SCORING MODE -->
   <div class="section">
-    <div class="section-label">07 — Scoring Mode</div>
+    <div class="section-label">Scoring Mode</div>
     <h2 class="section-heading">A decision lens that tips genuine close calls without overriding clear-cut ones</h2>
     <div class="section-body">
       <p>Three scoring modes re-weight the blend between the two layers, matching how a sourcing organization actually frames a decision cycle: are we under cost pressure, or are we prioritizing supply security? The mode does not change the individual factor scores, and it cannot move a decisive case. It only tips a recommendation when the case is genuinely close: when the mode-weighted blend falls within a defined margin of neutral and the balanced read was already near the line.</p>
@@ -389,10 +401,12 @@
 
   <!-- 08 WORKED EXAMPLES -->
   <div class="section">
-    <div class="section-label">08 — Worked Examples</div>
+    <div class="section-label">Worked Examples</div>
     <h2 class="section-heading">Two off-diagonal cases that a unit-cost comparison gets backwards</h2>
 
-    <table class="styled-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+
+      <table class="styled-table">
       <thead>
         <tr>
           <th>Part</th>
@@ -414,43 +428,34 @@
       </tbody>
     </table>
 
+    </div>
+
     <div class="section-body" style="margin-top: 16px;">
       <p>The two examples are deliberate mirror images. The first shows strategy correctly overriding cost. The second shows lifecycle discipline correctly overriding strategy. Neither answer falls out of a single number, and that is the entire point of the tool.</p>
     </div>
   </div>
 
-  <!-- 09 AI LAYER -->
+  <!-- 09 RATIONALE -->
   <div class="section">
-    <div class="section-label">09 — AI Narrative Layer</div>
-    <h2 class="section-heading">Deterministic first. AI explains the result — it does not generate it.</h2>
+    <div class="section-label">Decision rationale</div>
+    <h2 class="section-heading">Why the engine recommended make or buy</h2>
     <div class="section-body">
-      <p>The AI layer translates a computed decision into a short, leadership-ready rationale. Every score, the quadrant, the recommendation, and any override are computed before the model is called. The prompt passes the final recommendation as a fixed fact and instructs the model that implying a different one is a defect. The engine recommendation is also displayed directly above the narrative, so the deterministic result and its explanation can never be confused.</p>
-      <p>If no API key is present, the layer falls back to a deterministic template, so the live tool never breaks on the AI path. The narrative is honest about mode-tipped outcomes: when a part lands on Buy despite favorable economics, the explanation says so rather than claiming both layers favored buying.</p>
-    </div>
-
-    <div class="two-col" style="margin-top: 18px;">
-      <div class="two-col-card">
-        <div class="two-col-label">What AI Generates</div>
-        <div class="two-col-body">A two-to-four sentence rationale naming the dominant drivers, the cost picture, and any active override. Plain, leadership-ready language with no hedging on compliance constraints.</div>
-      </div>
-      <div class="two-col-card">
-        <div class="two-col-label">What AI Never Touches</div>
-        <div class="two-col-body">Layer scores, quadrant assignment, recommendation selection, override logic, break-even math. All computed deterministically before the call. The model string and token limit are fixed in code: the AI layer is boxed, not open-ended.</div>
-      </div>
+      <p>The app uses the computed scores, annual cost difference, and decision rules to explain the recommendation. An active override is included in the rationale so the reader can see how it affected the outcome.</p>
+      <p>When the selected decision lens tips a close call, the explanation describes which factors favored making or buying and why the final recommendation followed the selected lens.</p>
     </div>
   </div>
 
   <!-- 10 TECHNICAL DESIGN -->
   <div class="section">
-    <div class="section-label">10 — Technical Design</div>
-    <h2 class="section-heading">A deterministic core, an explanatory shell, and 121 passing tests</h2>
+    <div class="section-label">Technical Design</div>
+    <h2 class="section-heading">The decision engine and its regression checks</h2>
 
     <div class="formula-box">
       <div class="formula-label">Module Structure</div>
-      <div class="formula-main">decision_engine.py → ai_narrative.py → streamlit_app.py</div>
+      <div class="formula-main">decision_engine.py → rationale.py → streamlit_app.py</div>
       <div class="formula-sub">
         decision_engine.py: all constants, lookup tables, validated input schema, two-layer scoring, quadrant logic, mode tipping, overrides, break-even, sensitivity — single source of truth<br>
-        ai_narrative.py: Anthropic SDK call, prompt construction, deterministic fallback<br>
+        rationale.py: deterministic explanation of the decision, drivers, and overrides<br>
         streamlit_app.py: full UI layer, quadrant chart, comparison table, live "how scoring works" reference
       </div>
     </div>
@@ -463,7 +468,7 @@
 
   <!-- 11 LIMITATIONS -->
   <div class="section">
-    <div class="section-label">11 — Limitations &amp; Scope</div>
+    <div class="section-label">Limitations &amp; Scope</div>
     <h2 class="section-heading">What this tool does not do — and why those are explicit decisions</h2>
 
     <div class="limit-list">
@@ -492,44 +497,41 @@
 
   <!-- 12 BROADER CONTEXT -->
   <div class="section">
-    <div class="section-label">12 — Broader Context</div>
+    <div class="section-label">Broader Context</div>
     <h2 class="section-heading">The decision layer that sits above should-cost and beside supplier scoring</h2>
     <div class="section-body">
       <p>The Make vs. Buy Decision Framework is the highest-altitude tool in the portfolio. It operates at the level a sourcing leader works at: not "what should this part cost" or "how good is this supplier," but "should we make this at all, given that cost is only one of the factors that matter." It consumes a make-cost figure that the Should-Cost Model can produce, and it treats the buy path as a strategy that the Supplier Scorecard can then evaluate vendor by vendor. Together the tools form a buy-side decision system from part prioritization through award.</p>
     </div>
     <div class="context-grid">
       <div class="context-card">
-        <div class="context-card-label">Suite Progress</div>
+        <div class="context-card-label">Other case studies</div>
         <ul class="upcoming-list">
-          <li>Part Prioritization Framework: Complete</li>
-          <li>RFQ Lifecycle Tracker: Complete</li>
-          <li>Parametric Should-Cost Model: Complete</li>
-          <li>Supplier Performance &amp; Risk Scorecard: Complete</li>
-          <li>Make vs. Buy Decision Framework: Complete</li>
+          <li><a href="part-prioritization.html">Part Prioritization Framework</a></li>
+          <li><a href="rfq-tracker.html">Aerospace RFQ Tracker</a></li>
+          <li><a href="should-cost.html">Parametric Should-Cost Model</a></li>
+          <li><a href="supplier-scorecard.html">Supplier Performance &amp; Risk Scorecard</a></li>
         </ul>
       </div>
       <div class="context-card">
         <div class="context-card-label">Design Philosophy</div>
-        <div class="context-card-body">Deterministic scoring. AI explains outputs, never generates them. Cost is one weighted input, never the answer. Constraints like export control are hard overrides, not weighted variables. The tool produces the recommendation and shows its work; the sourcing professional makes the call, and the tool is honest enough to say when the call is too close to make.</div>
+        <div class="context-card-body">Deterministic scoring with an explanation drawn from the computed result. Cost is one weighted input, never the answer. Constraints like export control are hard overrides, not weighted variables. The tool produces the recommendation and shows its work; the sourcing professional makes the call, and the tool is honest enough to say when the call is too close to make.</div>
       </div>
     </div>
   </div>
 
   <!-- 13 CLOSING -->
   <div class="section">
-    <div class="section-label">13 — Closing Note</div>
+    <div class="section-label">Closing Note</div>
     <div class="closing-box">
       <p>Built to close the gap between "the supplier quote is lower, so we outsource" and "we have a structured, defensible view of whether a part belongs in-house across cost, control, risk, and program life." Deterministic by design. Explainable by requirement. Aerospace-specific by intent. <strong>The cheapest option is often the wrong one, and the most strategic option is not always worth the capital. The tool surfaces both. The sourcing professional decides.</strong></p>
-      <div class="closing-meta">Python engine + Streamlit UI + Claude API. &nbsp;|&nbsp; Two-layer scoring: 4 economic factors, 6 strategic factors. &nbsp;|&nbsp; 2x2 decision quadrant with off-diagonal Strategic Make and Opportunistic Make outputs. &nbsp;|&nbsp; Three scoring modes that tip genuine close calls. &nbsp;|&nbsp; Sunsetting and ITAR overrides with fixed precedence. &nbsp;|&nbsp; Break-even volume and sensitivity flag. &nbsp;|&nbsp; Marginal band for genuine coin-flips. &nbsp;|&nbsp; Six engineered sample scenarios. &nbsp;|&nbsp; 121 passing tests with a sample-recommendation regression lock.</div>
+      <div class="closing-meta">Python engine + Streamlit UI. &nbsp;|&nbsp; Two-layer scoring: 4 economic factors, 6 strategic factors. &nbsp;|&nbsp; 2x2 decision quadrant with off-diagonal Strategic Make and Opportunistic Make outputs. &nbsp;|&nbsp; Three scoring modes that tip genuine close calls. &nbsp;|&nbsp; Sunsetting and ITAR overrides with fixed precedence. &nbsp;|&nbsp; Break-even volume and sensitivity flag. &nbsp;|&nbsp; Marginal band for genuine coin-flips. &nbsp;|&nbsp; Six engineered sample scenarios. &nbsp;|&nbsp; 121 passing assertions with a sample-recommendation regression lock.</div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <div class="page-footer">
-    <span>Make vs. Buy Decision Framework: Case Study</span>
-    <span>Kenyon Woodley</span>
-  </div>
-
-</div>
+  <footer class="page-footer">
+    <a href="../#work">← Back to selected work</a>
+  </footer>
+</main>
 </body>
 </html>
