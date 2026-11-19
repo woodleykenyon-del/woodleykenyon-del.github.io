@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Supplier Performance & Risk Scorecard: Case Study | Kenyon Woodley</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Supplier Performance &amp; Risk Scorecard | Kenyon Woodley</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -137,23 +136,34 @@
     .two-col, .context-grid { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../assets/site-theme.css">
+<link rel="stylesheet" href="../assets/case-study.css">
 </head>
 <body>
-<div class="page">
+<a class="case-skip" href="#main">Skip to content</a>
+<nav class="case-nav" aria-label="Portfolio">
+  <div>
+    <a class="case-wordmark" href="../">Kenyon Woodley</a>
+    <a href="../#work">Selected work</a>
+  </div>
+</nav>
+<main id="main" class="page" tabindex="-1">
 
   <!-- HEADER -->
-  <div class="header">
-    <div>
-      <div class="header-eyebrow">— Portfolio Case Study</div>
-      <div class="header-title">Supplier Performance<br>&amp; Risk Scorecard</div>
-      <div class="header-sub">Forward-looking supplier evaluation for aerospace and defense sourcing<br>Kenyon Woodley | Western Washington University | 2026 | Stack: Python + Streamlit + Claude API</div>
+  <header class="header">
+    <p class="header-eyebrow">Sourcing Operations Suite</p>
+    <h1 class="header-title">Supplier Performance &amp; Risk Scorecard</h1>
+    <p class="case-intro">Evaluate performance, risk, and compliance before making a sourcing recommendation.</p>
+    <p class="header-sub">Python · Streamlit</p>
+    <div class="case-actions">
+      <a class="case-primary" href="https://kenyon-supplier-scorecard.streamlit.app/">Open demo</a>
+      <a href="../pdfs/Supplier_Scorecard_Case_Study.pdf">PDF case study</a>
     </div>
-    <div class="header-badge">SCM</div>
-  </div>
+  </header>
 
   <!-- 01 PROBLEM -->
   <div class="section">
-    <div class="section-label">01 — Problem</div>
+    <div class="section-label">Problem</div>
     <h2 class="section-heading">Most supplier evaluations are report cards. They describe the past. They don't surface the risk that's coming.</h2>
     <div class="section-body">
       <p>In aerospace and defense, many late deliveries are not complete surprises. The signals were there: a supplier running single-site, a sole-source relationship with no qualified alternate, a geography with increasing geopolitical friction. Sourcing teams see those signals in isolation, in scattered spreadsheets and quarterly reviews, but rarely in a system that aggregates them into a coherent risk picture before the problem lands on the production line.</p>
@@ -164,7 +174,7 @@
 
   <!-- 02 INSIGHT -->
   <div class="section">
-    <div class="section-label">02 — Insight</div>
+    <div class="section-label">Insight</div>
     <h2 class="section-heading">Performance tells you what happened. Risk tells you what's coming. A useful scorecard needs both layers.</h2>
     <div class="section-body">
       <p>Standard supplier scorecards measure delivery, quality, and responsiveness. Those dimensions matter, but they are backward-looking by nature. A supplier with 97% OTD and ITAR registration missing is not a safe supplier for defense work. A supplier with strong quality metrics and a single manufacturing site in a geopolitically exposed region carries asymmetric downside risk that the performance score doesn't capture.</p>
@@ -175,10 +185,10 @@
 
   <!-- 03 ENGINE ARCHITECTURE -->
   <div class="section">
-    <div class="section-label">03 — Engine Architecture</div>
+    <div class="section-label">Engine Architecture</div>
     <h2 class="section-heading">A deterministic two-layer scoring engine with ordinal recommendation logic</h2>
     <div class="section-body">
-      <p>The engine is built in Python across five modules with strict separation of concerns. Scoring, compliance, and recommendation are fully deterministic. Claude generates the plain-language narrative and improvement actions from the computed scores: it never generates or modifies a number.</p>
+      <p>The Python engine calculates performance, risk, and compliance before assigning a recommendation. The evaluation brief explains the resulting scores, compliance caps, and the largest modeled improvement.</p>
     </div>
 
     <div class="formula-box">
@@ -195,13 +205,13 @@
     </div>
 
     <div class="section-body">
-      <p>The recommendation engine produces one of four outcomes in fixed order of severity: Expand relationship, Maintain with monitoring, Issue corrective action plan, Initiate re-sourcing evaluation. Compliance caps are applied after the score-based recommendation. Caps can only increase severity, never reduce it. A supplier with a high composite score and a critical compliance gap will receive a more severe recommendation than the score alone would produce. The AI narrative receives the final recommendation as a fixed input and explains it. It cannot change it.</p>
+      <p>The recommendation engine produces one of four outcomes in fixed order of severity: Expand relationship, Maintain with monitoring, Issue corrective action plan, Initiate re-sourcing evaluation. Compliance caps are applied after the score-based recommendation. Caps can only increase severity, never reduce it. A supplier with a high composite score and a critical compliance gap will receive a more severe recommendation than the score alone would produce.</p>
     </div>
   </div>
 
   <!-- 04 SCORING DIMENSIONS -->
   <div class="section">
-    <div class="section-label">04 — Scoring Dimensions</div>
+    <div class="section-label">Scoring Dimensions</div>
     <h2 class="section-heading">Nine dimensions across two layers, each tied to a specific input and an explicit scoring function</h2>
 
     <div class="section-body" style="margin-bottom: 16px;">
@@ -266,7 +276,7 @@
 
   <!-- 05 RATING BANDS -->
   <div class="section">
-    <div class="section-label">05 — Rating Bands &amp; Recommendation Logic</div>
+    <div class="section-label">Rating Bands &amp; Recommendation Logic</div>
     <h2 class="section-heading">Four bands. One deterministic recommendation. Compliance caps the ceiling.</h2>
 
     <div class="band-grid">
@@ -299,7 +309,7 @@
 
   <!-- 06 COMPLIANCE FLAGS -->
   <div class="section">
-    <div class="section-label">06 — Compliance Hard Flags</div>
+    <div class="section-label">Compliance Hard Flags</div>
     <h2 class="section-heading">Compliance is not a scoring dimension. It is a hard gate that operates independently of composite score.</h2>
     <div class="section-body">
       <p>Each certification is evaluated against an applicability toggle: ITAR, CMMC, and NADCAP flags only apply when the scope of work makes them relevant. A supplier without ITAR registration on commercial-only work receives no flag. A supplier without ITAR registration on defense-applicable work receives a critical flag and a recommendation cap.</p>
@@ -329,33 +339,24 @@
     </div>
   </div>
 
-  <!-- 07 AI LAYER -->
+  <!-- 07 EVALUATION BRIEF -->
   <div class="section">
-    <div class="section-label">07 — AI Narrative Layer</div>
-    <h2 class="section-heading">Deterministic first. AI explains the result — it does not generate it.</h2>
+    <div class="section-label">Evaluation brief</div>
+    <h2 class="section-heading">The brief explains the scores and the final recommendation</h2>
     <div class="section-body">
-      <p>The AI layer serves one purpose: translate a structured score profile into a readable supplier evaluation brief and a specific, actionable set of improvement recommendations. Every score and recommendation is computed before the AI is called. The prompt passes computed scores as fixed facts and instructs the model that implying a different recommendation is a defect.</p>
-      <p>When compliance caps are triggered: whether or not they escalated the recommendation: the prompt explicitly surfaces the gap and requires the narrative to address it. If ITAR is missing on applicable work, the brief must state "this supplier is disqualified from ITAR-relevant work until registration is obtained." Softened compliance language is treated as a prompt failure.</p>
-    </div>
-
-    <div class="two-col" style="margin-top: 18px;">
-      <div class="two-col-card">
-        <div class="two-col-label">What AI Generates</div>
-        <div class="two-col-body">Supplier summary (2–3 sentences), key strengths grounded in high-scoring dimensions, primary risk factors in order of severity, suggested improvement actions specific enough for a supplier review meeting. One comparative paragraph when 2+ suppliers are loaded into the session table.</div>
-      </div>
-      <div class="two-col-card">
-        <div class="two-col-label">What AI Never Touches</div>
-        <div class="two-col-body">Numerical scores, rating band assignment, recommendation selection, compliance flag status, cap logic. All of these are computed deterministically before the AI call. The model string and max_tokens are fixed in code: the AI layer is boxed, not open-ended.</div>
-      </div>
+      <p>The brief reports the composite score, both layer scores, and data confidence. It lists every active compliance cap, including gaps that did not increase the recommendation severity, and surfaces the modeled improvement with the largest positive effect.</p>
+      <p>In the comparison view, the summary identifies the highest composite, performance, and risk-resilience scores. It flags suppliers evaluated under different modes or commodity profiles so the reader can choose common settings.</p>
     </div>
   </div>
 
   <!-- 08 ADDITIONAL FEATURES -->
   <div class="section">
-    <div class="section-label">08 — Additional Features</div>
+    <div class="section-label">Additional Features</div>
     <h2 class="section-heading">Data confidence scoring, what-if sensitivity, and multi-supplier comparison</h2>
 
-    <table class="styled-table">
+    <div class="case-table-wrap" role="region" aria-label="Data table" tabindex="0">
+
+      <table class="styled-table">
       <thead>
         <tr>
           <th>Feature</th>
@@ -391,11 +392,13 @@
         </tr>
       </tbody>
     </table>
+
+    </div>
   </div>
 
   <!-- 09 SCORE LINEAGE -->
   <div class="section">
-    <div class="section-label">09 — Score Lineage</div>
+    <div class="section-label">Score Lineage</div>
     <h2 class="section-heading">Every composite score is fully auditable from input to output</h2>
     <div class="section-body">
       <p>The Score Lineage expander in the UI renders a Plotly Sankey diagram showing exactly how weighted dimension scores flow into layer scores, and how layer scores combine into the composite. Each link's width is proportional to its weighted contribution. A sourcing manager being challenged on a score can open the lineage view and walk any reviewer through the exact math: dimension by dimension, weight by weight.</p>
@@ -405,30 +408,30 @@
 
   <!-- 10 TECHNICAL DESIGN -->
   <div class="section">
-    <div class="section-label">10 — Technical Design</div>
-    <h2 class="section-heading">Five modules, 92 passing tests, one centralized source of truth</h2>
+    <div class="section-label">Technical Design</div>
+    <h2 class="section-heading">How the scoring modules fit together</h2>
 
     <div class="formula-box">
       <div class="formula-label">Module Structure</div>
-      <div class="formula-main">models.py → scoring.py + compliance.py → recommendation.py → ai_narrative.py → streamlit_app.py</div>
+      <div class="formula-main">models.py → scoring.py + compliance.py → recommendation.py → evaluation_brief.py → streamlit_app.py</div>
       <div class="formula-sub">
         models.py: all constants, lookup tables, enums, validated input schema: single source of truth<br>
         scoring.py: two-layer deterministic engine, confidence score, sensitivity analysis<br>
         compliance.py: flag evaluation, applicability-gated cap logic<br>
         recommendation.py: ordinal recommendation + compliance cap resolution<br>
-        ai_narrative.py: Anthropic SDK call, prompt construction, comparison narrative<br>
+        evaluation_brief.py: supplier and comparison summaries derived from scores<br>
         streamlit_app.py: full UI layer — imports from all five backend modules
       </div>
     </div>
 
     <div class="section-body">
-      <p>The test suite enforces 92 assertions including: PPM band boundary correctness, lead time piecewise interpolation (no band cliffs), validation bounds across all input fields, cap logic separation (cap_triggered vs cap_escalated), same-severity compliance triggering, sensitivity filtering, weight table integrity across all commodity profiles, and confidence score label assignment.</p>
+      <p>The test suite covers PPM band boundary correctness, lead time piecewise interpolation (no band cliffs), validation bounds across all input fields, cap logic separation (cap_triggered vs cap_escalated), same-severity compliance triggering, sensitivity filtering, weight table integrity across all commodity profiles, and confidence score label assignment.</p>
     </div>
   </div>
 
   <!-- 11 LIMITATIONS -->
   <div class="section">
-    <div class="section-label">11 — Limitations &amp; Scope</div>
+    <div class="section-label">Limitations &amp; Scope</div>
     <h2 class="section-heading">What this tool does not do — and why those are explicit decisions</h2>
 
     <div class="limit-list">
@@ -450,51 +453,48 @@
       </div>
       <div class="limit-item">
         <span class="limit-tag">Known</span>
-        <div class="limit-text"><strong>No export.</strong> The Streamlit screen is the artifact. There is no PDF or Excel export. Score lineage, compliance flags, and AI narrative are designed to be presented from the live tool, not forwarded as a document.</div>
+        <div class="limit-text"><strong>No export.</strong> The Streamlit screen is the artifact. There is no PDF or Excel export. Score lineage, compliance flags, and the evaluation brief are designed to be presented from the live tool, not forwarded as a document.</div>
       </div>
     </div>
   </div>
 
   <!-- 12 BROADER CONTEXT -->
   <div class="section">
-    <div class="section-label">12 — Broader Context</div>
+    <div class="section-label">Broader Context</div>
     <h2 class="section-heading">Fourth tool in the sourcing operations portfolio</h2>
     <div class="section-body">
       <p>The Supplier Performance &amp; Risk Scorecard is the deepest engine in the portfolio so far, with the most scoring dimensions and the most complex recommendation logic. It is designed to sit downstream of the Part Prioritization Framework (which surfaces which suppliers need attention first) and inform the Make vs. Buy Decision Framework (which decides whether to source at all).</p>
     </div>
     <div class="context-grid">
       <div class="context-card">
-        <div class="context-card-label">Suite Progress</div>
+        <div class="context-card-label">Other case studies</div>
         <ul class="upcoming-list">
-          <li>Part Prioritization Framework: Complete</li>
-          <li>RFQ Lifecycle Tracker: Complete</li>
-          <li>Parametric Should-Cost Model: Complete</li>
-          <li>Supplier Performance &amp; Risk Scorecard: Complete</li>
-          <li>Make vs. Buy Decision Framework: In Development</li>
+          <li><a href="part-prioritization.html">Part Prioritization Framework</a></li>
+          <li><a href="rfq-tracker.html">Aerospace RFQ Tracker</a></li>
+          <li><a href="should-cost.html">Parametric Should-Cost Model</a></li>
+          <li><a href="make-vs-buy.html">Make vs. Buy Decision Framework</a></li>
         </ul>
       </div>
       <div class="context-card">
         <div class="context-card-label">Design Philosophy</div>
-        <div class="context-card-body">Deterministic scoring. AI explains outputs, never generates them. Every number traces to an auditable input. Compliance is a hard gate, not a weighted variable. The tool produces the assessment: the sourcing engineer makes the call. Built for the sourcing professional who needs to defend a recommendation in a leadership setting, not for the analyst building dashboards.</div>
+        <div class="context-card-body">Deterministic scoring with an explanation drawn from the computed results. Every number traces to an auditable input. Compliance is a hard gate, not a weighted variable. The tool produces the assessment: the sourcing engineer makes the call. Built for the sourcing professional who needs to defend a recommendation in a leadership setting, not for the analyst building dashboards.</div>
       </div>
     </div>
   </div>
 
   <!-- 13 CLOSING -->
   <div class="section">
-    <div class="section-label">13 — Closing Note</div>
+    <div class="section-label">Closing Note</div>
     <div class="closing-box">
       <p>Built to close the gap between "we track OTD in a spreadsheet" and "we have a structured, defensible view of supplier health across performance, risk, and compliance." Deterministic by design. Explainable by requirement. Aerospace-specific by intent. <strong>The engine produces the assessment. The sourcing engineer makes the call.</strong></p>
-      <div class="closing-meta">Python engine + Streamlit UI + Claude API. &nbsp;|&nbsp; Two-layer scoring: 4 performance dimensions, 5 risk dimensions. &nbsp;|&nbsp; Three scoring modes, five commodity profiles. &nbsp;|&nbsp; Four compliance hard flags with applicability toggles and ordinal cap logic. &nbsp;|&nbsp; Data confidence scoring, what-if sensitivity, spend criticality multiplier. &nbsp;|&nbsp; Multi-supplier comparison heatmap with session state. &nbsp;|&nbsp; Score Lineage Sankey diagram. &nbsp;|&nbsp; 92 passing tests across 18 assertion groups. &nbsp;|&nbsp; Geo risk tiering across 40+ countries.</div>
+      <div class="closing-meta">Python engine + Streamlit UI. &nbsp;|&nbsp; Two-layer scoring: 4 performance dimensions, 5 risk dimensions. &nbsp;|&nbsp; Three scoring modes, five commodity profiles. &nbsp;|&nbsp; Four compliance hard flags with applicability toggles and ordinal cap logic. &nbsp;|&nbsp; Data confidence scoring, what-if sensitivity, spend criticality multiplier. &nbsp;|&nbsp; Multi-supplier comparison heatmap with session state. &nbsp;|&nbsp; Score Lineage Sankey diagram. &nbsp;|&nbsp; Regression checks for scoring, compliance, and recommendations. &nbsp;|&nbsp; Geo risk tiering across 40+ countries.</div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <div class="page-footer">
-    <span>Supplier Performance &amp; Risk Scorecard: Case Study</span>
-    <span>Kenyon Woodley</span>
-  </div>
-
-</div>
+  <footer class="page-footer">
+    <a href="../#work">← Back to selected work</a>
+  </footer>
+</main>
 </body>
 </html>
